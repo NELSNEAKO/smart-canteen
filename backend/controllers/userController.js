@@ -20,7 +20,7 @@ const registerUser = (req, res) => {
   if (role === 'student' && !student_id) {
     return res.status(400).json({ message: 'Student ID is required for students' });
   }
-
+  
   // Check if the user already exists in the database
   const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
   db.query(checkUserQuery, [email], async (err, results) => {
@@ -101,7 +101,23 @@ const loginUser = (req, res) => {
   });
 };
 
+const getUser = (req, res) => {
+  const checkUserQuery = 'SELECT * FROM users';
+
+  db.query(checkUserQuery, async (err, results) => {
+    if (err) {
+      console.error('Database error:', err.message);
+      return res.status(500).json({ message: err.message }); // Return the actual error message
+    }
+
+    // If no error, send the results
+    return res.status(200).json(results); // Send the users as a response
+  });
+};
+
+  
 module.exports = {
   registerUser,
   loginUser,
+  getUser,
 };

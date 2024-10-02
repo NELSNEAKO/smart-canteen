@@ -45,4 +45,54 @@ const addReservation = (req, res) => {
   });
 };
 
-module.exports = { addReservation };
+// Get reservation
+const getReservationStatus = (req, res) => {
+  const checkReservationStatus = "SELECT * FROM reservations WHERE status = 'pending'";
+
+
+  db.query(checkReservationStatus, async (err, results) => {
+    if (err) {
+      console.error('Database error:', err.message);
+      return res.status(500).json({ message: err.message }); // Return the actual error message
+    }
+
+    // If no error, send the results
+    return res.status(200).json(results); // Send the reservations as a response
+  });
+};
+
+const getReservations = (req, res) => {
+  const checkReservations = `
+    SELECT 
+        reservation.quantity, 
+        reservation.status, 
+        foodItem.name AS foodName, 
+        student.student_id AS studentId
+    FROM 
+        reservations reservation
+    JOIN 
+        food_items foodItem ON reservation.food_id = foodItem.id
+    JOIN 
+        users student ON reservation.student_id = student.id
+  `;
+
+  // Query the database
+  db.query(checkReservations, (err, results) => {
+    if (err) {
+      console.error('Database error:', err); // Logs the error for debugging
+      return res.status(500).json({ message: 'Database error', error: err });
+    }
+
+    res.status(200).json(results); // Sends a 200 status with the query results
+  });
+};
+
+
+
+
+
+module.exports = { 
+  addReservation,
+  getReservationStatus,
+  getReservations,
+};

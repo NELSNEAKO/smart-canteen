@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, List, ListItem, ListItemText, Paper, CircularProgress, Alert, ListItemAvatar, Avatar } from '@mui/material';
+import { Typography, 
+  List, 
+  ListItem, 
+  ListItemText, 
+  Paper, 
+  CircularProgress, 
+  Alert, 
+  ListItemAvatar, 
+  Avatar 
+} from '@mui/material';
 import axios from 'axios';
 
 function ViewAvailableFood() {
   const [foodItems, setFoodItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+  
   useEffect(() => {
     const fetchFoodItems = async () => {
       try {
@@ -33,7 +42,7 @@ function ViewAvailableFood() {
   return (
     <Paper elevation={3} style={{ padding: '20px' }}>
       <Typography variant="h6" gutterBottom>
-        Available Food Items
+        {/* Available Food Items */}
       </Typography>
       {foodItems.length === 0 ? (
         <Typography>No food items available.</Typography>

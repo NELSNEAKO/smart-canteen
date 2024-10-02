@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Function to add a food item with an image and status
+// Function to add a food item with an image and status 
 const addFoodItem = (req, res) => {
   const { id, name, price, status } = req.body;  // Include 'status' in the request body
   const image = req.file ? req.file.filename : null;  // Get the uploaded image's filename
@@ -144,6 +144,7 @@ const deleteFoodItem = (req, res) => {
       res.status(200).json({ message: 'Food item deleted successfully' });
     });
   });
+
 };
 
 module.exports = {
@@ -152,5 +153,6 @@ module.exports = {
   getFoodItems,
   getFoodUpdates,
   deleteFoodItem,
+  //getUser,
   upload  // Export multer upload function
 };

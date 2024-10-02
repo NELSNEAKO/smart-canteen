@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Button, Dialog, DialogTitle, DialogContent, DialogActions, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -28,7 +28,7 @@ function VendorPage() {
   }, []);
 
   // Functions to handle opening and closing of the update dialog
-  const handleOpenUpdate = () => setOpenUpdate(true);
+  const handleOpenUpdate = () => setOpenUpdate(true); 
   const handleCloseUpdate = () => setOpenUpdate(false);
 
   // Functions to handle opening and closing of the delete dialog

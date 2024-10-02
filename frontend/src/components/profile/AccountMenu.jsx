@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
 
 const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -43,8 +44,10 @@ const AccountMenu = () => {
 
   return (
     <>
-      <Button color="inherit" onClick={handleMenuOpen}>
+      <Button variant="text" color="inherit" onClick={handleMenuOpen}sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h7">
         Account
+        </Typography>
       </Button>
       <Menu
         anchorEl={anchorEl}
