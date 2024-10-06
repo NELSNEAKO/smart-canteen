@@ -118,9 +118,40 @@ const TrackActivityPage = () => {
       <Typography variant="h4" gutterBottom>
         Track Activity
       </Typography>
-      
       {/* Show this section only if the user is a vendor */}
-      {userRole === 'vendor' && <VendorTrack />}
+      {userRole === 'vendor' && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Track Reservation Order Details
+          </Typography>
+            {/* Account Menu */}
+          <div style={{ position: 'absolute', top: 20, right: 20 }}>
+            <AccountMenu />
+          </div>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Food Name</TableCell> {/* Display food name */}
+                  <TableCell>Quantity</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Student ID</TableCell>  {/* Display Student ID */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {reservations.map((reservation, index) => (
+                  <TableRow key={reservation.id || index}>
+                    <TableCell>{reservation.foodName}</TableCell>  {/* Display food name */}
+                    <TableCell>{reservation.quantity}</TableCell>
+                    <TableCell>{reservation.status}</TableCell>
+                    <TableCell>{reservation.studentId !== null ? reservation.studentId : 'N/A'}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      )}
 
       {/* This section is shown to both students and vendors */}
       <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>

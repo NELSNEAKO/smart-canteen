@@ -108,8 +108,7 @@ const getUser = (req, res) => {
     if (err) {
       console.error('Database error:', err.message);
       return res.status(500).json({ message: err.message }); // Return the actual error message
-    }
-
+    } 
     // If no error, send the results
     return res.status(200).json(results); // Send the users as a response
   });
