@@ -45,26 +45,11 @@ const addReservation = (req, res) => {
 };
 
 
-// Get reservation
-const getReservationStatus = (req, res) => {
-  const checkReservationStatus = "SELECT * FROM reservations WHERE status = 'pending'";
-
-
-  db.query(checkReservationStatus, async (err, results) => {
-    if (err) {
-      console.error('Database error:', err.message);
-      return res.status(500).json({ message: err.message }); // Return the actual error message
-    }
-
-    // If no error, send the results
-    return res.status(200).json(results); // Send the reservations as a response
-  });
-};
 
 const getReservations = (req, res) => {
   const query = `
     SELECT 
-      r.id
+      r.id,
       r.quantity, 
       r.status, 
       fi.name AS foodName, 
@@ -118,7 +103,6 @@ const updateReservation = (req, res) => {
 
 module.exports = { 
   addReservation,
-  getReservationStatus,
   getReservations,
   updateReservation,
 };

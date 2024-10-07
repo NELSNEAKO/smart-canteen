@@ -75,7 +75,7 @@ export default function VendorTrack() {
     if (loading) {
         return <CircularProgress />; // Show a loading spinner
     }
-    console.log('Updating reservation with ID:', reservations);
+   // console.log('Updating reservation with ID:', reservations);
     return (
         <>
             <Typography variant="h6" gutterBottom>
