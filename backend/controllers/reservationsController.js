@@ -45,7 +45,6 @@ const addReservation = (req, res) => {
 };
 
 
-
 const getReservations = (req, res) => {
   const query = `
     SELECT 
@@ -73,7 +72,7 @@ const getReservations = (req, res) => {
   });
 };
 
-
+// Update Reservation Status
 const updateReservation = (req, res) => {
   const reservationId = req.params.id;
   const { status } = req.body;
@@ -99,10 +98,29 @@ const updateReservation = (req, res) => {
 }
 
 
+const deleteReservation = (req, res) => {
+  const { reservationId } = req.params; // Extract reservationId from URL
+
+  const deleteQuery = 'DELETE FROM reservations WHERE id = ?';
+  db.query(deleteQuery, [reservationId], (err, result) => {
+      if (err) {
+          return res.status(500).json({ message: 'Database error while deleting' });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Reservation not found' });
+      }
+
+      res.status(200).json({ message: 'Reservation deleted successfully' });
+  });
+};
+
+
 
 
 module.exports = { 
   addReservation,
   getReservations,
   updateReservation,
+  deleteReservation
 };

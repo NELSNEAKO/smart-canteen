@@ -153,6 +153,5 @@ module.exports = {
   getFoodItems,
   getFoodUpdates,
   deleteFoodItem,
-  //getUser,
   upload  // Export multer upload function
 };

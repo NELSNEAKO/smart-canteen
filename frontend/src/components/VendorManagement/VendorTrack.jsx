@@ -13,6 +13,8 @@ import {
     MenuItem,
     CircularProgress,
 } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import CustomDeleteIcon from './CustomDeleteIcon';
 import axios from 'axios';
 
 export default function VendorTrack() {
@@ -36,6 +38,27 @@ export default function VendorTrack() {
             });
     };
 
+    const handleStatusChange = async (index, newStatus) => {
+        const reservation = reservations[index]; // Get the current reservation
+        
+        try {
+            await axios.put(
+                `http://localhost:5000/api/update-reservation/${reservation.id}`, 
+                { status: newStatus },  // Send status as JSON
+                { headers: { 'Content-Type': 'application/json' } }  // Set correct content type
+            );
+            // Update the reservations state to reflect the new status
+            setReservations(prevReservations => 
+                prevReservations.map((res, i) => 
+                    i === index ? { ...res, status: newStatus } : res
+                )
+            );
+        } catch (error) {
+            console.error('Error updating status:', error.response || error);
+            alert('Failed to update reservation status. Please try again.');
+        }
+    };
+
     useEffect(() => {
         fetchReservations();
     }, []);  
@@ -50,28 +73,8 @@ export default function VendorTrack() {
         setCurrentIndex(null);
     };
 
-    const handleStatusChange = async (index, newStatus) => {
-        const reservation = reservations[index]; // Get the current reservation
-        const formData = new FormData();
-        formData.append('status', newStatus);
+    // console.log('Reservation:', reservations); // Log the entire reservation object
 
-        try {
-            await axios.put(`http://localhost:5000/api/update-reservation/${reservation.id}`, 
-                formData,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
-            );
-            // Update the reservations state to reflect the new status
-            setReservations(prevReservations => 
-                prevReservations.map((res, i) => 
-                    i === index ? { ...res, status: newStatus } : res
-                )
-            );
-        } catch (error) {
-            console.error('Error updating status:', error.response || error);
-            alert('Failed to update reservation status. Please try again.');
-        }
-    };
-    
     if (loading) {
         return <CircularProgress />; // Show a loading spinner
     }
@@ -81,7 +84,10 @@ export default function VendorTrack() {
             <Typography variant="h6" gutterBottom>
                 Track Reservation Order Details
             </Typography>
-            <TableContainer component={Paper}>
+            <TableContainer 
+                component={Paper}
+                sx={{ maxHeight: 400, overflow: 'auto' }} Set max height and enable scrolling
+            >
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -97,17 +103,26 @@ export default function VendorTrack() {
                                 <TableCell>{reservation.foodName}</TableCell>
                                 <TableCell>{reservation.quantity}</TableCell>
                                 <TableCell>
-                                    <Button 
-                                        variant="text" 
-                                        color="inherit" 
-                                        onClick={(event) => handlePendingOpen(event, index)} 
-                                        sx={{ fontWeight: 'light' }}
+                                    <Stack
+                                        direction={{ xs: 'column', sm: 'row' }}
+                                        spacing={{ xs: 1, sm: 2, md: 4 }}
                                     >
-                                        {reservation.status}
-                                    </Button>
+                                        <Button 
+                                            variant="contained" 
+                                            color={reservation.status === 'Pending' ? 'warning' : 'success'} // Change color based on status 
+                                            disabled={reservation.status === 'Completed'} // Disable button if status is 'Completed'
+                                            onClick={(event) => handlePendingOpen(event, index)} 
+                                            sx={{ fontWeight: 'bold', width: '50%' }} // Adjusts button to full width
+                                        >   
+                                                {reservation.status}
+                                        </Button>
+                                        {/* if status is equal to completed display DeleteButton AND pass the reservationId to Delete the reservation*/}
+                                        {reservation.status === 'Completed' ?<CustomDeleteIcon reservationId={reservation.id}/> : null } 
+                                    </Stack>
+
                                     <Menu
                                         anchorEl={anchorEl}
-                                        open={Boolean(anchorEl) && currentIndex === index}
+                                        open={Boolean(anchorEl) && currentIndex === index}  
                                         onClose={handlePendingClose}
                                     >
                                         <MenuItem onClick={() => handleStatusChange(index, 'Pending')}>Pending</MenuItem>

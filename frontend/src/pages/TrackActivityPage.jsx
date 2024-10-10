@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
-import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
+import { jwtDecode } from 'jwt-decode';
 import VendorTrack from '../components/VendorManagement/VendorTrack';
+import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
 
 const TrackActivityPage = () => {
   const [foodItems, setFoodItems] = useState([]);
@@ -13,9 +14,7 @@ const TrackActivityPage = () => {
   const [reservations, setReservations] = useState([]);  // For vendor reservations
   const [quantities, setQuantities] = useState({});  // State to track quantities for each item
 
-
   useEffect(() => {
-    // Decode the JWT token to get the user's role and studentId
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = jwtDecode(token);
@@ -23,49 +22,26 @@ const TrackActivityPage = () => {
       setStudentId(decodedToken.student_id); // Assuming student_id is in the token
     }
 
-    // Fetch food item statuses (accessible to both students and vendors)
     fetchFoodItems();
+  }, []);
 
-    // Fetch reservation details for vendors
+  useEffect(() => {
     if (userRole === 'vendor') {
       fetchReservations();
     }
   }, [userRole]);
 
-      //Fetch data userRole
-      const fetchUserRole = () => {
-        axios.get('http://localhost:5000/api/get-user')
-        .then(response => {
-            setUserRole(response.data);
-        })
-        .catch(error => console.error('Error fetching get Roles: ', error));
-    };
-
-    useEffect(() => {
-        fetchUserRole();
-    }, []);
-
-    useEffect(() => {
-        if (userRole === 'vendor') {
-            fetchReservations();
-        }
-    }, [userRole]);
-
   // Fetch food items
   const fetchFoodItems = () => {
     axios.get('http://localhost:5000/api/food-items')
-      .then(response => {
-        setFoodItems(response.data);
-      })
+      .then(response => setFoodItems(response.data))
       .catch(error => console.error('Error fetching food items:', error));
   };
 
   // Fetch reservation details for vendors
   const fetchReservations = () => {
     axios.get('http://localhost:5000/api/get-Reservation')
-      .then(response => {
-        setReservations(response.data);
-      })
+      .then(response => setReservations(response.data))
       .catch(error => console.error('Error fetching reservations:', error));
   };
 
@@ -111,13 +87,16 @@ const TrackActivityPage = () => {
         alert('Failed to confirm reservation. Please try again.');
       });
   };
-  console.log(reservations);
 
   return (  
     <Container maxWidth="md">
       <Typography variant="h4" gutterBottom>
         Track Activity
       </Typography>
+      {/* Account Menu */}
+      <div style={{ position: 'absolute', top: 20, right: 500 }}>
+        <AccountMenu />
+      </div>
       
       {/* Show this section only if the user is a vendor */}
       {userRole === 'vendor' && <VendorTrack />}
@@ -150,7 +129,7 @@ const TrackActivityPage = () => {
                       type="number"
                       value={quantities[item.id] || ''}
                       onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                      inputProps={{ min: '' }}
+                      inputProps={{ min: 1 }}
                       size="small"
                     />
                   </TableCell>
