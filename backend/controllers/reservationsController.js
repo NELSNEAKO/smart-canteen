@@ -44,7 +44,6 @@ const addReservation = (req, res) => {
   });
 };
 
-
 const getReservations = (req, res) => {
   const query = `
     SELECT 
@@ -115,12 +114,51 @@ const deleteReservation = (req, res) => {
   });
 };
 
+const getOrderList = (req, res) => {
+  const { studentId } = req.query; // Get the studentId from the query parameters
+
+  // Validate studentId
+  if (!studentId) {
+    return res.status(400).json({ message: 'Student ID is required' });
+  }
+
+  const query = `
+    SELECT 
+      r.id AS reservationId, 
+      r.quantity, 
+      r.status, 
+      fi.name AS foodName, 
+      fi.price AS totalPrice 
+    FROM 
+      reservations r
+    JOIN 
+      food_items fi ON r.food_id = fi.id
+    JOIN 
+      users u ON r.student_id = u.student_id
+    WHERE 
+      u.student_id = ?; 
+  `;
+
+  db.query(query, [studentId], (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ message: 'An error occurred while fetching the orders.', error: err });
+    }
+
+    // Wrap results in an object
+    res.status(200).json({ orders: results }); // Sends the reservation data back to the client
+  });
+};
+
+
+
 
 
 
 module.exports = { 
   addReservation,
   getReservations,
+  getOrderList,
   updateReservation,
   deleteReservation
 };

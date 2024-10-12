@@ -5,6 +5,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import VendorTrack from '../components/VendorManagement/VendorTrack';
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
+import OrderedList from '../components/StudentInteraction/OrderedList';
 
 const TrackActivityPage = () => {
   const [foodItems, setFoodItems] = useState([]);
@@ -190,7 +191,7 @@ const TrackActivityPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
-
+            
           {/* Checkout section */}
           <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
             Checkout
@@ -209,6 +210,7 @@ const TrackActivityPage = () => {
           </Button>
         </>
       )}
+      <OrderedList studentId={studentId}/>
     </Container>
   );
 };

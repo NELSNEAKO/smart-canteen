@@ -4,6 +4,7 @@ const {
     getReservations,
     updateReservation,
     deleteReservation,
+    getOrderList,
 } = require('../controllers/reservationsController');
 
 const router = express.Router();
@@ -13,7 +14,10 @@ router.post('/add-reservation', addReservation);
 
 // Route to handle get reservations
 router.get('/get-Reservation', getReservations);
-    
+
+// Route to handle get reservation for specific students
+router.get('/get-Reservation-Student', getOrderList);
+
 // Route to update an existing status by ID
 router.put('/update-Reservation/:id', updateReservation);
 

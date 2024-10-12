@@ -9,7 +9,6 @@ import RegisterVendorPage from './pages/RegisterVendorPage';  // Vendor registra
 import ProfilePage from './pages/ProfilePage';  // Vendor/Student profile page
 import SettingsPage from './pages/SettingsPage';  // Settings page for password updates etc.
 import TrackActivityPage from './pages/TrackActivityPage';  // Track vendor activities
-//import TrackTestVendor from './pages/TrackTestVendor';  // Track Test vendor activities
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
@@ -28,7 +27,6 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />  {/* Profile page route */}
           <Route path="/settings" element={<SettingsPage />} />  {/* Settings page route */}
           <Route path="/track-activity" element={<TrackActivityPage />} />  {/* Vendor Track Activity route */}
-          {/* <Route path="/track-activityVendor" element={<TrackTestVendor />} />  Vendor Track Activity route */}
         </Routes>
       </Router>
     </ThemeProvider>
