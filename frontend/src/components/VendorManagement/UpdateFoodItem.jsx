@@ -35,6 +35,7 @@ function UpdateFoodItem() {
       setImage(null);
       setStatus('Not Available');  // Reset status to default
       setError('');
+      
     } catch (err) {
       setError('Failed to update food item.');
       setSuccess('');

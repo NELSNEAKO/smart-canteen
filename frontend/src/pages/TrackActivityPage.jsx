@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 import VendorTrack from '../components/VendorManagement/VendorTrack';
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
 import OrderedList from '../components/StudentInteraction/OrderedList';
 
 const TrackActivityPage = () => {
+  const navigate = useNavigate();
   const [foodItems, setFoodItems] = useState([]);
   const [cart, setCart] = useState([]);  // State to hold items added to cart
   const [userRole, setUserRole] = useState('');
@@ -106,8 +108,8 @@ const TrackActivityPage = () => {
       <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
         Track Status of Food Items
       </Typography>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell>Food ID</TableCell>
@@ -210,8 +212,17 @@ const TrackActivityPage = () => {
           </Button>
         </>
       )}
-      <OrderedList studentId={studentId}/>
-    </Container>
+      {userRole === 'student' && <OrderedList studentId={studentId}/>}
+      {/* Back Button */}
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => navigate(-1)}
+        style={{ marginTop: '20px' }}
+      >
+        Back
+      </Button>
+    </Container> 
   );
 };
 

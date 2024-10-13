@@ -13,7 +13,7 @@ import {
     MenuItem,
     CircularProgress,
 } from '@mui/material';
-import Stack from '@mui/material/Stack';
+import Stack from '@mui/material/Stack';    
 import CustomDeleteIcon from './CustomDeleteIcon';
 import axios from 'axios';
 
@@ -23,8 +23,17 @@ export default function VendorTrack() {
     const [currentIndex, setCurrentIndex] = useState(null);
     const [loading, setLoading] = useState(true); // Loading state
 
+    useEffect(() => {
+        fetchReservations();
+    }, []);  
+
+    const handleDelete = async () => {
+        // Fetch reservations again after a deletion
+        await fetchReservations();
+    };
+
     // Fetch reservation details for vendors
-    const fetchReservations = () => {
+    const fetchReservations = () => {   
         setLoading(true); // Start loading
         axios.get('http://localhost:5000/api/get-Reservation')
             .then(response => {
@@ -59,9 +68,7 @@ export default function VendorTrack() {
         }
     };
 
-    useEffect(() => {
-        fetchReservations();
-    }, []);  
+    
 
     const handlePendingOpen = (event, index) => {
         setAnchorEl(event.currentTarget);
@@ -88,7 +95,7 @@ export default function VendorTrack() {
                 component={Paper}
                 sx={{ maxHeight: 400, overflow: 'auto' }} Set max height and enable scrolling
             >
-                <Table>
+                <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Food Name</TableCell>
@@ -114,10 +121,10 @@ export default function VendorTrack() {
                                             onClick={(event) => handlePendingOpen(event, index)} 
                                             sx={{ fontWeight: 'bold', width: '50%' }} // Adjusts button to full width
                                         >   
-                                                {reservation.status}
+                                            {reservation.status}
                                         </Button>
                                         {/* if status is equal to completed display DeleteButton AND pass the reservationId to Delete the reservation*/}
-                                        {reservation.status === 'Completed' ?<CustomDeleteIcon reservationId={reservation.id}/> : null } 
+                                        {reservation.status === 'Completed' ?<CustomDeleteIcon reservationId={reservation.id} onDelete={handleDelete} /> : null } 
                                     </Stack>
 
                                     <Menu

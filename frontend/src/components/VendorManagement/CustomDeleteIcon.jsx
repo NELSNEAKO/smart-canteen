@@ -4,7 +4,7 @@ import { IconButton, Snackbar } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 
-function CustomDeleteIcon({ reservationId }) { // Only passing reservationId
+function CustomDeleteIcon({ reservationId, onDelete }) { // Only passing reservationId
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
 
@@ -20,6 +20,9 @@ function CustomDeleteIcon({ reservationId }) { // Only passing reservationId
             await axios.delete(`http://localhost:5000/api/delete-Reservation/${reservationId}`);
             setSuccess('Reservation deleted successfully!');
             setError('');
+            if (onDelete) {
+                onDelete(reservationId); // Call the callback to refresh the list
+            }
         } catch (err) {
             console.error('Error during deletion:', err.response ? err.response.data : err.message);
             setError('Failed to delete reservation.');

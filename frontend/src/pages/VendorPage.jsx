@@ -1,5 +1,5 @@
  import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Button, Dialog, DialogTitle, DialogContent, DialogActions, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Container, Box, Typography, Grid, Button, Dialog, DialogTitle, DialogContent, DialogActions, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AddFoodItem from '../components/VendorManagement/AddFoodItem';
@@ -14,18 +14,21 @@ function VendorPage() {
   const [foodItems, setFoodItems] = useState([]); // State to store food items
 
   // Fetch food items when the component is mounted
-  useEffect(() => {
-    const fetchFoodItems = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/food-items');
-        setFoodItems(response.data);
-      } catch (error) {
-        console.error('Error fetching food items:', error);
-      }
-    };
 
+  useEffect(() => {
     fetchFoodItems();
   }, []);
+
+  const fetchFoodItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/food-items');
+      setFoodItems(response.data);
+    } catch (error) {
+      console.error('Error fetching food items:', error);
+    }
+    };
+
+
 
   // Functions to handle opening and closing of the update dialog
   const handleOpenUpdate = () => setOpenUpdate(true); 
@@ -108,49 +111,53 @@ function VendorPage() {
           </Dialog>
         </Grid>
       </Grid>
-
       {/* Display Food Items Table */}
-      <Typography variant="h5" style={{ marginTop: '30px' }}>
-        Your Food Items
-      </Typography>
+      <Box sx={{paddingTop: 3 }}>
+        <Paper elevation={3} sx={{ width: '100%', overflow: 'hidden' }}>
+        <Typography variant="h5" style={{ marginTop: '30px', textAlign: 'center', }}>
+          Your Food Items
+        </Typography>
 
-      <TableContainer component={Paper} style={{ marginTop: '20px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Food ID</TableCell>
-              <TableCell>Food Name</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Image</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {foodItems.length === 0 ? (
+        <TableContainer sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
               <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No food items available
-                </TableCell>
+                <TableCell>Food ID</TableCell>
+                <TableCell>Food Name</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Image</TableCell>
               </TableRow>
-            ) : (
-              foodItems.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>₱{item.price}</TableCell>
-                  <TableCell>
-                    {item.image ? (
-                      <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.name} style={{ width: '50px' }} />
-                    ) : (
-                      'No image'
-                    )}
+            </TableHead>
+            <TableBody>
+              {foodItems.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    No food items available
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
+              ) : (
+                foodItems.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>₱{item.price}</TableCell>
+                    <TableCell>
+                      {item.image ? (
+                        <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.name} style={{ width: '50px' }} />
+                      ) : (
+                        'No image'
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        </Paper>
+      </Box>
+      
+  
       {/* Back Button */}
       <Button
         variant="contained"
