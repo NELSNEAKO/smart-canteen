@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import ViewAvailableFood from '../components/StudentInteraction/ViewAvailableFood';
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
 import OrderedList from '../components/StudentInteraction/OrderedList';
+import RealTimeUpdates from '../components/StudentInteraction/RealTimeUpdates';
 
 function StudentPage() {
   const [userRole, setUserRole] = useState('');
@@ -56,6 +57,14 @@ function StudentPage() {
             <OrderedList studentId={studentId}/>
           </Paper>
         </Grid>
+        {/* <Grid item xs={12} md ={7}>
+          <Paper elevation={5} style={{ padding: '20px' }} >
+            <Typography variant="h5" gutterBottom>
+              Your Ordered Items 
+            </Typography>
+           // <RealTimeUpdates />
+          </Paper>
+        </Grid> */}
       </Grid>
 
       {/* Back Button */}

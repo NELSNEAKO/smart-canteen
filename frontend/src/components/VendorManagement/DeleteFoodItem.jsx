@@ -24,7 +24,7 @@ function DeleteFoodItem() {
   };
 
 
-  const handleDelete = async (e) => {
+  const handleDelete = async () => {
 
     try {
       await axios.delete(`http://localhost:5000/api/food-items/${foodId}`, {

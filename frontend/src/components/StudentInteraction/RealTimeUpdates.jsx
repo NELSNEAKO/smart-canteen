@@ -10,20 +10,26 @@ function RealTimeUpdates() {
   useEffect(() => {
     const fetchUpdates = async () => {
       try {
+        console.log('Fetching updates...');
         const response = await axios.get('http://localhost:5000/api/food-updates');
+        console.log('Received updates:', response.data); // Log the response data
         setUpdates(response.data);
         setLoading(false);
       } catch (err) {
+        console.error('Error fetching updates:', err); // Log the error for debugging
         setError('Failed to fetch updates.');
         setLoading(false);
       }
     };
+    
 
     fetchUpdates();
-    const intervalId = setInterval(fetchUpdates, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchUpdates, 10000); // Poll every 10 seconds
 
     return () => clearInterval(intervalId);
   }, []);
+
+  console.log('updates', updates);
 
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;

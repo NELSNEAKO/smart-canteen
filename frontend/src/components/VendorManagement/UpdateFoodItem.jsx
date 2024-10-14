@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, TextField, Button, Paper, Box, Alert } from '@mui/material';
 import axios from 'axios';
 
 function UpdateFoodItem() {
   const [foodId, setFoodId] = useState('');
-  const [foodName, setFoodName] = useState('');
+  const [foodName, setFoodName] = useState(''); 
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);  // State for the image file
   const [status, setStatus] = useState('Not Available');  // New status state for the item
+  const [foodItems, setFoodItems] = useState([]); // State to hold the list of food items
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchFoodItems();
+  }, []);
+
+  // Fetch the food items when the component mounts
+  const fetchFoodItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/food-items');
+      setFoodItems(response.data); // Assuming response.data contains the food items
+    } catch (err) {
+      setError('Failed to fetch food items.');
+    }
+  };
+  console.log('fooditems', foodItems);
+
+  const handleUpdate = async () => {
 
     const formData = new FormData();
     formData.append('name', foodName);
@@ -28,14 +43,14 @@ function UpdateFoodItem() {
           'Content-Type': 'multipart/form-data'
         }
       });
+
       setSuccess('Food item updated successfully!');
       setFoodId('');
       setFoodName('');
       setPrice('');
       setImage(null);
       setStatus('Not Available');  // Reset status to default
-      setError('');
-      
+      setError(''); 
     } catch (err) {
       setError('Failed to update food item.');
       setSuccess('');
@@ -104,7 +119,7 @@ function UpdateFoodItem() {
           </Button>
         </Box>
 
-        <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" color="secondary" onDelete={handleUpdate}fullWidth sx={{ mt: 2 }}>
           Update Item
         </Button>
       </Box>

@@ -27,7 +27,7 @@ export default function StudentReservations({ studentId }) {
       params: { studentId }  // Pass the studentId as a query parameter
     })
       .then(response => {
-        console.log('API Response:', response.data); // Log the response data
+        //console.log('API Response:', response.data); // Log the response data
         setReservations(response.data.orders);
         setLoading(false);
       })
@@ -37,7 +37,7 @@ export default function StudentReservations({ studentId }) {
         setLoading(false);
       });
   };
-  console.log('data:', reservations);
+  //console.log('data:', reservations);
 
   useEffect(() => {
     fetchReservations();
