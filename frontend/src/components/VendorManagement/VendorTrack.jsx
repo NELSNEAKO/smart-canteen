@@ -114,7 +114,7 @@ export default function VendorTrack() {
                                         direction={{ xs: 'column', sm: 'row' }}
                                         spacing={{ xs: 1, sm: 2, md: 4 }}
                                     >
-                                        <Button 
+                                        <Button
                                             variant="contained" 
                                             color={reservation.status === 'Pending' ? 'warning' : 'success'} // Change color based on status 
                                             disabled={reservation.status === 'Completed'} // Disable button if status is 'Completed'

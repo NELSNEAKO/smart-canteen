@@ -8,6 +8,8 @@ function CustomDeleteIcon({ reservationId, onDelete }) { // Only passing reserva
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
 
+
+
     const handleDelete = async () => {
         //console.log('Delete button clicked'); // Add this line to check if the function is called
         if (!reservationId) {

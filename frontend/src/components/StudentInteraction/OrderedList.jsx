@@ -77,7 +77,7 @@ export default function StudentReservations({ studentId }) {
                 <TableCell>{reservation.foodName}</TableCell>
                 <TableCell>{reservation.quantity}</TableCell>
                 <TableCell>{reservation.status}</TableCell>
-                <TableCell>${reservation.totalPrice}</TableCell> {/* Format the price */}
+                <TableCell>₱{reservation.totalPrice}</TableCell> {/* Format the price */}
               </TableRow>
             )) : (
               <TableRow>
