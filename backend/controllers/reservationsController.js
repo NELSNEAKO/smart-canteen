@@ -50,7 +50,8 @@ const getReservations = (req, res) => {
       r.id,
       r.quantity, 
       r.status, 
-      fi.name AS foodName, 
+      fi.name AS foodName,
+      fi.price, 
       u.student_id AS studentId
     FROM 
       reservations r
@@ -128,7 +129,7 @@ const getOrderList = (req, res) => {
       r.quantity, 
       r.status, 
       fi.name AS foodName, 
-      fi.price AS totalPrice 
+      fi.price AS price 
     FROM 
       reservations r
     JOIN 

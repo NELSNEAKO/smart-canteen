@@ -80,7 +80,7 @@ export default function VendorTrack() {
         setCurrentIndex(null);
     };
 
-    // console.log('Reservation:', reservations); // Log the entire reservation object
+    console.log('Reservation:', reservations); // Log the entire reservation object
 
     if (loading) {
         return <CircularProgress />; // Show a loading spinner

@@ -15,8 +15,8 @@ export default function StudentReservations({ studentId }) {
     setLoading(true);
     setError(null);
     
-    console.log('Fetching reservations for student ID:', studentId); // Log studentId
-    console.log('studentId:',studentId )
+    //console.log('Fetching reservations for student ID:', studentId); // Log studentId
+    //console.log('studentId:',studentId )
 
     if (!studentId) {
       setLoading(false);
@@ -37,7 +37,7 @@ export default function StudentReservations({ studentId }) {
         setLoading(false);
       });
   };
-  //console.log('data:', reservations);
+  console.log('data:', reservations);
 
   useEffect(() => {
     fetchReservations();
@@ -77,7 +77,7 @@ export default function StudentReservations({ studentId }) {
                 <TableCell>{reservation.foodName}</TableCell>
                 <TableCell>{reservation.quantity}</TableCell>
                 <TableCell>{reservation.status}</TableCell>
-                <TableCell>₱{reservation.totalPrice}</TableCell> {/* Format the price */}
+                <TableCell>₱{reservation.price * reservation.quantity}</TableCell> {/* Format the price */}
               </TableRow>
             )) : (
               <TableRow>

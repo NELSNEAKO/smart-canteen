@@ -29,7 +29,7 @@ function StudentPage() {
     // fetchFoodItems();
   }, []);
 
-  console.log('student Id',studentId);
+  //console.log('student Id',studentId);
   return (
     <Container maxWidth="md" style={{ marginTop: '50px', position: 'relative' }}>
       <Typography variant="h4" gutterBottom>
