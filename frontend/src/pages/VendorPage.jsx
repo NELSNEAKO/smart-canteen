@@ -38,6 +38,7 @@ function VendorPage() {
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
 
+  //console.log('fooditems:', foodItems);                           //test
   return (
     <Container maxWidth="md" style={{ marginTop: '50px', position: 'relative' }}>
       <Typography variant="h4" gutterBottom>

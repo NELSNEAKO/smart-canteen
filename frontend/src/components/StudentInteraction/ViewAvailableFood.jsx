@@ -20,6 +20,7 @@ function ViewAvailableFood() {
     const fetchFoodItems = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/food-items');
+        //console.log('API Response:', response.data); // Log the whole response
         const items = response.data.map(item => ({
           ...item,
           price: item.price ? parseFloat(item.price) : null, // Convert price to number or null
@@ -39,6 +40,7 @@ function ViewAvailableFood() {
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
+  //console.log('fooditems:', foodItems);
   return (
     <Paper elevation={3} style={{ padding: '20px' }}>
       <Typography variant="h6" gutterBottom>

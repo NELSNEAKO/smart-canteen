@@ -5,8 +5,8 @@ const {
   getFoodItems,
   getFoodUpdates,
   deleteFoodItem,
+  getTopSales,
   upload,
-  //getUser
 } = require('../controllers/foodController');
 
 
@@ -24,6 +24,9 @@ router.get('/food-items', getFoodItems);
 
 // Route to get real-time food updates
 router.get('/food-updates', getFoodUpdates);
+
+// Route to retrieve all top Sales
+router.get('/get-top-sales', getTopSales);
 
 // Route to delete an existing food item by ID
 router.delete('/food-items/:id', deleteFoodItem);

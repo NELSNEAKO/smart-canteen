@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import ViewAvailableFood from '../components/StudentInteraction/ViewAvailableFood';
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
 import OrderedList from '../components/StudentInteraction/OrderedList';
-import RealTimeUpdates from '../components/StudentInteraction/RealTimeUpdates';
+import TopSales from '../components/StudentInteraction/TopSales';
 
 function StudentPage() {
   const [userRole, setUserRole] = useState('');
@@ -57,14 +57,14 @@ function StudentPage() {
             <OrderedList studentId={studentId}/>
           </Paper>
         </Grid>
-        {/* <Grid item xs={12} md ={7}>
+        <Grid item xs={12} md ={5}>
           <Paper elevation={5} style={{ padding: '20px' }} >
             <Typography variant="h5" gutterBottom>
-              Your Ordered Items 
+            Top 5 Selling Food Items 
             </Typography>
-           // <RealTimeUpdates />
+            <TopSales />
           </Paper>
-        </Grid> */}
+        </Grid>
       </Grid>
 
       {/* Back Button */}

@@ -37,7 +37,7 @@ export default function StudentReservations({ studentId }) {
         setLoading(false);
       });
   };
-  console.log('data:', reservations);
+  //console.log('data:', reservations);
 
   useEffect(() => {
     fetchReservations();

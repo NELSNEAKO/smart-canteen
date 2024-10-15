@@ -147,11 +147,52 @@ const deleteFoodItem = (req, res) => {
 
 };
 
+const getTopSales = (req, res) => {
+  const query = `
+  SELECT 
+    fi.name AS foodName, 
+    SUM(r.quantity) AS totalSales,
+    fi.price AS price,
+    fi.image AS image  -- Select the image column from food_items
+  FROM 
+    reservations r
+  JOIN 
+    food_items fi ON r.food_id = fi.id
+  GROUP BY 
+    fi.name, fi.price, fi.image  -- Group by image as well
+  ORDER BY 
+    totalSales DESC
+  LIMIT 5;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ message: 'An error occurred while fetching the top sales.', error: err });
+    }
+
+    // Map results to include the full image URL
+    const topSales = results.map(item => ({
+      foodName: item.foodName,
+      totalSales: item.totalSales,
+      price: item.price,
+      imageUrl: item.image ? `http://localhost:5000/uploads/${item.image}` : null, // Construct the full image URL
+    }));
+
+    res.status(200).json({
+      topSales, // Send the modified top sales back to the client
+    });
+  });
+};
+
+
+
 module.exports = {
   addFoodItem,
   updateFoodItem,
   getFoodItems,
   getFoodUpdates,
+  getTopSales,
   deleteFoodItem,
   upload  // Export multer upload function
 };
