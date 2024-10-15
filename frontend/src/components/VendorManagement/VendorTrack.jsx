@@ -80,7 +80,7 @@ export default function VendorTrack() {
         setCurrentIndex(null);
     };
 
-    console.log('Reservation:', reservations); // Log the entire reservation object
+    //console.log('Reservation:', reservations); // Log the entire reservation object
 
     if (loading) {
         return <CircularProgress />; // Show a loading spinner
@@ -100,6 +100,7 @@ export default function VendorTrack() {
                         <TableRow>
                             <TableCell>Food Name</TableCell>
                             <TableCell>Quantity</TableCell>
+                            <TableCell>Total Price</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Student ID</TableCell>
                         </TableRow>
@@ -109,6 +110,7 @@ export default function VendorTrack() {
                             <TableRow key={reservation.id}> {/* Use unique id as key */}
                                 <TableCell>{reservation.foodName}</TableCell>
                                 <TableCell>{reservation.quantity}</TableCell>
+                                <TableCell>₱{reservation.price * reservation.quantity}</TableCell>
                                 <TableCell>
                                     <Stack
                                         direction={{ xs: 'column', sm: 'row' }}

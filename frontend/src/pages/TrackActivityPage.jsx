@@ -90,7 +90,7 @@ const TrackActivityPage = () => {
         alert('Failed to confirm reservation. Please try again.');
       });
   };
-  console.log('cart:', cart);
+  //console.log('cart:', cart);
 
   return (  
     <Container maxWidth="md">
