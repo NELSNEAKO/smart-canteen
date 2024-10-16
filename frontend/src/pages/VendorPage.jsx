@@ -6,6 +6,8 @@ import AddFoodItem from '../components/VendorManagement/AddFoodItem';
 import UpdateFoodItem from '../components/VendorManagement/UpdateFoodItem';
 import DeleteFoodItem from '../components/VendorManagement/DeleteFoodItem';
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
+import TopSales from '../components/StudentInteraction/TopSales';
+import UpdateFoodAvailability from '../components/VendorManagement/UpdateFoodAvailability';
 
 function VendorPage() {
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ function VendorPage() {
             <AddFoodItem />
           </Paper>
         </Grid>
-
+        
         <Grid item xs={12} md={4}>
           {/* Button to trigger the Update Food Item modal */}
           <Button
@@ -71,7 +73,6 @@ function VendorPage() {
           >
             Update Existing Food Item
           </Button>
-
           {/* Dialog for Update Food Item */}
           <Dialog open={openUpdate} onClose={handleCloseUpdate} maxWidth="sm" fullWidth>
             <DialogTitle>Update Food Item</DialogTitle>
@@ -84,6 +85,8 @@ function VendorPage() {
               </Button>
             </DialogActions>
           </Dialog>
+          {/*DISPLAY TOPSALES*/}
+          <TopSales padding top/>
         </Grid>
 
         <Grid item xs={12} md={4}>
@@ -112,53 +115,9 @@ function VendorPage() {
           </Dialog>
         </Grid>
       </Grid>
-      {/* Display Food Items Table */}
-      <Box sx={{paddingTop: 3 }}>
-        <Paper elevation={3} sx={{ width: '100%', overflow: 'hidden' }}>
-        <Typography variant="h5" style={{ marginTop: '30px', textAlign: 'center', }}>
-          Your Food Items
-        </Typography>
+      {/* Display Food Items and Update Food availability Table */} 
+      <UpdateFoodAvailability />
 
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Food ID</TableCell>
-                <TableCell>Food Name</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Image</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {foodItems.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">
-                    No food items available
-                  </TableCell>
-                </TableRow>
-              ) : (
-                foodItems.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.id}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>₱{item.price}</TableCell>
-                    <TableCell>
-                      {item.image ? (
-                        <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.name} style={{ width: '50px' }} />
-                      ) : (
-                        'No image'
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        </Paper>
-      </Box>
-      
-  
       {/* Back Button */}
       <Button
         variant="contained"

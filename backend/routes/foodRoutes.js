@@ -6,6 +6,7 @@ const {
   getFoodUpdates,
   deleteFoodItem,
   getTopSales,
+  updateAvailability,
   upload,
 } = require('../controllers/foodController');
 
@@ -18,6 +19,9 @@ router.post('/food-items', upload.single('image'), addFoodItem);
 
 // Route to update an existing food item by ID, including updating its image
 router.put('/food-items/:id', upload.single('image'), updateFoodItem);
+
+// Route to update an existing availability by ID
+router.put('/update-availability/:id', updateAvailability);
 
 // Route to retrieve all food items
 router.get('/food-items', getFoodItems);

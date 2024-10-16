@@ -73,6 +73,31 @@ const updateFoodItem = (req, res) => {
   });
 };
 
+// Update Availability Status
+const updateAvailability = (req, res) => {
+  const foodId = req.params.id;
+  const { availability } = req.body;
+
+  const query = `
+    UPDATE food_items 
+    SET availability = ? 
+    WHERE id = ?
+  `;
+
+  db.query(query, [availability, foodId], (err, result) => {
+    if (err) {
+      console.error('Error updating reservation status:', err);
+      return res.status(500).json({ message: 'Database error', error: err });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Reservation not found' });
+    }
+
+    res.status(200).json({ message: 'Reservation status updated successfully' });
+  });
+}
+
 // Function to get all food items
 const getFoodItems = (req, res) => {
   const query = 'SELECT * FROM food_items';
@@ -194,5 +219,6 @@ module.exports = {
   getFoodUpdates,
   getTopSales,
   deleteFoodItem,
+  updateAvailability,
   upload  // Export multer upload function
 };

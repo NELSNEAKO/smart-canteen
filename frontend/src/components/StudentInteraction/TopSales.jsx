@@ -22,7 +22,7 @@ export default function TopSales() {
 
     axios.get(`http://localhost:5000/api/get-top-sales`)
       .then(response => {
-        console.log('API Response:', response.data); // Log the whole response
+        //console.log('API Response:', response.data); // Log the whole response
         setTopSales(response.data.topSales);
         setLoading(false);
       })

@@ -11,6 +11,7 @@ import ViewAvailableFood from '../components/StudentInteraction/ViewAvailableFoo
 import AccountMenu from '../components/profile/AccountMenu';  // Corrected import path
 import OrderedList from '../components/StudentInteraction/OrderedList';
 import TopSales from '../components/StudentInteraction/TopSales';
+import ViewFoods from '../components/StudentInteraction/ViewFoods';
 
 function StudentPage() {
   const [userRole, setUserRole] = useState('');
@@ -57,6 +58,7 @@ function StudentPage() {
             <OrderedList studentId={studentId}/>
           </Paper>
         </Grid>
+        {/* Display Top Sales */}
         <Grid item xs={12} md ={5}>
           <Paper elevation={5} style={{ padding: '20px' }} >
             <Typography variant="h5" gutterBottom>
@@ -65,6 +67,7 @@ function StudentPage() {
             <TopSales />
           </Paper>
         </Grid>
+        <ViewFoods />
       </Grid>
 
       {/* Back Button */}
