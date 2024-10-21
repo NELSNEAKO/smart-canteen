@@ -12,6 +12,7 @@ import AccountMenu from '../components/profile/AccountMenu';  // Corrected impor
 import OrderedList from '../components/StudentInteraction/OrderedList';
 import TopSales from '../components/StudentInteraction/TopSales';
 import ViewFoods from '../components/StudentInteraction/ViewFoods';
+import ChatBox from '../components/features/chatbox';
 
 function StudentPage() {
   const [userRole, setUserRole] = useState('');
@@ -69,7 +70,7 @@ function StudentPage() {
         </Grid>
         <ViewFoods />
       </Grid>
-
+      <ChatBox />
       {/* Back Button */}
       <Button
         variant="contained"

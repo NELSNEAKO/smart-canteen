@@ -4,6 +4,7 @@ const path = require('path');
 const foodRoutes = require('./routes/foodRoutes');
 const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');  // Import reservation routes
+const feedBackRoutes = require('./routes/feedBackRoutes');  // Import reservation routes
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', foodRoutes);
 app.use('/api', reservationRoutes);  // Ensure reservation routes are included
 app.use('/api', userRoutes);
+app.use('/api', feedBackRoutes); 
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
