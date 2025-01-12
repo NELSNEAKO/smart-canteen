@@ -44,7 +44,7 @@ const ChatBox = () => {
     } catch (error) {
       console.error('Error sending message', error);
       // Optionally show an error message to the user
-      setMessages([...messages, newMessage, { message: 'Error sending message. Please try again.', sender: 'support' }]);
+      setMessages([...messages, newMessage, { message: 'Error sending message. Pl   ease try again.', sender: 'support' }]);
     }
 
     setInputMessage(''); // Clear input field
