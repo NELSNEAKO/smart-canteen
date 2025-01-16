@@ -54,7 +54,7 @@ function LoginPage() {
     <Container maxWidth="sm" style={{ marginTop: '100px' }}>
       <Paper elevation={3} style={{ padding: '20px' }}>
         <Typography variant="h4" gutterBottom>
-          Login
+          Login User
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 2 }}>
