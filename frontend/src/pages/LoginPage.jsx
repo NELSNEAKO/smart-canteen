@@ -51,6 +51,7 @@ function LoginPage() {
   };
 
   return (
+    <>
     <Container maxWidth="sm" style={{ marginTop: '100px' }}>
       <Paper elevation={3} style={{ padding: '20px' }}>
         <Typography variant="h4" gutterBottom>
@@ -86,7 +87,7 @@ function LoginPage() {
         </Typography>
       </Paper>
 
-      {/* Pop-up Dialog for Vendor or Student Registration */}
+     
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Select Registration Type</DialogTitle>
         <DialogContent>
@@ -104,6 +105,7 @@ function LoginPage() {
         </DialogActions>
       </Dialog>
     </Container>
+    </>
   );
 }
 

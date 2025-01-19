@@ -1,6 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import './App.css';
+
 import HomePage from './pages/HomePage';
+import RolePage from './pages/RolePage';
 import VendorPage from './pages/VendorPage';
 import StudentPage from './pages/StudentPage';
 import LoginPage from './pages/LoginPage';
@@ -9,6 +13,7 @@ import RegisterVendorPage from './pages/RegisterVendorPage';  // Vendor registra
 import ProfilePage from './pages/ProfilePage';  // Vendor/Student profile page
 import SettingsPage from './pages/SettingsPage';  // Settings page for password updates etc.
 import TrackActivityPage from './pages/TrackActivityPage';  // Track vendor activities
+
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
@@ -16,9 +21,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+      <Navbar />
         <Routes>
-          <Route path="/" element={<LoginPage />} />  {/* Default route: Login page */}
-          <Route path="/home" element={<HomePage />} />  {/* Home Page route */}
+          <Route path="/" element={<HomePage />} />  {/* Default route: Login page */}
+          <Route path="/role" element={<RolePage />} />  {/* Home Page route */}
           <Route path="/vendor" element={<VendorPage />} />  {/* Vendor Dashboard route */}
           <Route path="/student" element={<StudentPage />} />  {/* Student Dashboard route */}
           <Route path="/login" element={<LoginPage />} />  {/* Login page route */}
