@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Navbar2 from './components/Navbar2';
 import './App.css';
 
-import HomePage from './pages/HomePage';
+import HomePage from './pages/Home/HomePage';
 import RolePage from './pages/RolePage';
 import VendorPage from './pages/VendorPage';
 import StudentPage from './pages/StudentPage';
@@ -14,29 +15,29 @@ import ProfilePage from './pages/ProfilePage';  // Vendor/Student profile page
 import SettingsPage from './pages/SettingsPage';  // Settings page for password updates etc.
 import TrackActivityPage from './pages/TrackActivityPage';  // Track vendor activities
 
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-      <Navbar />
+    <Router>
+      <div className="app">
+        <Navbar2 />
         <Routes>
-          <Route path="/" element={<HomePage />} />  {/* Default route: Login page */}
-          <Route path="/role" element={<RolePage />} />  {/* Home Page route */}
-          <Route path="/vendor" element={<VendorPage />} />  {/* Vendor Dashboard route */}
-          <Route path="/student" element={<StudentPage />} />  {/* Student Dashboard route */}
-          <Route path="/login" element={<LoginPage />} />  {/* Login page route */}
-          <Route path="/register" element={<RegisterPage />} />  {/* Student registration route */}
-          <Route path="/register-vendor" element={<RegisterVendorPage />} />  {/* Vendor registration route */}
-          <Route path="/profile" element={<ProfilePage />} />  {/* Profile page route */}
-          <Route path="/settings" element={<SettingsPage />} />  {/* Settings page route */}
-          <Route path="/track-activity" element={<TrackActivityPage />} />  {/* Vendor Track Activity route */}
-        </Routes>
-      </Router>
-    </ThemeProvider>
+        <Route path="/" element={<HomePage />} /> {/* Default route: Login page */}
+        <Route path="/role" element={<RolePage />} /> {/* Home Page route */}
+        <Route path="/vendor" element={<VendorPage />} /> {/* Vendor Dashboard route */}
+        <Route path="/student" element={<StudentPage />} /> {/* Student Dashboard route */}
+        <Route path="/login" element={<LoginPage />} /> {/* Login page route */}
+        <Route path="/register" element={<RegisterPage />} /> {/* Student registration route */}
+        <Route path="/register-vendor" element={<RegisterVendorPage />} /> {/* Vendor registration route */}
+        <Route path="/profile" element={<ProfilePage />} /> {/* Profile page route */}
+        <Route path="/settings" element={<SettingsPage />} /> {/* Settings page route */}
+        <Route path="/track-activity" element={<TrackActivityPage />} /> {/* Vendor Track Activity route */}
+      </Routes>
+      </div>
+    </Router>
   );
 }
+
 
 export default App;
