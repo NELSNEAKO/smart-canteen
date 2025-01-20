@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import  './HomePage.css'
+import Header from '../../components/Header/Header';
+import ExploreMenu from '../../components/ExploreMenu/ExploreMenu';
 
 function HomePage() {
 
+  const [category, setCategory] = useState('All');
+
   return (
     <>
-   
+      <Header />
+      <ExploreMenu category={category} setCategory={setCategory}/>
+
     </>
   );
 }
 
-export default HomePage;
+export default HomePage;  
