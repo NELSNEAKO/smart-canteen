@@ -14,6 +14,7 @@ import RegisterVendorPage from './pages/RegisterVendorPage';  // Vendor registra
 import ProfilePage from './pages/ProfilePage';  // Vendor/Student profile page
 import SettingsPage from './pages/SettingsPage';  // Settings page for password updates etc.
 import TrackActivityPage from './pages/TrackActivityPage';  // Track vendor activities
+import Footer from './components/Footer/Footer';
 
 
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/track-activity" element={<TrackActivityPage />} /> {/* Vendor Track Activity route */}
       </Routes>
       </div>
+      <Footer />
     </Router>
   );
 }
