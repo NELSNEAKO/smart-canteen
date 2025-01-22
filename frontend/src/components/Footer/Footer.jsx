@@ -1,13 +1,14 @@
 import React from 'react'
 import './Footer.css'
 import { assets } from '../../assets/frontend_assets/assets'
+import {Link} from 'react-router-dom'
 
 function Footer() {
   return (
     <div className='footer' id='footer'>
         <div className="footer-content">
           <div className="footer-content-left">
-              <img src={assets.logo} alt="" />
+              <Link to='/'><img src='https://upload.wikimedia.org/wikipedia/en/8/8c/Cebu_Institute_of_Technology_University_logo.png' alt="cit-u logo" className="logo" /></Link>
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed, numquam! Optio aliquam 
                 ex laboriosam natus corrupti nisi, distinctio laborum enim accusamus! Cum fugiat, ad excepturi commodi architecto repellat ipsam natus.
