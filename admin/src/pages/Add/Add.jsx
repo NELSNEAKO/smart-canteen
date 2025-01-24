@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Add.css'
 import { assets } from '../../assets/admin_assets/assets'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 const Add = () => {
@@ -44,8 +45,9 @@ const Add = () => {
                 availability: 'Break Fast' 
             })
             setImage(false);
+            toast.success(response.data.message);
         }else{
-            console.log('Failed to add product');
+            toast.error(response.data.message);
         }
     }
    
