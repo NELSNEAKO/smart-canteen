@@ -17,8 +17,6 @@ const upload = multer({ storage: storage });
 // Define routes
 foodRouter.post('/add', upload.single('image'), addFood);
 foodRouter.get('/list', listFood);
-foodRouter.delete('/remove', removeFood);   
-
-
+foodRouter.delete('/remove/:id', removeFood); // Corrected route definition
 
 module.exports = foodRouter;

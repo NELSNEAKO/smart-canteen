@@ -32,17 +32,16 @@ const FoodItem = sequelize.define('food_items', {
     allowNull: true
   },
   status: {
-    type: DataTypes.ENUM('Available', 'Not Available'),
-    defaultValue: 'Not Available',
-    allowNull: true
+    type: DataTypes.STRING,
+    allowNull: false
   },
   availability: {
-    type: DataTypes.ENUM('Break Fast', 'Lunch'),
-    allowNull: true
+    type: DataTypes.STRING,
+    allowNull: false
   },
   image: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   created_at: {
     type: DataTypes.DATE,

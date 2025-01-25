@@ -14,6 +14,8 @@ const Add = () => {
         description: '',
         price:'',
         category: 'Main Dishes',
+        status: 'Available',      
+        availability: 'Break Fast' 
     })
 
     const onChangeHandler = (event) => {
@@ -78,7 +80,7 @@ const Add = () => {
                         <option value="Snacks">Snacks</option>
                         <option value="Desert">Desert</option>
                         <option value="Drinks">Drinks</option>
-                        <option value="Pasta">Pasta</option>
+                        <option value="Pasta">Pasta</option>    
                         <option value="Healthy Options">Healthy Options</option>
                         <option value="Rice Meals">Rice Meals</option>
                     </select>
@@ -96,7 +98,7 @@ const Add = () => {
                 </div>
                 <div className="add-status flex-col">
                     <p>Product status</p>
-                    <select onChange={onChangeHandler} name="stuts" >
+                    <select onChange={onChangeHandler} name="status" >
                         <option value="Available">Available</option>
                         <option value="Not Available">Not Available</option>
                     </select>

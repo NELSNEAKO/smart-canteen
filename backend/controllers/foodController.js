@@ -46,16 +46,34 @@ const listFood = async (req, res) => {
 }
 
 const removeFood = async (req, res) => {
+  const id = req.params.id;
+
   try {
-    const food = await FoodItem.findByPk(req.body.id);
-    fs.unlinkSync(`uploads/${food.image}`);
+    const food = await FoodItem.findByPk(id);
+    if (!food) {
+      return res.status(404).json({ success: false, message: 'Food not found' });
+    }
+
+    // Delete the image file
+    if (food.image) {
+      fs.unlinkSync(`uploads/${food.image}`);
+    }
+
     await food.destroy();
     res.json({ success: true, message: 'Food removed successfully' });
   } catch (error) {
     console.error(error);
     res.json({ success: false, message: 'An error occurred, please try again' });
   }
+}
+ 
+module.exports = {
+  addFood,
+  listFood,
+  removeFood
 };
 
 
-module.exports = { addFood, listFood, removeFood, };
+
+
+module.exports = { addFood, listFood, removeFood};

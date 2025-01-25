@@ -12,11 +12,11 @@ const Sidebar = () => {
           <p>Add Items</p>
         </NavLink>
         <NavLink to='/list' className="sidebar-option">
-          <img src={assets.add_icon} alt="" />
+          <img src={assets.order_icon} alt="" />
           <p>List Items</p>
         </NavLink>
         <NavLink to='/reservation' className="sidebar-option">
-          <img src={assets.add_icon} alt="" />
+          <img src={assets.order_icon} alt="" />
           <p>Reservations</p>
         </NavLink>  
       </div>
