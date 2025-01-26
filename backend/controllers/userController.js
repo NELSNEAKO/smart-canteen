@@ -5,10 +5,9 @@ const validator = require('validator');
 
 // Create JWT token
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+  return jwt.sign({ id }, process.env.JWT_SECRET);
 };
+
 
 // Register user
 const registerUser = async (req, res) => {
@@ -47,6 +46,8 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    const user = await newUser.save();
+
     // Create token
     const token = createToken(newUser.id);
 
@@ -54,7 +55,7 @@ const registerUser = async (req, res) => {
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'An error occurred, please try again' });
+    res.json({ success: false, message: 'Error' });
   }
 };
 
@@ -64,20 +65,20 @@ const loginUser = async (req, res) => {
 
   // Validate if email and password are present
   if (!email || !password) {
-    return res.json({ success: false, message: 'Email and password are required' });
+    return res.json({ success: false, message: 'All fields are required' });
   }
 
   try {
     // Check if user exists
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.json({ success: false, message: 'Invalid email or password' });
+      return res.json({ success: false, message: "User doesn't exist" });
     }
 
     // Check if password is correct
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.json({ success: false, message: 'Invalid email or password' });
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.json({ success: false, message: 'Invalid credentials' });
     }
 
     // Create token
@@ -87,7 +88,7 @@ const loginUser = async (req, res) => {
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'An error occurred, please try again' });
+    res.json({ success: false, message: 'Error' });
   }
 };
 
