@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const dotenv = require('dotenv');
 const foodRouter = require('./routes/foodRoute'); // Correct import
+const userRouter = require('./routes/userRoutes');
 
 dotenv.config();
 
@@ -24,8 +24,7 @@ app.use((req, res, next) => {
 // API Endpoints
 app.use('/api/food', foodRouter); // Use the correct router variable
 app.use('/images', express.static('uploads'));
-app.use('/api', reservationRoutes);
-app.use('/api', userRoutes);
+app.use('/api/user', userRouter);
 
 // Test Root Route
 app.get('/', (req, res) => {

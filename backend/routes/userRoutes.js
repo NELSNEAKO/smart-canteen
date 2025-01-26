@@ -6,15 +6,13 @@ const {
 } = require('../controllers/userController') //import controller
 
 const db = require('../config/db'); 
-const router = express.Router();
+const userRouter = express.Router();
 
-// Route to retrieve all users
-router.get('/get-user', getUser);
 
 // Route for user registration
-router.post('/register', registerUser);
+userRouter.post('/register', registerUser);
 
 // Route for user login
-router.post('/login', loginUser);
+userRouter.post('/login', loginUser);
 
-module.exports = router;
+module.exports = userRouter;

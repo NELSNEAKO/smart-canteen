@@ -4,9 +4,8 @@ import './List.css'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 
-const List = () => {
+const List = ({url}) => {
 
-  const url = 'http://localhost:5000'
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
@@ -19,34 +18,12 @@ const List = () => {
   }
 
   const removeFood = async (foodId) => {
-    try {
-      // Log the foodId to ensure it's passed correctly
-      console.log(`Attempting to remove food with ID: ${foodId}`);
-  
-      // Make the API call to delete the food item
-      const response = await axios.delete(`${url}/api/food/remove/${foodId}`);
-      
-      // Log the response to see what is returned
-      console.log("Response from API:", response.data);
-  
-      // Check if the deletion was successful
-      if (response.data.success) {
-        toast.success(response.data.message);
-        await fetchList(); // Refresh the food list
-      } else {
-        // If not successful, log the message for debugging
-        console.log("Failed to remove food:", response.data.message);
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      // Log the complete error object to understand it better
-      console.error("There was an error removing the food item:", error);
-  
-      // Optionally, you can log the error stack trace for further debugging
-      console.error("Error stack trace:", error.stack);
-  
-      // Show a user-friendly message
-      toast.error("Failed to remove food item.");
+    const response = await axios.delete(`${url}/api/food/remove/${foodId}`);
+    if(response.data.success){
+      toast.success(response.data.message)
+      fetchList()
+    } else {
+      toast.error(response.data.message)
     }
   };
   

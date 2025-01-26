@@ -19,25 +19,21 @@ const User = sequelize.define('User', {
     primaryKey: true
   },
   student_id: {
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: true // Nullable for vendors
+    type: DataTypes.STRING(50),
+    allowNull: true, // Nullable for vendors
+    unique: 'unique_student_id' // Unique constraint with name
   },
-  username: {
-    type: DataTypes.STRING,
+  name: {
+    type: DataTypes.STRING(255),
     allowNull: false
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
     unique: true
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  role: {
-    type: DataTypes.ENUM('student', 'vendor'),
+    type: DataTypes.STRING(255),
     allowNull: false
   },
   created_at: {
@@ -45,7 +41,8 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.NOW
   }
 }, {
-  timestamps: false
+  timestamps: false, // Disable automatic `createdAt` and `updatedAt` fields
+  tableName: 'users' // Ensure the table name matches the database table
 });
 
 module.exports = { sequelize, User };
