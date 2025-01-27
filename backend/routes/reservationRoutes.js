@@ -4,11 +4,12 @@ const {
     removeFromCart,
     getCart,
 } = require('../controllers/reservationsController');
+const authMiddleware = require('../middleware/auth');
 
 const reservationRouter = express.Router();
 
-reservationRouter.post('/add', addToCart);
-reservationRouter.post('/remove', removeFromCart);
-reservationRouter.post('/get', getCart);
+reservationRouter.post('/add', authMiddleware, addToCart);
+reservationRouter.post('/remove', authMiddleware, removeFromCart);
+reservationRouter.get('/get', authMiddleware, getCart);
 
-module.exports = router;
+module.exports = reservationRouter;
