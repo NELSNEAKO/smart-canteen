@@ -10,44 +10,58 @@ const StoreContextProvider = (props) => {
     const [food_list, setFoodList] = useState([]);
 
     const addToCart = (itemId) => {
-        if (!cartItems[itemId]) {
-            setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-        } else {
-            setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-        }
+        setCartItems((prev) => {
+            const updatedCart = { ...prev };
+            if (!updatedCart[itemId]) {
+                updatedCart[itemId] = 1;
+            } else {
+                updatedCart[itemId] += 1;
+            }
+            // console.log("Updated Cart Items:", updatedCart);
+            return updatedCart;
+        });
     };
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+        // console.log(`Removing from cart: ${itemId}`);
+        setCartItems((prev) => {
+            const updatedCart = { ...prev };
+            if (updatedCart[itemId] > 1) {
+                updatedCart[itemId] -= 1;
+            } else {
+                delete updatedCart[itemId];
+            }
+            return updatedCart;
+        });
     };
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
-        for(const item in cartItems)
-        {
-            if(cartItems[item] > 0)
-                {
-                    let itemInfo = food_list.find((product)=>product._id === item);
-                    totalAmount += itemInfo.price*cartItems[item];      
-                }    
+        for (const item in cartItems) {
+            if (cartItems[item] > 0) {
+                let itemInfo = food_list.find((product) => product.id === parseInt(item));
+                if (itemInfo) {
+                    totalAmount += itemInfo.price * cartItems[item];
+                }
+            }
         }
         return totalAmount;
-    }
+    };
 
     const fetchFoodList = async () => {
-        const response = await axios.get(url+'/api/food/list');
+        const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
+        console.log(response.data.data);
     };
 
     useEffect(() => {
         async function loadData() {
             await fetchFoodList();
-            if(localStorage.getItem('token'))
-            {
+            if (localStorage.getItem('token')) {
                 setToken(localStorage.getItem('token'));
             }
         }
-        loadData(); 
+        loadData();
     }, []);
 
 

@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 app.use('/api/food', foodRouter); // Use the correct router variable
 app.use('/images', express.static('uploads'));
 app.use('/api/user', userRouter);
+app.use('/api/reservations', reservationRoutes);
 
 // Test Root Route
 app.get('/', (req, res) => {

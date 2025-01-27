@@ -1,27 +1,14 @@
 const express = require('express');
 const { 
-    addReservation, 
-    getReservations,
-    updateReservation,
-    deleteReservation,
-    getOrderList,
+    addToCart,
+    removeFromCart,
+    getCart,
 } = require('../controllers/reservationsController');
 
-const router = express.Router();
+const reservationRouter = express.Router();
 
-// Route to handle adding reservations
-router.post('/add-reservation', addReservation);
-
-// Route to handle get reservations
-router.get('/get-Reservation', getReservations);
-
-// Route to handle get reservation for specific students
-router.get('/get-Reservation-Student', getOrderList);
-
-// Route to update an existing status by ID
-router.put('/update-Reservation/:id', updateReservation);
-
-// Route to delete an existing reservation
-router.delete('/delete-Reservation/:reservationId', deleteReservation);
+reservationRouter.post('/add', addToCart);
+reservationRouter.post('/remove', removeFromCart);
+reservationRouter.post('/get', getCart);
 
 module.exports = router;

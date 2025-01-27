@@ -36,6 +36,11 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING(255),
     allowNull: false
   },
+  reservation: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW

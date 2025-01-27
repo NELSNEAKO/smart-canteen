@@ -5,12 +5,17 @@ import { StoreContext } from '../../context/StoreContext'
 
 const FoodItem = ({id,name,price,description,image,status,availability}) => {
 
-    const {cartItems,addToCart,removeFromCart} = useContext(StoreContext)
+    const {cartItems,addToCart,removeFromCart,url} = useContext(StoreContext)
+    // const url = "http://localhost:5000";
 
   return (
     <div className='food-item'>
         <div className="food-item-img-container">
-            <img  className='food-item-image' src={image} alt="" />
+            <img
+            className="food-item-image"
+            src={image ? url + "/images/" + image : assets.food_placeholder}
+            alt={name}
+            />
             {!cartItems[id]
                 ? <img className='add' onClick={()=>addToCart(id)} src={assets.add_icon_white} />
                 : <div className='food-item-counter'>
@@ -18,7 +23,7 @@ const FoodItem = ({id,name,price,description,image,status,availability}) => {
                     <p>{cartItems[id]}</p>
                     <img onClick={()=>addToCart(id)} src={assets.add_icon_green} alt="" />
                 </div>
-            }
+            }   
         </div>
         <div className="food-item-info">
             <div className="food-item-name-rating">
@@ -35,3 +40,4 @@ const FoodItem = ({id,name,price,description,image,status,availability}) => {
 }
 
 export default FoodItem
+
