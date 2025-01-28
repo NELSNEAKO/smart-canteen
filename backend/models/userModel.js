@@ -14,14 +14,13 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 // Define the User model
 const User = sequelize.define('User', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true
   },
   student_id: {
     type: DataTypes.STRING(50),
-    allowNull: true, // Nullable for vendors
-    unique: 'unique_student_id' // Unique constraint with name
+    allowNull: false // Not nullable as per the SQL definition
   },
   name: {
     type: DataTypes.STRING(255),
@@ -35,11 +34,6 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING(255),
     allowNull: false
-  },
-  reservation: {
-    type: DataTypes.JSON,
-    allowNull: true,
-    defaultValue: null
   },
   created_at: {
     type: DataTypes.DATE,

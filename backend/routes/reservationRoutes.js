@@ -10,6 +10,6 @@ const reservationRouter = express.Router();
 
 reservationRouter.post('/add', authMiddleware, addToCart);
 reservationRouter.post('/remove', authMiddleware, removeFromCart);
-reservationRouter.get('/get', authMiddleware, getCart);
+reservationRouter.get('/get/:userId', authMiddleware, getCart);
 
 module.exports = reservationRouter;

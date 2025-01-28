@@ -29,19 +29,21 @@ const FoodItem = sequelize.define('food_items', {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false // Changed to NOT NULL as per your SQL code
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 'Not Available' // Added default value
   },
   availability: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 'Lunch' // Added default value
   },
   image: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true // Changed to allowNull: true as it can be NULL
   },
   created_at: {
     type: DataTypes.DATE,
