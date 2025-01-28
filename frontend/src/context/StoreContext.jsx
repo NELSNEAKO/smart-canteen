@@ -9,17 +9,16 @@ const StoreContextProvider = (props) => {
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
 
-    const addToCart = (itemId) => {
-        setCartItems((prev) => {
-            const updatedCart = { ...prev };
-            if (!updatedCart[itemId]) {
-                updatedCart[itemId] = 1;
-            } else {
-                updatedCart[itemId] += 1;
-            }
-            // console.log("Updated Cart Items:", updatedCart);
-            return updatedCart;
-        });
+    const addToCart = async (itemId) => {
+       if (!cartItems[itemId]) {
+            setCartItems((prev) =>  ({ ...prev, [itemId]: 1 }))
+        }
+        else {
+            setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+        }
+        if (token) {
+            await axios.post(url + '/api/reservation/add', {itemId}, {headers:{token}});
+        }
     };
 
     const removeFromCart = (itemId) => {
