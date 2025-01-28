@@ -21,17 +21,11 @@ const StoreContextProvider = (props) => {
         }
     };
 
-    const removeFromCart = (itemId) => {
-        // console.log(`Removing from cart: ${itemId}`);
-        setCartItems((prev) => {
-            const updatedCart = { ...prev };
-            if (updatedCart[itemId] > 1) {
-                updatedCart[itemId] -= 1;
-            } else {
-                delete updatedCart[itemId];
-            }
-            return updatedCart;
-        });
+    const removeFromCart = async (itemId) => {
+       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+        if (token) {
+            await axios.post(url + '/api/reservation/remove', {itemId}, {headers:{token}});
+        }
     };
 
     const getTotalCartAmount = () => {
