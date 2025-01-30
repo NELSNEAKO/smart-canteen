@@ -44,14 +44,43 @@ const StoreContextProvider = (props) => {
     const fetchFoodList = async () => {
         const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
-        console.log(response.data.data);
     };
+
+    const loadCartData = async () => {
+        const storedToken = localStorage.getItem('token');
+    
+        if (!storedToken) {
+            console.error("Token is missing from localStorage!");
+            return;
+        }
+    
+        try {
+            const response = await axios.get(`${url}/api/reservation/get`, {
+                headers: { token: storedToken }
+            });
+    
+            console.log("Response data:", response.data);
+    
+            // Convert the array into an object with itemId as keys
+            const cartObject = response.data.reduce((acc, item) => {
+                acc[item.itemId] = item.quantity;
+                return acc;
+            }, {});
+    
+            setCartItems(cartObject); // Now cartItems will be an object like { 1: 2, 2: 3 }
+        } catch (error) {
+            console.error("Error loading cart data:", error.response?.data || error);
+        }
+    };
+    
+    
 
     useEffect(() => {
         async function loadData() {
             await fetchFoodList();
             if (localStorage.getItem('token')) {
                 setToken(localStorage.getItem('token'));
+                await loadCartData();  
             }
         }
         loadData();

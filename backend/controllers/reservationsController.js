@@ -89,10 +89,8 @@ const removeFromCart = async (req, res) => {
   }
 };
 
-
-// Fetch user cart data
 const getCart = async (req, res) => {
-  const { userId } = req.params;
+  const { userId } = req.body;
 
   try {
     // Validate the input data
@@ -130,6 +128,6 @@ const getCart = async (req, res) => {
     console.error('Error fetching cart data:', error);
     res.status(500).json({ message: 'Error fetching cart data', error });
   }
-};
+}
 
 module.exports = { addToCart, removeFromCart, getCart };
