@@ -92,4 +92,68 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, registerUser };
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.json({ success: true, users });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: 'Error retrieving users' });
+  }
+};
+
+// Update user details
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
+  const { student_id, name, email, password } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.json({ success: false, message: 'User not found' });
+    }
+
+    // Update user fields
+    user.student_id = student_id || user.student_id;
+    user.name = name || user.name;
+    user.email = email || user.email;
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    await user.save();
+    res.json({ success: true, message: 'User updated successfully' });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: 'Error' });
+  }
+};
+
+// Delete user
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.json({ success: false, message: 'User not found' });
+    }
+
+    await user.destroy();
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: 'Error' });
+  }
+};
+
+module.exports = { 
+   loginUser, 
+   registerUser,
+   getAllUsers, 
+   updateUser, 
+   deleteUser 
+  };

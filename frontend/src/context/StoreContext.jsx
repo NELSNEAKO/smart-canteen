@@ -72,15 +72,13 @@ const StoreContextProvider = (props) => {
             console.error("Error loading cart data:", error.response?.data || error);
         }
     };
-    
-    
 
     useEffect(() => {
         async function loadData() {
             await fetchFoodList();
             if (localStorage.getItem('token')) {
                 setToken(localStorage.getItem('token'));
-                await loadCartData();  
+                await loadCartData();
             }
         }
         loadData();
