@@ -1,6 +1,8 @@
 import React from 'react'
 import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
+import { useState, useContext } from 'react'
+ 
 
 
 function PlaceOrder() {
