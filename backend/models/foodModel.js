@@ -1,7 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
   host: process.env.DB_HOST,
@@ -9,7 +10,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   port: process.env.DB_PORT || 3306,
 });
 
-const FoodItem = sequelize.define('food_items', {
+const FoodItem = sequelize.define('FoodItem', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

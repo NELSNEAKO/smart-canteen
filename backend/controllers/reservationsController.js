@@ -128,6 +128,36 @@ const getCart = async (req, res) => {
     console.error('Error fetching cart data:', error);
     res.status(500).json({ message: 'Error fetching cart data', error });
   }
+
 }
 
-module.exports = { addToCart, removeFromCart, getCart };
+const getAllReservations = async (req, res) => {
+  try {
+    const reservations = await Reservation.findAll({
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['id', 'name', 'email'] // Include relevant user details
+        },
+        {
+          model: ReservationItem,
+          as: 'ReservationItems',
+          attributes: ['item_id', 'quantity'], // Include item_id and quantity
+          include: {
+            model: FoodItem,
+            as: 'FoodItem',
+            attributes: ['name', 'price'] // Include relevant food item details
+          }
+        }
+      ]
+    });
+
+    res.status(200).json({ success: true, reservations });
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    res.status(500).json({ message: 'Error fetching reservations', error });
+  }
+};
+
+module.exports = { addToCart, removeFromCart, getCart, getAllReservations };

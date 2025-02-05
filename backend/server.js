@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 const foodRouter = require('./routes/foodRoute'); // Correct import
 const userRouter = require('./routes/userRoutes');
 
+const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
+
+
 dotenv.config();
 
 const app = express();

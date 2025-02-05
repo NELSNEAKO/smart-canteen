@@ -39,6 +39,6 @@ const ReservationItem = sequelize.define('ReservationItem', {
 });
 
 // Define associations
-ReservationItem.belongsTo(FoodItem, { foreignKey: 'item_id', as: 'FoodItem' });
+// ReservationItem.belongsTo(FoodItem, { foreignKey: 'item_id', as: 'FoodItem' });
 
 module.exports = { ReservationItem };

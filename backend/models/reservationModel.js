@@ -28,6 +28,6 @@ const Reservation = sequelize.define('Reservation', {
 });
 
 // Define associations
-Reservation.hasMany(ReservationItem, { foreignKey: 'reservation_id', as: 'ReservationItems' });
+// Reservation.hasMany(ReservationItem, { foreignKey: 'reservation_id', as: 'ReservationItems' });
 
 module.exports = { Reservation };
