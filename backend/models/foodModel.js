@@ -12,7 +12,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 
 const FoodItem = sequelize.define('FoodItem', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true
   },
@@ -30,29 +30,29 @@ const FoodItem = sequelize.define('FoodItem', {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false // Changed to NOT NULL as per your SQL code
+    allowNull: false
   },
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Not Available' // Added default value
+    defaultValue: 'Not Available'
   },
   availability: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Lunch' // Added default value
+    defaultValue: 'Lunch'
   },
   image: {
     type: DataTypes.STRING,
-    allowNull: true // Changed to allowNull: true as it can be NULL
+    allowNull: true
   },
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
 }, {
-  timestamps: false, // Disable Sequelize's automatic timestamps
-  tableName: 'food_items' // Ensure Sequelize maps this model to the correct table
+  timestamps: false,
+  tableName: 'food_items'
 });
 
 module.exports = { sequelize, FoodItem };

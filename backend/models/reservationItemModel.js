@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const { sequelize } = require('./userModel');
-const { FoodItem } = require('./foodModel');
 
 // Define the ReservationItem model
 const ReservationItem = sequelize.define('ReservationItem', {
@@ -37,8 +36,5 @@ const ReservationItem = sequelize.define('ReservationItem', {
   timestamps: false, // Disable automatic `createdAt` and `updatedAt` fields
   tableName: 'reservation_items' // Ensure the table name matches the database table
 });
-
-// Define associations
-// ReservationItem.belongsTo(FoodItem, { foreignKey: 'item_id', as: 'FoodItem' });
 
 module.exports = { ReservationItem };
