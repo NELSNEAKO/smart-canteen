@@ -3,13 +3,6 @@ const { Payment } = require('../models/paymentModel');
 const { User } = require('../models/userModel');
 require('dotenv').config();
 
-import paymongo from '@api/paymongo';
-
-paymongo.auth('sk_test_1ZpWmQLmKjBuWB2AkUPz6qXf');
-paymongo.createALink()
-  .then(({ data }) => console.log(data))
-  .catch(err => console.error(err));
-
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
 
 const placePayment = async (req, res) => {
@@ -18,10 +11,23 @@ const placePayment = async (req, res) => {
     console.log('PayMongo Secret Key:', payMongoKey); // Log the secret key for debugging
     console.log('Request Body:', req.body); // Log the request body for debugging
 
+    // Check if userId is in the request body (set by authMiddleware)
+    if (!req.body.userId) {
+        return res.status(401).json({
+            message: 'Unauthorized: User not authenticated'
+        });
+    }
+
+    if (!payMongoKey) {
+        return res.status(500).json({
+            message: 'PayMongo secret key not found in environment variables'
+        });
+    }
+
     try {
         // Create Payment Intent with PayMongo for GCash
         const paymentIntentResponse = await axios.post(
-            'https://api.paymongo.com/v1/links', // Ensure this endpoint is correct
+            'https://api.paymongo.com/v1/payment_intents',
             {
                 data: {
                     attributes: {
@@ -34,7 +40,7 @@ const placePayment = async (req, res) => {
             },
             {
                 headers: {
-                    Authorization: `Bearer ${payMongoKey}`,
+                    Authorization: `Basic ${Buffer.from(payMongoKey + ':').toString('base64')}`,
                     'Content-Type': 'application/json'
                 }
             }
@@ -47,7 +53,7 @@ const placePayment = async (req, res) => {
 
         // Create Payment Record
         const payment = await Payment.create({
-            user_id: req.user.id,
+            user_id: req.body.userId, // Use userId from req.body
             amount,
             reservation_item_id: reservationItems,
             paymongo_payment_intent_id: paymongoPaymentIntentId,
@@ -57,7 +63,7 @@ const placePayment = async (req, res) => {
         // Update User if needed (example: increment payment count, etc.)
         await User.update(
             { last_payment_date: new Date() },
-            { where: { id: req.user.id } }
+            { where: { id: req.body.userId } } // Use userId from req.body
         );
 
         res.status(201).json({
