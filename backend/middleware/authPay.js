@@ -1,20 +1,22 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../models/userModel');
 
-const authenticate = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Get token from header
-
+const authMiddlewarePay = async (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
+    
+    console.log('Received Token:', token); // Debugging: Log the token
+    
     if (!token) {
-        return res.status(401).json({ message: 'No token provided' });
+        return res.status(401).json({ success: false, message: 'Unauthorized Login access.' });
     }
-
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Invalid token' });
-        }
-        req.user = decoded.user; // Add the user info to req.user
+    try {
+        const token_decode = jwt.verify(token, process.env.JWT_SECRET);
+        req.body.userId = token_decode.id; // Attach userId to request body
         next();
-    });
-};
+    } catch (error) {
+        console.error('Error occurred:', error);
+        return res.status(401).json({ success: false, message: 'Unauthorized Login access.' });
+    }
+}
 
-module.exports = authenticate;
+module.exports = authMiddlewarePay;
+

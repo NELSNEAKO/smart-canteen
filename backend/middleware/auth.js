@@ -1,22 +1,20 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
-    
-    console.log('Received Token:', token); // Debugging: Log the token
-    
+    const token = req.headers.token;
+
     if (!token) {
-        return res.status(401).json({ success: false, message: 'Unauthorized Login access.' });
+        return res.status(401).json({ success: false, message: 'Unauthorized access. No token provided.' });
     }
+    // console.log('🔹 Received Token:', token); // Log token
     try {
-        const token_decode = jwt.verify(token, process.env.JWT_SECRET);
-        req.body.userId = token_decode.id; // Attach userId to request body
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        req.body.userId = decoded.id;
         next();
     } catch (error) {
-        console.error('Error occurred:', error);
-        return res.status(401).json({ success: false, message: 'Unauthorized Login access.' });
+        return res.status(401).json({ success: false, message: 'Unauthorized access. Invalid or expired token.' });
     }
-}
+};
 
 module.exports = authMiddleware;
-

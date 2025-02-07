@@ -8,7 +8,7 @@ const userRouter = require('./routes/userRoutes');
 const paymentRouter = require('./routes/paymentRoute')
 
 const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
-console.log('Loaded Environment Variables:', process.env); // Log all environment variables for debugging
+// console.log('Loaded Environment Variables:', process.env); // Log all environment variables for debugging
 
 
 

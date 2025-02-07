@@ -19,7 +19,7 @@ const LoginPopup = ({ setShowLogin }) => {
     const name = e.target.name;
     const value = e.target.value;
     setData((prevData) => ({ ...prevData, [name]: value }));
-    console.log('Updated Data:', data);
+    // console.log('Updated Data:', data);
   };
 
   const onLogin = async (e) => {
