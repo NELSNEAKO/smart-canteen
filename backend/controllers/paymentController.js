@@ -1,56 +1,68 @@
 const axios = require('axios');
 const { Payment } = require('../models/paymentModel');
 const { User } = require('../models/userModel');
-const { Reservation } = require('../models/reservationModel'); // Import Reservation model
+const { Reservation } = require('../models/reservationModel');
 require('dotenv').config();
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 
 const placePayment = async (req, res) => {
-    const { amount } = req.body;
+    const { amount, userId, reservationItems } = req.body;
 
-    if (!req.body.userId) {
-        return res.status(401).json({
-            message: 'Unauthorized: User not authenticated'
-        });
-    }
-
-    if (!payMongoKey) {
-        return res.status(500).json({
-            message: 'PayMongo secret key not found in environment variables'
-        });
-    }
+    if (!userId) return res.status(401).json({ message: 'Unauthorized: User not authenticated' });
+    if (!amount) return res.status(400).json({ message: 'Bad Request: Amount is required' });
+    if (!payMongoKey) return res.status(500).json({ message: 'PayMongo secret key not found' });
 
     try {
-        // ✅ Automatically fetch all reserved food items for the user
-        const reservations = await Reservation.findAll({
-            where: { user_id: req.body.userId }
-        });
+        console.log(`✅ Processing payment for user: ${userId}, Amount: ${amount}`);
 
-        if (reservations.length === 0) {
+        // Ensure reservationItems exist
+        if (!reservationItems || reservationItems.length === 0) {
+            return res.status(400).json({ message: 'No reservation items found for payment' });
+        }
+
+        // Fetch reservations related to the user
+        const reservations = await Reservation.findAll({ where: { user_id: userId } });
+
+        if (!reservations || reservations.length === 0) {
             return res.status(400).json({ message: 'No reservations found for payment' });
         }
 
-        // Extract item IDs or details (modify based on your database structure)
-        const reservationItems = reservations.map(r => r.id); // Assuming reservation has an ID
+        const reservationItemIds = reservations.map(r => r.id);
+        const successUrl = `${frontendUrl}/success?userId=${userId}`;
+        const cancelUrl = `${frontendUrl}/cancel?userId=${userId}`;
 
-        // Define the success URL
-        const successUrl = `https://yourwebsite.com/payment-success?userId=${req.body.userId}`;
+        // ✅ Print reservation items to check if they are correct
+        console.log("🛒 Reservation Items:", JSON.stringify(reservationItems, null, 2));
 
-        // Create Payment Intent with PayMongo for GCash
-        const paymentIntentResponse = await axios.post(
-            'https://api.paymongo.com/v1/payment_intents',
-            {
-                data: {
-                    attributes: {
-                        amount: amount * 100, // Convert to cents if needed
-                        currency: 'PHP',
-                        payment_method_allowed: ['gcash'],
-                        capture_type: 'automatic',
-                        success_url: successUrl // ✅ Added success URL
-                    }
+        // Prepare line items for PayMongo
+        const lineItems = reservationItems.map(item => ({
+            name: item.description || 'Food Item',
+            amount: amount * 100, // Convert to centavo format (PHP * 100)
+            currency: 'PHP',
+            description: item.description || "Food item",
+            quantity: item.quantity || 1,
+        }));
+
+        // ✅ Print formatted PayMongo request data before sending
+        const requestData = {
+            data: {
+                attributes: {
+                    line_items: lineItems,
+                    show_description: false,
+                    payment_method_types: ['card', 'gcash'],
+                    success_url: successUrl,
+                    cancel_url: cancelUrl,
                 }
-            },
+            }
+        };
+        console.log("🚀 Sending PayMongo Request Data:", JSON.stringify(requestData, null, 2));
+
+        // Create PayMongo checkout session
+        const checkoutResponse = await axios.post(
+            'https://api.paymongo.com/v1/checkout_sessions',
+            requestData,
             {
                 headers: {
                     Authorization: `Basic ${Buffer.from(payMongoKey + ':').toString('base64')}`,
@@ -59,55 +71,41 @@ const placePayment = async (req, res) => {
             }
         );
 
-        console.log('Response from PayMongo:', paymentIntentResponse.data);
+        const checkoutSession = checkoutResponse.data.data;
+        const paymongoCheckoutSessionId = checkoutSession.id;
 
-        const paymentIntent = paymentIntentResponse.data.data;
-        const paymongoPaymentIntentId = paymentIntent.id;
+        console.log(`✅ PayMongo session created: ${paymongoCheckoutSessionId}`);
 
-        // Create Payment Record
+        // Save payment record
         const payment = await Payment.create({
-            user_id: req.body.userId,
+            user_id: userId,
             amount,
-            reservation_item_id: reservationItems,
-            paymongo_payment_intent_id: paymongoPaymentIntentId,
-            status: 'pending' // Initially set to pending
+            reservation_item_id: reservationItemIds[0], // Ensure correct reservation mapping
+            paymongo_checkout_session_id: paymongoCheckoutSessionId,
+            status: 'pending'
         });
 
-        // Update User
+        // Update user's last payment date
         await User.update(
             { last_payment_date: new Date() },
-            { where: { id: req.body.userId } }
+            { where: { id: userId } }
         );
 
-        // ✅ Clear reservation data after successful payment
-        const paymentStatus = paymentIntent.attributes.status;
-
-        if (paymentStatus === 'succeeded') { // Ensure payment is completed
-            await Reservation.update(
-                { status: 'completed', items: null }, // Mark as completed and clear items
-                { where: { user_id: req.body.userId } }
-            );
-
-            // ✅ Update payment status to "completed"
-            await Payment.update(
-                { status: 'completed' },
-                { where: { id: payment.id } }
-            );
-        }
-
         res.status(201).json({
-            message: 'Payment intent created successfully',
-            paymentIntent: paymentIntent.attributes.client_key,
-            success_url: successUrl, // ✅ Return the success URL
+            message: 'Checkout session created successfully',
+            checkoutUrl: checkoutSession.attributes.checkout_url,
             payment
         });
-    } catch (error) {
-        console.error('Error placing payment:', error);
 
-        if (error.name === 'SequelizeValidationError') {
-            return res.status(400).json({
-                message: 'Validation error',
-                errors: error.errors
+    } catch (error) {
+        console.error("❌ Error placing payment:", error);
+
+        // ✅ Print PayMongo error response
+        if (error.response && error.response.data) {
+            console.error("❌ PayMongo API Error Response:", JSON.stringify(error.response.data, null, 2));
+            return res.status(500).json({
+                message: 'PayMongo API error',
+                error: error.response.data
             });
         }
 
@@ -118,6 +116,4 @@ const placePayment = async (req, res) => {
     }
 };
 
-module.exports = {
-    placePayment,
-};
+module.exports = { placePayment };

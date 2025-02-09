@@ -37,7 +37,7 @@ const Payment = sequelize.define('Payment', {
     allowNull: false,
     defaultValue: 'pending'
   },
-  paymongo_payment_intent_id: {
+  paymongo_checkout_session_id: {
     type: DataTypes.STRING,
     allowNull: false
   },
