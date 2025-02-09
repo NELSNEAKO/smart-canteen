@@ -17,14 +17,11 @@ const placePayment = async (req, res) => {
     try {
         console.log(`✅ Processing payment for user: ${userId}, Amount: ${amount}`);
 
-        // Ensure reservationItems exist
         if (!reservationItems || reservationItems.length === 0) {
             return res.status(400).json({ message: 'No reservation items found for payment' });
         }
 
-        // Fetch reservations related to the user
         const reservations = await Reservation.findAll({ where: { user_id: userId } });
-
         if (!reservations || reservations.length === 0) {
             return res.status(400).json({ message: 'No reservations found for payment' });
         }
@@ -33,19 +30,16 @@ const placePayment = async (req, res) => {
         const successUrl = `${frontendUrl}/success?userId=${userId}`;
         const cancelUrl = `${frontendUrl}/cancel?userId=${userId}`;
 
-        // ✅ Print reservation items to check if they are correct
         console.log("🛒 Reservation Items:", JSON.stringify(reservationItems, null, 2));
 
-        // Prepare line items for PayMongo
         const lineItems = reservationItems.map(item => ({
-            name: item.description || 'Food Item',
-            amount: amount * 100, // Convert to centavo format (PHP * 100)
+            name: item.description || 'Food item',
+            amount: Number(item.price) * 100,
             currency: 'PHP',
             description: item.description || "Food item",
             quantity: item.quantity || 1,
         }));
 
-        // ✅ Print formatted PayMongo request data before sending
         const requestData = {
             data: {
                 attributes: {
@@ -59,7 +53,6 @@ const placePayment = async (req, res) => {
         };
         console.log("🚀 Sending PayMongo Request Data:", JSON.stringify(requestData, null, 2));
 
-        // Create PayMongo checkout session
         const checkoutResponse = await axios.post(
             'https://api.paymongo.com/v1/checkout_sessions',
             requestData,
@@ -76,31 +69,31 @@ const placePayment = async (req, res) => {
 
         console.log(`✅ PayMongo session created: ${paymongoCheckoutSessionId}`);
 
-        // Save payment record
         const payment = await Payment.create({
             user_id: userId,
             amount,
-            reservation_item_id: reservationItemIds[0], // Ensure correct reservation mapping
+            reservation_item_id: reservationItemIds[0],
             paymongo_checkout_session_id: paymongoCheckoutSessionId,
             status: 'pending'
         });
 
-        // Update user's last payment date
         await User.update(
             { last_payment_date: new Date() },
             { where: { id: userId } }
         );
+
+        // ✅ Clear reservations after payment is processed
+        await Reservation.destroy({ where: { user_id: userId } });
+        console.log(`🗑️ Cleared reservations for user: ${userId}`);
 
         res.status(201).json({
             message: 'Checkout session created successfully',
             checkoutUrl: checkoutSession.attributes.checkout_url,
             payment
         });
-
     } catch (error) {
         console.error("❌ Error placing payment:", error);
 
-        // ✅ Print PayMongo error response
         if (error.response && error.response.data) {
             console.error("❌ PayMongo API Error Response:", JSON.stringify(error.response.data, null, 2));
             return res.status(500).json({
