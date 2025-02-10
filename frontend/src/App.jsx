@@ -24,8 +24,8 @@ function App() {
         <Route path="/cart" element={<Cart />} /> {/* Cart Page route */}
         <Route path="/order" element={<PlaceOrder />} /> {/* Place Order Page route */}
       </Routes>
-      <Footer />
       </div>
+      <Footer />
     </Router>
   );
 }
