@@ -4,14 +4,18 @@ const { User } = require('../models/userModel');
 const { Reservation } = require('../models/reservationModel');
 const { ReservationItem } = require('../models/reservationItemModel');
 const { FoodItem } = require('../models/foodModel');
+const { sequelize } = require('../models/userModel'); // ✅ Ensure a single DB connection
 
 require('dotenv').config();
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 
+/**
+ * ✅ **Handles payment creation & PayMongo checkout session**
+ */
 const placePayment = async (req, res) => {
-    const { amount, userId } = req.body; // Ensure correct parameters
+    const { amount, userId } = req.body;
 
     if (!userId) return res.status(401).json({ message: 'Unauthorized: User not authenticated' });
     if (!payMongoKey) return res.status(500).json({ message: 'PayMongo secret key not found' });
@@ -19,7 +23,7 @@ const placePayment = async (req, res) => {
     try {
         console.log(`✅ Processing payment for user: ${userId}`);
 
-        // Fetch reservations and ensure Payment records properly
+        // 🏷️ Fetch reservations with reservation items in one optimized query
         const userReservations = await Reservation.findAll({
             where: { user_id: userId },
             include: [{
@@ -30,24 +34,21 @@ const placePayment = async (req, res) => {
             }]
         });
 
-        // Extract reservationItem IDs
-        const reservationItemIds = userReservations.flatMap(r => r.ReservationItems.map(item => item.id)).filter(Boolean);
-
-        if (reservationItemIds.length === 0) {
+        if (!userReservations.length) {
             return res.status(400).json({ message: 'No reservation items found for payment' });
         }
 
-        console.log("Fetched reservation items:", reservationItemIds);
+        // 🏷️ Extract first reservationItem ID (assuming one payment per order)
+        const reservationItemId = userReservations[0]?.ReservationItems[0]?.id;
+        if (!reservationItemId) {
+            return res.status(400).json({ message: 'No valid reservation item found' });
+        }
 
-        const reservationItemId = reservationItemIds[0];
-        console.log("Valid reservation item ID:", reservationItemId);
+        console.log(`🛒 Valid reservation item ID: ${reservationItemId}`);
 
-        const successUrl = `${frontendUrl}/verify?success=true&userId=${userId}`;
-        const cancelUrl = `${frontendUrl}/verify?success=false&userId=${userId}`;
-
-        // ✅ Ensure proper mapping of reservation items
-        const lineItems = userReservations.flatMap(r =>
-            r.ReservationItems.map(item => ({
+        // ✅ Construct line items for PayMongo
+        const lineItems = userReservations.flatMap(reservation =>
+            reservation.ReservationItems.map(item => ({
                 name: item.FoodItem?.name || 'Food item',
                 amount: Number(item.FoodItem?.price || 0) * 100,
                 currency: 'PHP',
@@ -56,129 +57,83 @@ const placePayment = async (req, res) => {
             }))
         );
 
-        console.log("🛒 Reservation Items:", JSON.stringify(lineItems, null, 2));
+        console.log("🚀 Sending PayMongo Request Data:", JSON.stringify(lineItems, null, 2));
 
-        const requestData = {
-            data: {
-                attributes: {
-                    line_items: lineItems,
-                    show_description: false,
-                    payment_method_types: ['card', 'gcash'],
-                    success_url: successUrl,
-                    cancel_url: cancelUrl,
-                }
-            }
-        };
-
-        console.log("🚀 Sending PayMongo Request Data:", JSON.stringify(requestData, null, 2));
-
-        // Send request to PayMongo
+        // ✅ Call PayMongo API
         const checkoutResponse = await axios.post(
             'https://api.paymongo.com/v1/checkout_sessions',
-            requestData,
-            {
-                headers: {
-                    Authorization: `Basic ${Buffer.from(payMongoKey + ':').toString('base64')}`,
-                    'Content-Type': 'application/json'
-                }
-            }
+            { data: { attributes: { line_items: lineItems, payment_method_types: ['card', 'gcash'], success_url: `${frontendUrl}/verify?success=true&userId=${userId}`, cancel_url: `${frontendUrl}/verify?success=false&userId=${userId}` } } },
+            { headers: { Authorization: `Basic ${Buffer.from(payMongoKey + ':').toString('base64')}`, 'Content-Type': 'application/json' } }
         );
 
-        const checkoutSession = checkoutResponse.data.data;
-        const paymongoCheckoutSessionId = checkoutSession.id;
-
+        const paymongoCheckoutSessionId = checkoutResponse.data.data.id;
         console.log(`✅ PayMongo session created: ${paymongoCheckoutSessionId}`);
 
-        // ✅ Ensure payment is created correctly
-        try {
-            const payment = await Payment.create({
+        // ✅ Create payment in the database using a transaction for safety
+        await sequelize.transaction(async (t) => {
+            await Payment.create({
                 user_id: userId,
                 amount,
                 reservation_item_id: reservationItemId,
                 paymongo_checkout_session_id: paymongoCheckoutSessionId,
-                payment_status: false,  // ⬅️ BOOLEAN, not string!
-                status: 'Pending' // ⬅️ This is the correct place for 'Food Processing'
-            });
-            
+                payment_status: false,
+                status: 'Pending'
+            }, { transaction: t });
 
-            console.log("✅ Payment record saved:", payment.toJSON()); // Debug log
-        } catch (error) {
-            console.error("❌ Error saving payment:", error);
-        }
-
-        // ✅ Update last payment date
-        await User.update(
-            { last_payment_date: new Date() },
-            { where: { id: userId } }
-        );
-
-        // 🚨 Ensure reservations are NOT deleted before checking the DB
-        // // Comment this out if you want to check if records are missing after payment.
-        // await Reservation.destroy({ where: { user_id: userId } });
-        // console.log(`🗑️ Cleared reservations for user: ${userId}`);
-
-        res.status(201).json({
-            message: 'Checkout session created successfully',
-            checkoutUrl: checkoutSession.attributes.checkout_url
+            await User.update({ last_payment_date: new Date() }, { where: { id: userId }, transaction: t });
         });
+
+        res.status(201).json({ message: 'Checkout session created successfully', checkoutUrl: checkoutResponse.data.data.attributes.checkout_url });
+
     } catch (error) {
         console.error("❌ Error placing payment:", error);
-
-        if (error.response && error.response.data) {
-            console.error("❌ PayMongo API Error Response:", JSON.stringify(error.response.data, null, 2));
-            return res.status(500).json({
-                message: 'PayMongo API error',
-                error: error.response.data
-            });
-        }
-
-        res.status(500).json({
-            message: 'Failed to place payment',
-            error: error.message
-        });
+        return res.status(500).json({ message: 'Failed to place payment', error: error?.response?.data || error.message });
     }
 };
 
 /**
- * 2️⃣ **Verify payment after user is redirected from PayMongo**
+ * ✅ **Verifies the payment and updates the database**
  */
 const verifyReservation = async (req, res) => {
-    const { userId, success } = req.body; // Ensure frontend sends correct data
+    const { userId, success } = req.body;
+
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
 
     try {
-        // Find the latest payment entry for this user
-        const payment = await Payment.findOne({ 
-            where: { user_id: userId }, 
-            order: [['created_at', 'DESC']] // ✅ Works because we explicitly defined `created_at`
+        // 🏷️ Find the latest payment entry for this user
+        const payment = await Payment.findOne({
+            where: { user_id: userId },
+            order: [['created_at', 'DESC']]
         });
-        
+
         if (!payment) {
             return res.json({ success: false, message: 'No payment found' });
         }
 
         if (success === "true") {
-            // ✅ Update the payment status to true
-            await Payment.update(
-                { payment_status: true, status: 'Food Processing' }, 
-                { where: { id: payment.id } }
-            );
+            // ✅ Update payment status & clear reservations using transaction
+            await sequelize.transaction(async (t) => {
+                await Payment.update(
+                    { payment_status: true, status: 'Food Processing' },
+                    { where: { id: payment.id }, transaction: t }
+                );
 
-            // ✅ Clear reservations after successful payment
-            await Reservation.destroy({ where: { user_id: userId } });
+                await Reservation.destroy({ where: { user_id: userId }, transaction: t });
+            });
 
             console.log(`✅ Payment verified! Updated status for Payment ID: ${payment.id}`);
+            return res.json({ success: true, message: 'Payment verified and reservation cleared' });
 
-            res.json({ success: true, message: 'Payment verified and reservation cleared' });
         } else {
             // ❌ Delete the payment record if payment failed
             await Payment.destroy({ where: { id: payment.id } });
             console.log(`❌ Payment failed! Deleted record for Payment ID: ${payment.id}`);
 
-            res.json({ success: false, message: 'Payment failed, record removed' });
+            return res.json({ success: false, message: 'Payment failed, record removed' });
         }
     } catch (error) {
         console.error('❌ Error verifying payment:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
