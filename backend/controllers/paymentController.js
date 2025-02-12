@@ -149,9 +149,9 @@ const verifyReservation = async (req, res) => {
         // Find the latest payment entry for this user
         const payment = await Payment.findOne({ 
             where: { user_id: userId }, 
-            order: [['created_at', 'DESC']] // Get the most recent payment
+            order: [['created_at', 'DESC']] // ✅ Works because we explicitly defined `created_at`
         });
-
+        
         if (!payment) {
             return res.json({ success: false, message: 'No payment found' });
         }
@@ -164,17 +164,17 @@ const verifyReservation = async (req, res) => {
             );
 
             // ✅ Clear reservations after successful payment
-            // await Reservation.destroy({ where: { user_id: userId } });
+            await Reservation.destroy({ where: { user_id: userId } });
 
             console.log(`✅ Payment verified! Updated status for Payment ID: ${payment.id}`);
 
             res.json({ success: true, message: 'Payment verified and reservation cleared' });
         } else {
-            // // ❌ Delete the payment record if payment failed
-            // await Payment.destroy({ where: { id: payment.id } });
-            // console.log(`❌ Payment failed! Deleted record for Payment ID: ${payment.id}`);
+            // ❌ Delete the payment record if payment failed
+            await Payment.destroy({ where: { id: payment.id } });
+            console.log(`❌ Payment failed! Deleted record for Payment ID: ${payment.id}`);
 
-            // res.json({ success: false, message: 'Payment failed, record removed' });
+            res.json({ success: false, message: 'Payment failed, record removed' });
         }
     } catch (error) {
         console.error('❌ Error verifying payment:', error);

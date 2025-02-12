@@ -1,7 +1,6 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const { sequelize } = require('./userModel');
 
-// Define the Payment model
 const Payment = sequelize.define('Payment', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
@@ -25,7 +24,7 @@ const Payment = sequelize.define('Payment', {
       model: 'reservation_items',
       key: 'id'
     },
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
     onUpdate: 'CASCADE'
   },
   amount: {
@@ -35,28 +34,27 @@ const Payment = sequelize.define('Payment', {
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Food Proccessing'
+    defaultValue: 'Pending'
   },
   paymongo_checkout_session_id: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  payment_status: {  // ✅ New boolean column
+  payment_status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
   },
-  created_at: {
+  created_at: {  // ✅ Explicitly define created_at
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  updated_at: {
+  updated_at: {  // ✅ Explicitly define updated_at
     type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    onUpdate: DataTypes.NOW
+    defaultValue: DataTypes.NOW
   }
 }, {
-  timestamps: false,
+  timestamps: false,  // ✅ Disable Sequelize auto `createdAt` and `updatedAt`
   tableName: 'payment'
 });
 

@@ -1,17 +1,15 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Initialize Sequelize with the same environment variables
+// Ensure a single sequelize instance
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
   host: process.env.DB_HOST,
   dialect: 'mysql',
   port: process.env.DB_PORT || 3306,
 });
 
-// Define the User model
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
@@ -20,7 +18,7 @@ const User = sequelize.define('User', {
   },
   student_id: {
     type: DataTypes.STRING(50),
-    allowNull: false // Not nullable as per the SQL definition
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING(255),
@@ -34,14 +32,10 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING(255),
     allowNull: false
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
   }
 }, {
-  timestamps: false, // Disable automatic `createdAt` and `updatedAt` fields
-  tableName: 'users' // Ensure the table name matches the database table
+  timestamps: true, // ✅ Automatically handle createdAt & updatedAt
+  tableName: 'users'
 });
 
 module.exports = { sequelize, User };

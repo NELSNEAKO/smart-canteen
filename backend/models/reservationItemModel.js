@@ -1,7 +1,6 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const { sequelize } = require('./userModel');
 
-// Define the ReservationItem model
 const ReservationItem = sequelize.define('ReservationItem', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
@@ -10,19 +9,19 @@ const ReservationItem = sequelize.define('ReservationItem', {
   },
   reservation_id: {
     type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
+    allowNull: true,
     references: {
-      model: 'reservations', // References the `reservations` table
+      model: 'reservations',
       key: 'id'
     },
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL', // ✅ Prevent orphaned items when reservations are deleted
     onUpdate: 'CASCADE'
   },
   item_id: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: 'food_items', // References the `food_items` table
+      model: 'food_items',
       key: 'id'
     },
     onDelete: 'CASCADE',
@@ -33,8 +32,9 @@ const ReservationItem = sequelize.define('ReservationItem', {
     allowNull: false
   }
 }, {
-  timestamps: false, // Disable automatic `createdAt` and `updatedAt` fields
-  tableName: 'reservation_items' // Ensure the table name matches the database table
+  timestamps: true,
+  paranoid: true, // ✅ Enable soft delete
+  tableName: 'reservation_items'
 });
 
 module.exports = { ReservationItem };
