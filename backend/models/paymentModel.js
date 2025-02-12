@@ -12,7 +12,7 @@ const Payment = sequelize.define('Payment', {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: 'users', // References the `users` table
+      model: 'users',
       key: 'id'
     },
     onDelete: 'CASCADE',
@@ -20,9 +20,9 @@ const Payment = sequelize.define('Payment', {
   },
   reservation_item_id: {
     type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
+    allowNull: true,
     references: {
-      model: 'reservation_items', // References the `reservation_items` table
+      model: 'reservation_items',
       key: 'id'
     },
     onDelete: 'CASCADE',
@@ -35,11 +35,16 @@ const Payment = sequelize.define('Payment', {
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'pending'
+    defaultValue: 'Food Proccessing'
   },
   paymongo_checkout_session_id: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  payment_status: {  // ✅ New boolean column
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   },
   created_at: {
     type: DataTypes.DATE,
@@ -51,8 +56,8 @@ const Payment = sequelize.define('Payment', {
     onUpdate: DataTypes.NOW
   }
 }, {
-  timestamps: false, // Disable automatic `createdAt` and `updatedAt` fields
-  tableName: 'payment' // Ensure the table name matches the database table
+  timestamps: false,
+  tableName: 'payment'
 });
 
 module.exports = { Payment };
