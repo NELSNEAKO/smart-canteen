@@ -125,9 +125,11 @@ const verifyReservation = async (req, res) => {
             return res.json({ success: true, message: 'Payment verified and reservation cleared' });
 
         } else {
-            // ❌ Delete the payment record if payment failed
-            await Payment.destroy({ where: { id: payment.id } });
-            console.log(`❌ Payment failed! Deleted record for Payment ID: ${payment.id}`);
+            // ❌ update the payment status to "Failed"
+            await Payment.update(
+                { payment_status: false, status: 'Failed' }, // ✅ Track failed payments
+                { where: { id: payment.id } }
+            );
 
             return res.json({ success: false, message: 'Payment failed, record removed' });
         }

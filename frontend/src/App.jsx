@@ -25,6 +25,8 @@ function App() {
         <Route path="/cart" element={<Cart />} /> {/* Cart Page route */}
         <Route path="/order" element={<PlaceOrder />} /> {/* Place Order Page route */}
         <Route path="/verify" element={<Verify />} /> {/* Place Order Page route */}
+        <Route path="/myReservations" element={<Verify />} /> {/* Place Order Page route */}
+
 
       </Routes>
       </div>
