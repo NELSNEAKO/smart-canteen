@@ -144,30 +144,39 @@ const userReservations = async (req, res) => {
     try {
         const reservations = await Reservation.findAll({
             where: { user_id: req.body.userId },
+            paranoid: false, // ✅ Ensure we get soft-deleted data if needed
             include: [
                 {
                     model: ReservationItem,
-                    as: "ReservationItems", // ✅ Use the correct alias
+                    as: "ReservationItems",
                     include: [
                         {
                             model: FoodItem,
-                            as: "FoodItem" // ✅ Use the correct alias
+                            as: "FoodItem"
                         },
                         {
                             model: Payment,
-                            as: "Payment" // ✅ Ensure this alias matches your model definition
+                            as: "Payment"
                         }
                     ]
                 }
             ]
         });
 
-        res.json({ success: true, data: reservations });
+        // ✅ Filter out reservations where ALL payments are failed
+        const filteredReservations = reservations.filter((reservation) =>
+            reservation.ReservationItems?.some(
+                (item) => item.Payment?.status !== "Failed"
+            )
+        );
+
+        res.json({ success: true, data: filteredReservations });
     } catch (error) {
         console.error("Error fetching reservations:", error);
         res.status(500).json({ success: false, message: "Error fetching reservations" });
     }
 };
+
 
 
 
