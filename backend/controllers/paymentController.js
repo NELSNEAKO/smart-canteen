@@ -139,4 +139,19 @@ const verifyReservation = async (req, res) => {
     }
 };
 
-module.exports = { placePayment, verifyReservation };
+
+const userReservations = async (req, res) => {
+    try {
+        const reservations = await Payment.findAll({
+            where: { user_id: req.body.userId }
+        });
+
+        res.json({ success: true, data: reservations });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Error fetching Reservations" });
+    }
+};
+
+
+module.exports = { placePayment, verifyReservation,userReservations };
