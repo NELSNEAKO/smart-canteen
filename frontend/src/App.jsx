@@ -10,6 +10,7 @@ import LoginPopup from './components/LoginPopup/LoginPopup';
 import Cart from './pages/Cart/Cart';
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder';
 import Verify from './pages/Verify/Verify';
+import MyReservations from './pages/MyReservations/MyReservations';
 
 function App() {
 
@@ -24,8 +25,8 @@ function App() {
         <Route path="/" element={<HomePage />} /> {/* Default route: Login page */}
         <Route path="/cart" element={<Cart />} /> {/* Cart Page route */}
         <Route path="/order" element={<PlaceOrder />} /> {/* Place Order Page route */}
-        <Route path="/verify" element={<Verify />} /> {/* Place Order Page route */}
-        <Route path="/myReservations" element={<Verify />} /> {/* Place Order Page route */}
+        <Route path="/verify" element={<Verify />} /> {/* Verify Page route */}
+        <Route path="/myReservations" element={<MyReservations />} /> {/* Reservation Page route */}
 
 
       </Routes>

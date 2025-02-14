@@ -142,16 +142,33 @@ const verifyReservation = async (req, res) => {
 
 const userReservations = async (req, res) => {
     try {
-        const reservations = await Payment.findAll({
-            where: { user_id: req.body.userId }
+        const reservations = await Reservation.findAll({
+            where: { user_id: req.body.userId },
+            include: [
+                {
+                    model: ReservationItem,
+                    as: "ReservationItems", // ✅ Use the correct alias
+                    include: [
+                        {
+                            model: FoodItem,
+                            as: "FoodItem" // ✅ Use the correct alias
+                        },
+                        {
+                            model: Payment,
+                            as: "Payment" // ✅ Ensure this alias matches your model definition
+                        }
+                    ]
+                }
+            ]
         });
 
         res.json({ success: true, data: reservations });
     } catch (error) {
-        console.error(error);
-        res.json({ success: false, message: "Error fetching Reservations" });
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ success: false, message: "Error fetching reservations" });
     }
 };
+
 
 
 module.exports = { placePayment, verifyReservation,userReservations };
