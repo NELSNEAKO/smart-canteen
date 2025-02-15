@@ -1,13 +1,80 @@
-import React from 'react'
-import './Reservation.css'
+import React, { useEffect, useState } from 'react';
+import './Reservation.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { assets } from '../../assets/admin_assets/assets';
 
-const Reservation = () => {
+const Reservation = ({ url }) => {
+  const [reservations, setReservations] = useState([]);
+
+  const fetchAllReservations = async () => {
+    try {
+      const response = await axios.get(`${url}/api/payment/list`);
+      if (response.data.success) {
+        setReservations(response.data.data);
+        console.log(response.data.data);
+      } else {
+        toast.error('Error fetching reservations');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Something went wrong!');
+    }
+  };
+
+  useEffect(() => {
+    fetchAllReservations();
+  }, []);
+
   return (
-    <div>
-      
-    </div>
-  )
-}
-import './Reservation.css'
+    <div className="reservation add">
+      <h3>Reservation Page</h3>
+      <div className="reservation-list">
+        {reservations.map((reservation, index) => (
+          <div key={index} className="reservation-item">
+            <img src={assets.parcel_icon} alt="Reservation Icon" />
+            <div>
+              {/* Display Food Items */}
+              <p className="reservation-item-food">
+                {reservation.ReservationItems?.map((item, idx) =>
+                  idx === reservation.ReservationItems.length - 1
+                    ? `${item.FoodItem?.name} x ${item.quantity}`
+                    : `${item.FoodItem?.name} x ${item.quantity}, `
+                )}
+              </p>
 
-export default Reservation
+              {/* Display Student ID and Name */}
+              <p className="reservation-item-name">
+                {reservation.student_id} - {reservation.name}
+              </p>
+
+              {/* Display Order Length */}
+              <p><b>Items:</b> {reservation.ReservationItems?.length || 0}</p>
+
+              {/* Display Total Amount */}
+              <p>
+                <b>Total:</b> ₱
+                {Math.round(
+                  (reservation.ReservationItems && Array.isArray(reservation.ReservationItems))
+                    ? reservation.ReservationItems.reduce(
+                        (total, item) => total + (item.Payment?.amount || 0),
+                        0
+                      )
+                    : 0
+                )}
+              </p>
+              {/* Display Status */}
+              <select>
+                <option value="Food Processing">Food Processing</option>
+                <option value=""></option>
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Reservation;

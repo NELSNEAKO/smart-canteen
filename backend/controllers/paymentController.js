@@ -195,6 +195,11 @@ const listReservations = async (req, res) => {
                             as: "Payment"
                         }
                     ]
+                },
+                {
+                    model: User,
+                    as: "User",
+                    attributes: ["student_id", "name", "email"]
                 }
             ]
         });
