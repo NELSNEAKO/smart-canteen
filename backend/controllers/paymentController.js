@@ -177,7 +177,36 @@ const userReservations = async (req, res) => {
     }
 };
 
+const listReservations = async (req, res) => {
+    try {
+        const reservations = await Reservation.findAll({
+            paranoid: false, // ✅ Ensure we get soft-deleted data if needed
+            include: [
+                {
+                    model: ReservationItem,
+                    as: "ReservationItems",
+                    include: [
+                        {
+                            model: FoodItem,
+                            as: "FoodItem"
+                        },
+                        {
+                            model: Payment,
+                            as: "Payment"
+                        }
+                    ]
+                }
+            ]
+        });
+
+        res.json({ success: true, data: reservations });
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ success: false, message: "Error fetching reservations" });
+    }
+}
 
 
 
-module.exports = { placePayment, verifyReservation,userReservations };
+
+module.exports = { placePayment, verifyReservation,userReservations,listReservations };
