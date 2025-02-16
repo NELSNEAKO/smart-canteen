@@ -210,8 +210,31 @@ const listReservations = async (req, res) => {
         res.status(500).json({ success: false, message: "Error fetching reservations" });
     }
 }
+const updateStatus = async (req, res) => {
+    try {
+        // Find the payment record by primary key (ID)
+        const payment = await Payment.findByPk(req.body.paymentId);
+
+        if (!payment) {
+            return res.status(404).json({ success: false, message: "Payment record not found" });
+        }
+
+        // Update the status field
+        await payment.update({ status: req.body.status });
+
+        res.json({ success: true, message: "Status Updated" });
+    } catch (error) {
+        console.error("Error updating status:", error);
+        res.status(500).json({ success: false, message: "Error updating status" });
+    }
+};
 
 
 
-
-module.exports = { placePayment, verifyReservation,userReservations,listReservations };
+module.exports = {
+     placePayment,
+     verifyReservation, 
+     userReservations, 
+     listReservations,
+     updateStatus,
+};
