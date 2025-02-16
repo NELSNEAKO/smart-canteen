@@ -42,18 +42,19 @@ const Reservation = ({ url }) => {
                     : `${item.FoodItem?.name} x ${item.quantity}, `
                 )}
               </p>
-
               {/* Display Student ID and Name */}
               <p className="reservation-item-name">
-                {reservation.student_id} - {reservation.name}
+                {reservation.User.student_id} - {reservation.User.name} <br />
+                {reservation.User.email}
               </p>
-
+            </div>
+              
               {/* Display Order Length */}
               <p><b>Items:</b> {reservation.ReservationItems?.length || 0}</p>
 
               {/* Display Total Amount */}
               <p>
-                <b>Total:</b> ₱
+                ₱
                 {Math.round(
                   (reservation.ReservationItems && Array.isArray(reservation.ReservationItems))
                     ? reservation.ReservationItems.reduce(
@@ -66,10 +67,10 @@ const Reservation = ({ url }) => {
               {/* Display Status */}
               <select>
                 <option value="Food Processing">Food Processing</option>
-                <option value=""></option>
-                <option value=""></option>
+                <option value="Completed">Completed</option>
+                <option value="Failed">Payment Failed</option>
+                <option value="Ready for Pickup">Ready for Pickup</option>
               </select>
-            </div>
           </div>
         ))}
       </div>
