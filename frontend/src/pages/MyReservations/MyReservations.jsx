@@ -19,7 +19,7 @@ const MyReservations = () => {
             );
 
             if (response.data.success) {
-                console.log("Reservations:", response.data.data);
+                // console.log("Reservations:", response.data.data);
                 setData(response.data.data);
             } else {
                 setError("Failed to fetch reservations.");
@@ -73,7 +73,7 @@ const MyReservations = () => {
                                 <span>&#x25cf;</span> <b>{reservation.ReservationItems?.[0]?.Payment?.status || "Pending"}</b>
                             </p>
 
-                            <button>Track Order</button>
+                            <button onClick={fetchReservations}>Track Reservation</button>
                         </div>
                     ))
                 ) : (
