@@ -1,6 +1,6 @@
 .list-table-format{
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1.5fr 0.5fr;
     align-items: center;
     gap: 10px;
     padding: 12px 15px;
@@ -13,6 +13,29 @@
 .list-table-format img{
     width: 50px;
 }
+
+.list-table-availability select, .list-table-status select{
+    background-color: #fcfbfb; /* Light background */
+    border: none; /* Softer border color */
+    width: max(7vw, 50px); /* Responsive width */
+    padding: 10px 12px; /* Slightly more horizontal padding */
+    outline: none; /* Remove default focus outline */
+    border-radius: 4px; /* Smoother rounded corners */
+    font-size: 14px; /* Standard font size */
+    color: #333; /* Darker text for better readability */
+    cursor: pointer; /* Indicate it's clickable */
+    transition: all 0.3s ease; /* Smooth transitions for interactions */
+    
+}
+
+/* Hover effect */
+.list-table-availability select:hover, .list-table-status select:hover  {
+    border-color: #a8a8a8; /* Darker border on hover */
+    background-color: #f9f9f9; /* Slightly darker background on hover */
+    font-weight: 600;
+}
+
+
 
 @media (max-width: 600px){
     .list-table-format{

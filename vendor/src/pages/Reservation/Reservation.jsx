@@ -12,7 +12,7 @@ const Reservation = ({ url }) => {
       const response = await axios.get(`${url}/api/payment/list`);
       if (response.data.success) {
         setReservations(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       } else {
         toast.error('Error fetching reservations');
       }
@@ -86,9 +86,9 @@ const Reservation = ({ url }) => {
             </p>
 
             {/* Status Dropdown - Looping through ReservationItems */}
-            {reservation.ReservationItems?.map((item, idx) => (
+            {reservation.ReservationItems?.map((item, index) => (
               item.Payment && (
-                <div key={idx}>
+                <div key={index}>
                   <select
                     onChange={(event) => statusHandler(event, item.Payment.id)}
                     value={item.Payment.status}

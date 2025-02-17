@@ -12,6 +12,7 @@ const List = ({url}) => {
     const response = await axios.get(`${url}/api/food/list`)
     if(response.data.success){
       setList(response.data.data)
+      console.log(response.data.data);
     } else {
       toast.error(response.data.message)
     }
@@ -24,6 +25,26 @@ const List = ({url}) => {
       fetchList()
     } else {
       toast.error(response.data.message)
+    }
+  };
+
+  const statusHandler = async (event, paymentId) => {
+    const newStatus = event.target.value;
+    try {
+      const response = await axios.post(`${url}/api/food/status`, {
+        paymentId: paymentId,
+        status: newStatus,
+      });
+
+      if (response.data.success) {
+        toast.success('Status Updated Successfully');
+        fetchList(); // Refresh data after update
+      } else {
+        toast.error('Failed to update status');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Something went wrong!');
     }
   };
   
@@ -52,8 +73,28 @@ const List = ({url}) => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>₱{item.price}</p>
-              <p>{item.status}</p>
-              <p>{item.availability}</p>
+              <p>
+                <div className="list-table-status" key={index}>
+                  <select
+                    onChange={(event) => statusHandler(event, item.status)}
+                    value={item.status}
+                  >
+                    <option value="Available">Availabe</option>
+                    <option value="Not Availabe">Not Availabe</option>
+                  </select>
+                </div>
+              </p>
+              <p>
+                <div className="list-table-availability" key={index}>
+                  <select
+                    onChange={(event) => statusHandler(event, item.status)}
+                    value={item.status}
+                  >
+                    <option value="Break Fast">Break Fast</option>
+                    <option value="Lunch">Lunch</option>
+                  </select>
+                </div>
+              </p>
               <p onClick={() => removeFood(item.id)} className="cursor">X</p>
               </div>
           )

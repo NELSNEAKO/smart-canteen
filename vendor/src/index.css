@@ -44,6 +44,9 @@ hr{
 .cursor{
   cursor: pointer;
 }
+.cursor:hover{
+  font-weight: 900;
+}
 
 @keyframes fadeIn{
   0%{
