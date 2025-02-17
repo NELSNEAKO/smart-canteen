@@ -23,8 +23,17 @@ hr{
   background-color: #a9a9a9;
 }
 
+.app-content-wrapper {
+  margin-left: 10%; /* Match the width of the sidebar */
+  padding-top: 80px; /* Adjust based on navbar height */
+  height: calc(100vh - 80px); /* Full height minus navbar height */
+  overflow-y: scroll; /* Add scrollbar inside the wrapper */
+}
+
 .app-content{
   display: flex;
+  justify-content: center;
+  padding: 20px; /* Optional: Add padding for better spacing */
 }
 
 .flex-col{

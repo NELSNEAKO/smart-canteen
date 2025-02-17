@@ -1,22 +1,29 @@
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 4%;
     padding-bottom: 20px;
-    position: relative;
+    position: fixed; /* Fix the navbar at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure it spans the full width */
+    background-color: white; /* Add a background color to avoid content showing through */
+    z-index: 1000; /* Ensure it stays above other content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
 }
 
-.navbar .logo{
+.navbar .logo {
     width: 65px;
 }
 
-.navbar .details{
+.navbar .details {
     position: absolute;
     font-size: 17px;
     top: 70px;
     left: 70px;
 }
-.navbar .profile{
+
+.navbar .profile {
     width: 50px;
 }
