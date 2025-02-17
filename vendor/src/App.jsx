@@ -1,35 +1,41 @@
+import React from 'react'
+import Navbar from './components/Navbar/Navbar'
+import Sidebar from './components/Sidebar/Sidebar'
+import { Routes, Route} from 'react-router-dom'
+import Add from './pages/Add/Add'
+import List from './pages/List/List'
+import User from './pages/User/User'
+import Reservation from './pages/Reservation/Reservation'
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import UpdatePopup from './components/UpdatePopup/UpdatePopup'
 
-function App() {
-  const [count, setCount] = useState(0)
+
+
+const App = () => {
+
+  const url = 'http://localhost:5000'
+  const [showUpdate, setShowUpdate] = useState(false)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      {showUpdate?<UpdatePopup setShowUpdate={setShowUpdate}/>:<></>}
+       <ToastContainer />
+       <Navbar />
+       <hr />
+       <div className="app-content">
+          <Sidebar setShowUpdate ={setShowUpdate}/>
+          <Routes>
+              <Route path="/add" element={<Add url={url}/>} />
+              <Route path="/list" element={<List url={url}/>} />
+              <Route path="/user" element={<User url={url}/>} />
+              <Route path="/reservation" element={<Reservation url={url}/>} />
+          </Routes>
+       </div>
+    </div>
   )
 }
+
 
 export default App
