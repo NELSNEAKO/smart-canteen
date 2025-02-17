@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { addFood, listFood, removeFood } = require('../controllers/foodController');
+const { addFood, listFood, removeFood, updateStatus } = require('../controllers/foodController');
 
 const foodRouter = express.Router();
 
@@ -18,5 +18,6 @@ const upload = multer({ storage: storage });
 foodRouter.post('/add', upload.single('image'), addFood);
 foodRouter.get('/list', listFood);
 foodRouter.delete('/remove/:id', removeFood); // Corrected route definition
+foodRouter.post('/status', updateStatus);
 
 module.exports = foodRouter;

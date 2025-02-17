@@ -66,14 +66,36 @@ const removeFood = async (req, res) => {
     res.json({ success: false, message: 'An error occurred, please try again' });
   }
 }
+
+const updateStatus = async (req, res) => {
+  try {
+    //find the food item record by primary key (id)
+    const food = await FoodItem.findByPk(req.body.foodId);
+
+    if(!food){
+      return res.status(404).json({ success: false, message: "Food Item record not found" });
+    }
+
+    //update the status field
+    await food.update(
+    {
+      status: req.body.status,
+      availability: req.body.availability
+    })
+    
+    res.json({ success: true, message: "Status Updated" });
+  } catch (error) {
+    console.error("Error updating status:", error);
+    res.status(500).json({ success: false, message: "Error updating status" });
+  }
+}
  
 module.exports = {
   addFood,
   listFood,
-  removeFood
+  removeFood,
+  updateStatus,
 };
 
 
 
-
-module.exports = { addFood, listFood, removeFood};

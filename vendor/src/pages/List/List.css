@@ -15,7 +15,7 @@
 }
 
 .list-table-availability select, .list-table-status select{
-    background-color: #fcfbfb; /* Light background */
+    background-color: #fcfbfb; 
     border: none; /* Softer border color */
     width: max(7vw, 50px); /* Responsive width */
     padding: 10px 12px; /* Slightly more horizontal padding */
