@@ -11,7 +11,7 @@ const List = ({ url }) => {
       const response = await axios.get(`${url}/api/food/list`);
       if (response.data.success) {
         setList(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       } else {
         toast.error(response.data.message);
       }

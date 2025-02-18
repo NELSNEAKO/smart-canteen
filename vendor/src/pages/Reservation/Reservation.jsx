@@ -9,10 +9,10 @@ const Reservation = ({ url }) => {
 
   const fetchAllReservations = async () => {
     try {
-      const response = await axios.get(`${url}/api/payment/list`);
+      const response = await axios.get(`${url}/api/payment/vendor-list`);
       if (response.data.success) {
         setReservations(response.data.data);
-        // console.log(response.data.data);
+        console.log(response.data.data);
       } else {
         toast.error('Error fetching reservations');
       }

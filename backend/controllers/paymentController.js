@@ -210,6 +210,49 @@ const listReservations = async (req, res) => {
         res.status(500).json({ success: false, message: "Error fetching reservations" });
     }
 }
+
+const vendorListReservation = async (req, res) => {
+    try {
+        const reservations = await Reservation.findAll({
+            paranoid: false, // Ensure we get soft-deleted data if needed
+            include: [
+                {
+                    model: ReservationItem,
+                    as: "ReservationItems",
+                    include: [
+                        {
+                            model: FoodItem,
+                            as: "FoodItem"
+                        },
+                        {
+                            model: Payment,
+                            as: "Payment"
+                        }
+                    ]
+                },
+                {
+                    model: User,
+                    as: "User",
+                    attributes: ["student_id", "name", "email"]
+                }
+            ]
+        });
+
+        // ✅ Ensure only reservations with valid payments are returned
+        const filteredReservations = reservations.filter((reservation) =>
+            reservation.ReservationItems?.some(
+                (item) => item.Payment && item.Payment.payment_status !== 0 // Explicitly check for 0 (false)
+            )
+        );
+
+        res.json({ success: true, data: filteredReservations });
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ success: false, message: "Error fetching reservations" });
+    }
+};
+
+
 const updateStatus = async (req, res) => {
     try {
         // Find the payment record by primary key (ID)
@@ -237,4 +280,5 @@ module.exports = {
      userReservations, 
      listReservations,
      updateStatus,
+     vendorListReservation,
 };
