@@ -4,6 +4,8 @@ const { Reservation } = require('./reservationModel');
 const { ReservationItem } = require('./reservationItemModel');
 const { FoodItem } = require('./foodModel');
 const { Payment } = require('./paymentModel');
+const { Vendor } = require('./vendorModel')
+const { VendorInviteCode } = require('./vendorInviteModel');
 
 // Define associations
 User.hasMany(Reservation, { as: 'Reservations', foreignKey: 'user_id', onDelete: 'CASCADE' });
@@ -22,6 +24,10 @@ Payment.belongsTo(User, { as: 'User', foreignKey: 'user_id' });
 ReservationItem.hasOne(Payment, { as: 'Payment', foreignKey: 'reservation_item_id', onDelete: 'SET NULL' });
 Payment.belongsTo(ReservationItem, { as: 'ReservationItem', foreignKey: 'reservation_item_id' });
 
+// ✅ Define Vendor Associations
+Vendor.belongsTo(VendorInviteCode, { as: 'InviteCode', foreignKey: 'invite_code', targetKey: 'code', onDelete: 'SET NULL' });
+VendorInviteCode.hasOne(Vendor, { as: 'Vendor', foreignKey: 'invite_code', sourceKey: 'code' });
+
 // Synchronize all models
 sequelize.sync({ alter: true })
   .then(() => console.log('✅ Database synchronized'))
@@ -33,5 +39,7 @@ module.exports = {
   ReservationItem,
   FoodItem,
   Payment,
+  Vendor,
+  VendorInviteCode,
   sequelize
 };

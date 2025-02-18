@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const foodRouter = require('./routes/foodRoute'); // Correct import
 const userRouter = require('./routes/userRoutes');
 const paymentRouter = require('./routes/paymentRoute')
+const vendorRouter = require('./routes/vendorRoute')
 
 const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
 // console.log('Loaded Environment Variables:', process.env); // Log all environment variables for debugging
@@ -33,6 +34,7 @@ app.use('/images', express.static('uploads'));
 app.use('/api/user', userRouter);
 app.use('/api/reservation', reservationRoutes);
 app.use('/api/payment', paymentRouter);
+app.use('/api/vendor', vendorRouter);
 
 // Test Root Route
 app.get('/', (req, res) => {
