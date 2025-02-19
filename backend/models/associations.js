@@ -29,9 +29,11 @@ Vendor.belongsTo(VendorInviteCode, { as: 'InviteCode', foreignKey: 'invite_code'
 VendorInviteCode.hasOne(Vendor, { as: 'Vendor', foreignKey: 'invite_code', sourceKey: 'code' });
 
 // Synchronize all models
-sequelize.sync({ alter: true })
+// Only alter true when added new Model to prevent hitting MySQL's 64-index limit
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ Database synchronized'))
   .catch(error => console.error('❌ Error synchronizing database:', error));
+  
 
 module.exports = {
   User,
