@@ -129,4 +129,5 @@ const generateInviteCode = async (req, res) => {
 module.exports = {
     generateInviteCode,
     registerVendor,
+    loginVendor,
 }
