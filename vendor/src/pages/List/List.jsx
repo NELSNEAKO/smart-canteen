@@ -2,11 +2,23 @@ import React, { useState, useEffect } from 'react';
 import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 const List = ({ url }) => {
   const [list, setList] = useState([]);
+  const token = localStorage.getItem('token'); // Get token from local storage
+  const navigate = useNavigate();
+
+
 
   const fetchList = async () => {
+    if (!token) {
+      toast.error("Unauthorized: No token provided"); 
+      navigate('/'); // ✅ Redirect after login
+      return;
+    }
+
     try {
       const response = await axios.get(`${url}/api/food/list`);
       if (response.data.success) {
