@@ -3,6 +3,8 @@ import './Add.css'
 import { assets } from '../../assets/admin_assets/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Add = ({url}) => {
@@ -16,6 +18,14 @@ const Add = ({url}) => {
         status: 'Available',      
         availability: 'Break Fast' 
     })
+    const token = localStorage.getItem('token'); // Get token from local storage
+    const navigate = useNavigate();
+
+    if (!token) {
+        toast.error("Unauthorized: No token provided");
+        navigate('/'); // ✅ Redirect after login
+        return;
+      }
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
