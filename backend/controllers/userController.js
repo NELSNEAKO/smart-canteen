@@ -150,10 +150,29 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+      const userId = req.body.userId; // Extracted from the token in authMiddleware
+
+      // Fetch user data from the database
+      const user = await User.findByPk(userId); // Assuming Sequelize, modify if using another ORM
+
+      if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      res.status(200).json({ success: true, user });
+  } catch (error) {
+      console.error('Error fetching user:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 module.exports = { 
    loginUser, 
    registerUser,
    getAllUsers, 
    updateUser, 
-   deleteUser 
+   deleteUser,
+   getUser 
   };

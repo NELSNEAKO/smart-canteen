@@ -5,7 +5,10 @@ const {
     loginUser,
     updateUser,
     deleteUser,
+    getUser,
 } = require('../controllers/userController') //import controller
+const authMiddleware = require('../middleware/auth');
+
 
 const db = require('../config/db'); 
 const userRouter = express.Router();
@@ -19,6 +22,9 @@ userRouter.post('/login', loginUser);
 
 // Route for getting user details
 userRouter.get('/users', getAllUsers);
+
+// Route for getting specific user
+userRouter.get('/user', authMiddleware, getUser);
 
 // Route for updating user details
 userRouter.put('/update/:userId', updateUser);

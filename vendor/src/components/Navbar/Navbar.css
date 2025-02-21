@@ -4,13 +4,13 @@
     align-items: center;
     padding: 10px 4%;
     padding-bottom: 20px;
-    position: fixed; /* Fix the navbar at the top */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Ensure it spans the full width */
-    background-color: white; /* Add a background color to avoid content showing through */
-    z-index: 1000; /* Ensure it stays above other content */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar .logo {
@@ -26,4 +26,69 @@
 
 .navbar .profile {
     width: 35px;
+    margin-right: 100px;
+    cursor: pointer;
+}
+
+.navbar-profile {
+    position: relative;
+}
+
+.nav-profile-dropdown {
+    position: absolute;
+    display: none;
+    right: 0;
+    z-index: 1;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 220px;
+    padding: 10px 0;
+    list-style: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-profile:hover .nav-profile-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+}
+
+.profile-img {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.nav-profile-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-profile-dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-profile-dropdown img {
+    width: 20px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 5px 15px;
 }
