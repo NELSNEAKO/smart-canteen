@@ -17,8 +17,9 @@
 .add-product-name input, .add-product-description textarea{
     padding: 10px;
 }
-.add-category-price {
+.add-category-price{
     display: flex;
+    flex-wrap: wrap;
     gap: 30px;
 }
 .add-category-price{

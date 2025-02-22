@@ -50,14 +50,19 @@ const List = ({ url }) => {
 
   const statusHandler = async (event, foodId, field) => {
     const newValue = event.target.value;
-
+  
     try {
-      const response = await axios.post(`${url}/api/food/status`, {
-        foodId, // ✅ Ensure this key matches the backend
-        status: newValue, 
-        availability: newValue
-      });
-
+      const payload = { foodId }; // Initialize payload with foodId
+  
+      // Dynamically update only the field that needs to be changed
+      if (field === "status") {
+        payload.status = newValue;
+      } else if (field === "availability") {
+        payload.availability = newValue;
+      }
+  
+      const response = await axios.post(`${url}/api/food/status`, payload);
+  
       if (response.data.success) {
         toast.success("Status Updated Successfully");
         fetchList();
@@ -69,6 +74,7 @@ const List = ({ url }) => {
       toast.error("Something went wrong!");
     }
   };
+  
 
   useEffect(() => {
     fetchList();

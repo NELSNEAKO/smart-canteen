@@ -18,7 +18,7 @@
     background-color: #fcfbfb; 
     border: none; /* Softer border color */
     width: max(7vw, 50px); /* Responsive width */
-    padding: 10px 12px; /* Slightly more horizontal padding */
+    /* padding: 5px -5px; Slightly more horizontal padding */
     outline: none; /* Remove default focus outline */
     border-radius: 4px; /* Smoother rounded corners */
     font-size: 14px; /* Standard font size */
@@ -39,11 +39,14 @@
 
 @media (max-width: 600px){
     .list-table-format{
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
         gap: 15px;
     }
     .list-table-format.title{
         display: none;        
+    }
+    .list-table-availability select, .list-table-status select{
+        width: 20px;
     }
     
 }

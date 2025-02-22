@@ -5,8 +5,6 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
-
-
 const Add = ({url}) => {
 
     const [image, setImage] = useState(false);
@@ -62,7 +60,6 @@ const Add = ({url}) => {
         }
     }
    
-
   return (
     <div className='add'>
         <form className='flex-col' onSubmit={onSubmitHandler}>
@@ -120,3 +117,4 @@ const Add = ({url}) => {
 }
 
 export default Add;
+
