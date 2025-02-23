@@ -3,7 +3,7 @@ import './FoodItem.css'
 import { assets } from '../../assets/frontend_assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 
-const FoodItem = ({id,name,price,description,image,status,availability}) => {
+const FoodItem = ({id,name,price,description,image  }) => {
 
     const {cartItems,addToCart,removeFromCart,url} = useContext(StoreContext)
     // const url = "http://localhost:5000";
@@ -32,8 +32,6 @@ const FoodItem = ({id,name,price,description,image,status,availability}) => {
             </div>
                 <p className="food-item-desc">{description}</p>
                 <p className="food-item-price">${price}</p>
-                <p className="food-item-status">{status}</p>
-                <p className="food-item-availability">{availability}</p>
         </div>
     </div>
   )

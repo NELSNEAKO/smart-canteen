@@ -59,6 +59,8 @@ import profile_icon from './profile_icon.png'
 import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
+import breakfast from './breakfast.png'
+import lunch from './lunch.png'
 
 export const assets = {
     logo,
@@ -84,33 +86,34 @@ export const assets = {
 
 export const menu_list = [
     {
-        menu_name: "Main Dishes",
-        menu_image: menu_1
+        menu_name: "Breakfast",
+        menu_image: breakfast
     },
     {
-        menu_name: "Snacks",
-        menu_image: menu_2
-    },
-    {
-        menu_name: "Deserts",
-        menu_image: menu_3
-    },
-    {
-        menu_name: "Drinks",
-        menu_image: menu_4
-    },
-    {
-        menu_name: "Pasta",
-        menu_image: menu_5
-    },
-    {
-        menu_name: "Healthy Options",
-        menu_image: menu_6
-    },
-    {
-        menu_name: "Rice Meals",
-        menu_image: menu_7
-    }]
+        menu_name: "Lunch",
+        menu_image: lunch
+    }
+    // {
+    //     menu_name: "Deserts",
+    //     menu_image: menu_3
+    // },
+    // {
+    //     menu_name: "Drinks",
+    //     menu_image: menu_4
+    // },
+    // {
+    //     menu_name: "Pasta",
+    //     menu_image: menu_5
+    // },
+    // {
+    //     menu_name: "Healthy Options",
+    //     menu_image: menu_6
+    // },
+    // {
+    //     menu_name: "Rice Meals",
+    //     menu_image: menu_7
+    // }
+    ]
 
 export const food_list = [
     {

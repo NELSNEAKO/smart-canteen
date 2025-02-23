@@ -7,13 +7,13 @@ import AppDownload from '../../components/AppDownload/AppDownload';
 
 function HomePage() {
 
-  const [category, setCategory] = useState('All');
+  const [availability, setAvailability] = useState('All');
 
   return (
     <>
       <Header />
-      <ExploreMenu category={category} setCategory={setCategory}/>
-      <FoodDisplay  category={category}/>
+      <ExploreMenu availability={availability} setAvailability={setAvailability}/>
+      <FoodDisplay  availability={availability}/>
       <AppDownload />
     </>
   );
