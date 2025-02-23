@@ -34,17 +34,12 @@ const List = ({ url }) => {
   };
 
   const removeFood = async (foodId) => {
-    try {
-      const response = await axios.delete(`${url}/api/food/remove/${foodId}`);
-      if (response.data.success) {
-        toast.success(response.data.message);
-        fetchList();
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Error removing food:", error);
-      toast.error("Something went wrong!");
+    const response = await axios.delete(`${url}/api/food/remove/${foodId}`);
+    if(response.data.success){
+      toast.success(response.data.message)
+      fetchList()
+    } else {
+      toast.error(response.data.message)
     }
   };
 
@@ -122,7 +117,7 @@ const List = ({ url }) => {
               </select>
             </div>
 
-            <p onClick={() => removeFood(item.foodId)} className="cursor">
+            <p onClick={() => removeFood(item.id)} className="cursor">
               X
             </p>
           </div>
