@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu';
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay';
 import AppDownload from '../../components/AppDownload/AppDownload';
+import TopFoods from '../../components/TopFoods/TopFoods';
 
 function HomePage() {
 
@@ -14,6 +15,7 @@ function HomePage() {
       <Header />
       <ExploreMenu availability={availability} setAvailability={setAvailability}/>
       <FoodDisplay  availability={availability}/>
+      <TopFoods />
       <AppDownload />
     </>
   );
