@@ -1,46 +1,58 @@
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-  *{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: Outfit, sans-serif;
-  }
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Outfit, sans-serif;
+}
 
-  body{
-    min-height: 100vh;
-    background-color: #fcfcfc;
-  }
+body{
+  min-height: 100vh;
+  background-color: #fcfcfc;
+}
 
-  a{
-    text-decoration: none;
-    color: inherit;
-  }
+a{
+  text-decoration: none;
+  color: inherit;
+}
 
-  hr{
-    border: none;
-    height: 1px;
-    background-color: #a9a9a9;
-  }
+hr{
+  border: none;
+  height: 1px;
+  background-color: #a9a9a9;
+}
 
-  .app-content{
-    display: flex;
-  }
+.app-content-wrapper {
+  margin-left: 10%; /* Match the width of the sidebar */
+  padding-top: 80px; /* Adjust based on navbar height */
+  height: calc(100vh - 80px); /* Full height minus navbar height */
+  overflow-y: scroll; /* Add scrollbar inside the wrapper */
+}
 
-  .flex-col{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .cursor{
-    cursor: pointer;
-  }
+.app-content{
+  display: flex;
+  justify-content: center;
+  padding: 20px; /* Optional: Add padding for better spacing */
+}
 
-  @keyframes fadeIn{
-    0%{
-      opacity: 0;
-    }
-    100%{
-      opacity: 1;
-    }
+.flex-col{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cursor{
+  cursor: pointer;
+}
+.cursor:hover{
+  font-weight: 900;
+}
+
+@keyframes fadeIn{
+  0%{
+    opacity: 0;
   }
+  100%{
+    opacity: 1;
+  }
+}

@@ -1,18 +1,27 @@
-.sidebar{
+.sidebar {
     width: 18%;
-    min-height: 100vh;
+    height: 100vh; /* Set a fixed height */
+    min-height: 100vh; /* Fallback for older browsers */
     border: 1.5px solid #a9a9a9;
     border-top: 0;
     font-size: max(1vw, 10px);
+    overflow-y: auto; /* Add scrollbar inside the sidebar */
+    position: fixed; /* Keep the sidebar fixed */
+    top: 0;
+    left: 0;
+    background-color: white; /* Optional: Add a background color */
+    margin-top: 50px;
 }
-.sidebar-options{
-    padding-top: 50px;
+
+.sidebar-options {
+    padding-top: 92px;
     padding-left: 20%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.sidebar-option{
+
+.sidebar-option {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -23,14 +32,13 @@
     cursor: pointer;
 }
 
-.sidebar-option.active{
+.sidebar-option.active {
     background-color: #fff0ed;
     border-color: tomato;
 }
 
-@media (max-width: 900px){
-    .sidebar-option p{
+@media (max-width: 900px) {
+    .sidebar-option p {
         display: none;
     }
-    
 }
