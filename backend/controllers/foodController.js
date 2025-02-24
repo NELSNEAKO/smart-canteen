@@ -1,4 +1,6 @@
 const { FoodItem } = require('../models/foodModel');
+const { ReservationItem } = require('../models/reservationItemModel');
+const { sequelize } = require('../models/userModel');
 const fs = require('fs');
 
 
@@ -86,6 +88,31 @@ const updateStatus = async (req, res) => {
   }
 };
 
+const getTopFoodItems = async (req, res) => {
+  try {
+    const topFoodItems = await ReservationItem.findAll({
+      attributes: [
+        'item_id',
+        [sequelize.fn('COUNT', sequelize.col('item_id')), 'count']
+      ],
+      include: [
+        {
+          model: FoodItem,
+          as: 'FoodItem', // Ensure alias matches your association
+          attributes: ['id', 'name', 'price', 'description'] // Select only necessary fields
+        }
+      ],
+      group: ['item_id', 'FoodItem.id'], // Group by both item_id and FoodItem's id
+      order: [[sequelize.literal('count'), 'DESC']],
+      limit: 5,
+    });
+
+    res.json({ success: true, data: topFoodItems });
+  } catch (error) {
+    console.error("Error fetching top food items:", error);
+    res.status(500).json({ success: false, message: "Error fetching top food items" });
+  }
+};
 
 
  
@@ -94,6 +121,7 @@ module.exports = {
   listFood,
   removeFood,
   updateStatus,
+  getTopFoodItems,
 };
 
 
