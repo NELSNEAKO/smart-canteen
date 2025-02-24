@@ -1,0 +1,47 @@
+.top-foods-container {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+.top-foods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.food-card {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+.rank {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #ff6347;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.food-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.food-name {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
