@@ -99,7 +99,7 @@ const getTopFoodItems = async (req, res) => {
         {
           model: FoodItem,
           as: 'FoodItem', // Ensure alias matches your association
-          attributes: ['id', 'name', 'price', 'description'] // Select only necessary fields
+          attributes: ['id', 'name', 'price', 'image'] // Select only necessary fields
         }
       ],
       group: ['item_id', 'FoodItem.id'], // Group by both item_id and FoodItem's id

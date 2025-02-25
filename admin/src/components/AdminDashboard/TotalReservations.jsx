@@ -12,7 +12,7 @@ const TotalReservations = () => {
       const response = await axios.get(`${url}/api/admin/total-reservations`);
       if (response.data.success) {
         setOrders(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         
       } else {
         console.error(data.message);

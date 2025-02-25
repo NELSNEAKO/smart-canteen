@@ -52,7 +52,6 @@ const StoreContextProvider = (props) => {
         const response = await axios.get(`${url}/api/food/top`);
         setTopList(response.data.data);
         console.log("Top list:", response.data.data);
-        
     };
 
     const loadCartData = async () => {

@@ -1,5 +1,7 @@
 .container{
+    margin-top: 100px;
     display: flex;
+    flex-wrap: wrap;
     width: 70%;
     justify-self: start;
     gap: 20px;
