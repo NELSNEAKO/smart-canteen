@@ -5,10 +5,10 @@ function Header() {
   return (
     <div className='header'>
         <div className="header-contents">
-            <h2>Order your favourite food here</h2>
+            <h2>Reserve your favourite food here</h2>
             <p>
-                Choose from a diverse menu featuring a delectable array of dishes
-                crafted with the finest chiefs
+              Treat yourself to a freshly prepared meal, made just for you. Place your order
+              in advance and enjoy a delightful dining experience.  
             </p>
             <button>View Menu</button>
         </div>

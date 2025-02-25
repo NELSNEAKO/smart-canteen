@@ -12,19 +12,19 @@
 .explore-menu-list {
     display: flex;
     gap: 50px;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     margin-top: 10px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+
 }
 
 .explore-menu-list-item {
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 15px;
     border-radius: 8px;
-    width: 135px;
-    height: 135px;
+    width: 170px;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     background-color: #f3f3f3; /* Default (Unselected) */
@@ -39,7 +39,7 @@
 }
 
 .explore-menu-list-item img {
-    width: 60px;
+    width: 90px;
     transition: 0.3s ease-in-out;
 }
 
@@ -63,4 +63,22 @@
 .explore-menu-list-item.active p {
     color: white; /* Ensures the text is readable when selected */
     font-family: sans-serif;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .explore-menu-list {
+
+        justify-content: center;
+        flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    
+    }
+    .explore-menu-list-item {
+        width: 100px;
+        height: 100px;
+    }
+    .explore-menu-list-item img {
+        width: 60px;
+        transition: 0.3s ease-in-out;
+    }
 }

@@ -1,22 +1,23 @@
-/* Toggle Button */
+/* Toggle Button (Arrow) */
 .toggle-btn {
     position: fixed;
-    top: 10px;
-    right: 5px;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
     background: #ff5722;
     color: white;
     border: none;
-    padding: 10px 10px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    border-radius: 2px;
-    font-size: 16px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.toggle-btn:hover {
-    background: #e64a19;
-    transform: scale(1.05);
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    transform: rotate(180deg); /* Always rotated */
 }
 
 /* Sidebar Container */
@@ -35,9 +36,29 @@
     border-radius: 10px 0 0 10px;
 }
 
+/* When the sidebar is open */
 .top-foods-container.open {
     right: 0; /* Slide in */
 }
+
+/* Close (X) Button Inside Sidebar */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ff5722;
+    transition: color 0.3s ease-in-out;
+}
+
+.close-btn:hover {
+    color: #e64a19;
+}
+
 
 /* Header */
 h2 {

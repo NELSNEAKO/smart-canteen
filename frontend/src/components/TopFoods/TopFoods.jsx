@@ -8,11 +8,16 @@ const TopFoods = () => {
 
     return (
         <>
-            <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
-                Top Foods
+            {/* Toggle Button (Arrow) */}
+            <button className="toggle-btn" onClick={() => setIsOpen(true)}>
+                ➤
             </button>
 
+            {/* Sidebar Container */}
             <div className={`top-foods-container ${isOpen ? 'open' : ''}`}>
+                {/* Close Button */}
+                <button className="close-btn" onClick={() => setIsOpen(false)}>✖</button>
+
                 <h2>Top Food Items</h2>
                 <div className="top-foods-grid">
                     {topList.map((food, index) => (
