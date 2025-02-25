@@ -177,7 +177,7 @@ const getTopFoodItems = async (req, res) => {
           createdAt: {
             [Op.between]: [startOfDay, endOfDay]
           }
-        },
+        },  
         paranoid: false
       });
   
