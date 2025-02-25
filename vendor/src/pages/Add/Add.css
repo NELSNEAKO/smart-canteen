@@ -22,10 +22,7 @@
     flex-wrap: wrap;
     gap: 30px;
 }
-.add-category-price{
-    display: flex;
-    gap: 30px;
-}
+
 .add-category-price select, .add-category-price input{
     max-width: 130px;
     padding: 10px;
