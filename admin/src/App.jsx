@@ -6,6 +6,7 @@ import Add from './pages/Add/Add'
 import List from './pages/List/List'
 import User from './pages/User/User'
 import Reservation from './pages/Reservation/Reservation'
+import Analytics from './pages/Analytics/Analytics'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
@@ -32,6 +33,7 @@ const App = () => {
                 <Route path="/list" element={<List url={url}/>} />
                 <Route path="/user" element={<User url={url}/>} />
                 <Route path="/reservation" element={<Reservation url={url}/>} />
+                <Route path="/analytics" element={<Analytics url={url}/>} />
             </Routes>
         </div>
        </div>
