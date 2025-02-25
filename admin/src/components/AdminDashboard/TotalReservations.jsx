@@ -27,24 +27,36 @@ const TotalReservations = () => {
   }, []);
 
   return (
-    <><div className="total-reservation-container">
-      <h2>Total Reservations</h2>
-      <div className="total-reservations">
-        <div className="total-reservation">
-          <h3>Daily</h3>
-          <p>{orders.daily}</p>
+      <div className="totalReservations-container">
+        <h2>📅 Total Reservations</h2>
+        <div className="reservations-table">
+          <div className="reservations-table-format title">
+            <b>Time Period</b>
+            <b>Reservations</b>
+          </div>
         </div>
-        <div className="total-reservation">
-          <h3>Weekly</h3>
-          <p>{orders.weekly}</p>
+
+        <div className="reservations-table">
+          <div className="reservations-table-format">
+            <p>Daily</p>
+            <p>{orders.daily}</p>
+          </div>
         </div>
-        <div className="total-reservation">
-          <h3>Monthly</h3>
-          <p>{orders.monthly}</p>
+
+        <div className="reservations-table">
+          <div className="reservations-table-format">
+            <p>Weekly</p>
+            <p>{orders.weekly}</p>
+          </div>
+        </div>
+
+        <div className="reservations-table">
+          <div className="reservations-table-format">
+            <p>Monthly</p>
+            <p>{orders.monthly}</p>
+          </div>
         </div>
       </div>
-    </div>
-    </>
   );
 };
 

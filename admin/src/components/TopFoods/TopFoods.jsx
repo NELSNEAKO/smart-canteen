@@ -21,23 +21,33 @@ const TopFoods = () => {
     }, []);
 
     return (
-        <div className="top-foods-container">
-            <h2>🔥 Top Food Items</h2>
-            <div className="top-foods-grid">
-                {topList.map((food, index) => (
-                    <div key={food.id || index} className="food-card">  {/* ✅ FIXED KEY */}
-                        <img 
-                            src={food.FoodItem?.image ? `${url}/images/${food.FoodItem.image}` : ''} 
-                            alt="food" 
-                            className="food-image" 
-                        />
-                        <div className="food-info">
-                            <span className="rank">#{index + 1}</span>
-                            <h3 className="food-name">{food.FoodItem?.name || "Unknown Food"}</h3>
+        <div className="topFood-container">
+            <h2>🔥 Top Foods</h2>
+            <div className="topFood-table">
+                <div className="topFood-table-format title">
+                    <b>Rank</b>
+                    <b>Images</b>
+                    <b>Food Name</b>
+                </div>
+            </div>
+
+            {topList.length > 0 ? (
+                topList.map((food, index) => (
+                    <div key={food.id} className="topFood-table">
+                        <div className="topFood-table-format">
+                            <p>#{index + 1}</p>
+                            <img 
+                                src={food.FoodItem?.image ? `${url}/images/${food.FoodItem.image}` : ''} 
+                                alt="food" 
+                                className="food-image" 
+                             />
+                            <p>{food.FoodItem?.name || "Unknown"}</p>
                         </div>
                     </div>
-                ))}
-            </div>
+                ))
+            ) : (
+                <p className="no-data">No top foods available.</p>
+            )}
         </div>
     );
 };
