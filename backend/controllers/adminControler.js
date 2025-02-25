@@ -2,6 +2,7 @@ const { User } = require('../models/userModel');
 const { Reservation } = require('../models/reservationModel');
 const { ReservationItem } = require('../models/reservationItemModel');
 const { FoodItem } = require('../models/foodModel');
+const { Payment } = require("../models/paymentModel");
 const { Op } = require("sequelize");
 
 
@@ -228,7 +229,57 @@ const getTopFoodItems = async (req, res) => {
     }
   };
 
+
+const getTotalAmounts = async (req, res) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const totalToday = await Payment.sum("amount", {
+      where: {
+        status: "Completed",
+        created_at: { [Op.gte]: today }
+      }
+    });
+
+    const totalWeekly = await Payment.sum("amount", {
+      where: {
+        status: "Completed",
+        created_at: { [Op.gte]: startOfWeek }
+      }
+    });
+
+    const totalMonthly = await Payment.sum("amount", {
+      where: {
+        status: "Completed",
+        created_at: { [Op.gte]: startOfMonth }
+      }
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        daily: totalToday || 0,
+        weekly: totalWeekly || 0,
+        monthly: totalMonthly || 0
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching total amounts:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+
 module.exports = {
     getTopFoodItems,
+    getTotalAmounts,
     getTotalReservations,
 };
