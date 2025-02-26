@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StudentLayout from "./layouts/StudentLayout";
 import VendorLayout from "./layouts/VendorLayout";
+import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import protected route
 
 // Student Pages
 import HomePage from "./pages/Student/Home/HomePage";
@@ -18,24 +19,29 @@ import Login from "./pages/Vendor/Login/Login";
 
 const App = () => {
   const url = "http://localhost:5000";
+
   return (
     <Router>
       <Routes>
         {/* Vendor Routes */}
         <Route path="/vendor" element={<VendorLayout />}>
           <Route index element={<Login />} />
-          <Route path="add" element={<Add />} />
-          <Route path="list" element={<List url={url}/>} />
-          <Route path="reservation" element={<Reservation url={url}/>} />
+          <Route element={<ProtectedRoute allowedUserType="vendor" />}>
+            <Route path="add" element={<Add url={url} />} />
+            <Route path="list" element={<List url={url} />} />
+            <Route path="reservation" element={<Reservation url={url} />} />
+          </Route>
         </Route>
 
         {/* Student Routes */}
         <Route path="/" element={<StudentLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="order" element={<PlaceOrder />} />
-          <Route path="verify" element={<Verify />} />
-          <Route path="myReservations" element={<MyReservations />} />
+          <Route element={<ProtectedRoute allowedUserType="student" />}>
+            <Route path="cart" element={<Cart />} />
+            <Route path="order" element={<PlaceOrder />} />
+            <Route path="verify" element={<Verify />} />
+            <Route path="myReservations" element={<MyReservations />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

@@ -32,12 +32,12 @@ const Login = () => {
       if (response.data.success) {
         if (currState === 'Login' && response.data.token) {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userType', response.data.userType); // ✅ Store userType
           alert('Login successful!');
-          navigate('/vendor/add'); // ✅ Redirect after login
-        } else {
-          alert(response.data.message || 'Registration successful.');
+          navigate(response.data.userType === 'vendor' ? '/vendor/add' : '/'); // Redirect based on user type
         }
-      } else {
+      }
+       else {
         alert('Error: ' + (response.data.message || 'Something went wrong.'));
       }
     } catch (error) {

@@ -2,7 +2,7 @@ const express = require('express')
 const {
     getAllUsers,
     registerUser,
-    loginUser,
+    loginStudent,
     updateUser,
     deleteUser,
     getUser,
@@ -18,7 +18,7 @@ const userRouter = express.Router();
 userRouter.post('/register', registerUser);
 
 // Route for user login
-userRouter.post('/login', loginUser);
+userRouter.post('/login', loginStudent);
 
 // Route for getting user details
 userRouter.get('/users', getAllUsers);

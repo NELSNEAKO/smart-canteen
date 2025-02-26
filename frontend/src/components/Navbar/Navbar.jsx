@@ -8,6 +8,7 @@ const Navbar = () => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userType');
     navigate('/vendor');
   };
 

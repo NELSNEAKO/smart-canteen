@@ -33,6 +33,7 @@ const Navbar2 = ({ setShowLogin }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userType');
         setToken("");
         navigate('/');
     };
