@@ -3,10 +3,13 @@ import './LoginPopup.css';
 import { assets } from '../../assets/frontend_assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
-
+  
+  const navigate = useNavigate();
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
     name: '',
@@ -108,6 +111,8 @@ const LoginPopup = ({ setShowLogin }) => {
         ) : null}
         {currState === 'Login' ? (
           <p>
+            Are you a Vendor? <span onClick={() => navigate('/vendor')}>Click here</span> <br />
+
             Create a new account? <span onClick={() => setCurrState('Sign Up')}>Click here</span>
           </p>
         ) : (
