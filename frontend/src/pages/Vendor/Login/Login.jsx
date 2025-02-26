@@ -33,7 +33,7 @@ const Login = () => {
         if (currState === 'Login' && response.data.token) {
           localStorage.setItem('token', response.data.token);
           alert('Login successful!');
-          navigate('/main'); // ✅ Redirect after login
+          navigate('/vendor/add'); // ✅ Redirect after login
         } else {
           alert(response.data.message || 'Registration successful.');
         }

@@ -17,6 +17,7 @@ import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
 
 const App = () => {
+  const url = "http://localhost:5000";
   return (
     <Router>
       <Routes>
@@ -24,8 +25,8 @@ const App = () => {
         <Route path="/vendor" element={<VendorLayout />}>
           <Route index element={<Login />} />
           <Route path="add" element={<Add />} />
-          <Route path="list" element={<List />} />
-          <Route path="reservation" element={<Reservation />} />
+          <Route path="list" element={<List url={url}/>} />
+          <Route path="reservation" element={<Reservation url={url}/>} />
         </Route>
 
         {/* Student Routes */}
