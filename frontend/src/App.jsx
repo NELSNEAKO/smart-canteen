@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar2 from './components/Navbar2';
 import './App.css';
 
-import HomePage from './pages/Home/HomePage';
+import HomePage from './pages/Student/Home/HomePage';
 import Footer from './components/Footer/Footer';
 import LoginPopup from './components/LoginPopup/LoginPopup';
-import Cart from './pages/Cart/Cart';
-import PlaceOrder from './pages/PlaceOrder/PlaceOrder';
-import Verify from './pages/Verify/Verify';
-import MyReservations from './pages/MyReservations/MyReservations';
+import Cart from './pages/Student/Cart/Cart';
+import PlaceOrder from './pages/Student/PlaceOrder/PlaceOrder';
+import Verify from './pages/Student/Verify/Verify';
+import MyReservations from './pages/Student/MyReservations/MyReservations';
 
 function App() {
 
@@ -26,8 +26,6 @@ function App() {
         <Route path="/order" element={<PlaceOrder />} /> {/* Place Order Page route */}
         <Route path="/verify" element={<Verify />} /> {/* Verify Page route */}
         <Route path="/myReservations" element={<MyReservations />} /> {/* Reservation Page route */}
-
-
       </Routes>
       </div>
       <Footer />

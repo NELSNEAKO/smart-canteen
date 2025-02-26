@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./MyReservations.css";
-import { StoreContext } from "../../context/StoreContext";
-import { assets } from "../../assets/frontend_assets/assets";
+import { StoreContext } from "../../../context/StoreContext";
+import { assets } from "../../../assets/frontend_assets/assets";
 import axios from "axios";
 
 const MyReservations = () => {
