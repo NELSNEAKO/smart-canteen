@@ -1,16 +1,18 @@
-.navbar {
-    padding: 20px 0px;
+.navbar2 {
+    padding: 20px 150px 20px 150px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar .logo {
+.navbar2 .logo {
     width: 80px;
 }
 
-.navbar-menu {
+.navbar2-menu {
     display: flex;
     list-style: none;
     gap: 20px;
@@ -18,13 +20,13 @@
     font-size: 18px;
 }
 
-.navbar-right {
+.navbar2-right {
     display: flex;
     align-items: center;
     gap: 40px;
 }
 
-.navbar button {
+.navbar2 button {
     background: transparent;
     font-size: 16px;
     color: #3D2B1F;
@@ -35,24 +37,24 @@
     transition: 0.3s;
 }
 
-.navbar button:hover {
+.navbar2 button:hover {
     background-color: #fff4f2;
 }
 
-.navbar .active {
+.navbar2 .active {
     padding-bottom: 2px;
     border-bottom: 2px solid #3D2B1F;
 }
 
-.navbar li {
+.navbar2 li {
     cursor: pointer;
 }
 
-.navbar-search-icon {
+.navbar2-search-icon {
     position: relative;
 }
 
-.navbar-search-icon .dot {
+.navbar2-search-icon .dot {
     position: absolute;
     min-width: 10px;
     min-height: 10px;
@@ -62,17 +64,17 @@
     right: -8px;
 }
 
-.navbar-profile {
+.navbar2-profile {
     position: relative;
     cursor: pointer;
 }
 
-.navbar-profile .profile {
+.navbar2-profile .profile {
     width: 35px;
     border-radius: 50%;
 }
 
-.nav-profile-dropdown {
+.nav2-profile-dropdown {
     position: absolute;
     display: none;
     right: 0;
@@ -86,7 +88,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-profile:hover .nav-profile-dropdown {
+.navbar2-profile:hover .nav-profile-dropdown {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -108,7 +110,7 @@
     font-weight: bold;
 }
 
-.nav-profile-dropdown li {
+.nav2-profile-dropdown li {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -117,11 +119,11 @@
     transition: 0.3s;
 }
 
-.nav-profile-dropdown li:hover {
+.nav2-profile-dropdown li:hover {
     background-color: #f0f0f0;
 }
 
-.nav-profile-dropdown img {
+.nav2-profile-dropdown img {
     width: 20px;
 }
 
@@ -132,46 +134,58 @@ hr {
 }
 
 @media (max-width: 1050px) {
-    .navbar .logo {
+    .navbar2 .logo {
         width: 140px;
     }
-    .navbar-menu {
+    .navbar2-menu {
         gap: 20px;
         font-size: 17px;
     }
-    .navbar-right {
+    .navbar2-right {
         gap: 30px;
     }
-    .navbar-right img {
+    .navbar2-right img {
         width: 22px;
     }
-    .navbar-right button {
+    .navbar2-right button {
         padding: 8px 25px;
+    }
+    .navbar2 .logo {
+        width: 65px;
     }
 }
 
 @media (max-width: 900px) {
-    .navbar .logo {
+    .navbar2 .logo {
         width: 100px;
     }
-    .navbar-menu {
+    .navbar2-menu {
         gap: 15px;
         font-size: 16px;
     }
-    .navbar-right {
+    .navbar2-right {
         gap: 20px;
     }
-    .navbar-right img {
+    .navbar2-right img {
         width: 20px;
     }
-    .navbar-right button {
+    .navbar2-right button {
         padding: 7px 20px;
         font-size: 15px;
+    }
+    .navbar2 .logo {
+        width: 65px;
     }
 }
 
 @media (max-width: 750px) {
-    .navbar-menu {
+    .navbar2{
+        padding: 20px 30px;
+    }
+    .navbar2-menu {
         display: none;
+    }
+    .navbar2 .logo {
+        width: 65px;
     }
 }

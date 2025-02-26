@@ -1,37 +1,44 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar2 from './components/Navbar2';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import StudentLayout from "./layouts/StudentLayout";
+import VendorLayout from "./layouts/VendorLayout";
 
-import HomePage from './pages/Student/Home/HomePage';
-import Footer from './components/Footer/Footer';
-import LoginPopup from './components/LoginPopup/LoginPopup';
-import Cart from './pages/Student/Cart/Cart';
-import PlaceOrder from './pages/Student/PlaceOrder/PlaceOrder';
-import Verify from './pages/Student/Verify/Verify';
-import MyReservations from './pages/Student/MyReservations/MyReservations';
+// Student Pages
+import HomePage from "./pages/Student/Home/HomePage";
+import Cart from "./pages/Student/Cart/Cart";
+import PlaceOrder from "./pages/Student/PlaceOrder/PlaceOrder";
+import Verify from "./pages/Student/Verify/Verify";
+import MyReservations from "./pages/Student/MyReservations/MyReservations";
 
-function App() {
+// Vendor Pages
+import Add from "./pages/Vendor/Add/Add";
+import List from "./pages/Vendor/List/List";
+import Reservation from "./pages/Vendor/Reservation/Reservation";
+import Login from "./pages/Vendor/Login/Login";
 
-  const [showLogin,setShowLogin] = useState(false)
-
+const App = () => {
   return (
     <Router>
-      {showLogin?<LoginPopup setShowLogin={setShowLogin}/>:<></>}
-      <div className="app">
-        <Navbar2 setShowLogin={setShowLogin} />
-        <Routes>
-        <Route path="/" element={<HomePage />} /> {/* Default route: Login page */}
-        <Route path="/cart" element={<Cart />} /> {/* Cart Page route */}
-        <Route path="/order" element={<PlaceOrder />} /> {/* Place Order Page route */}
-        <Route path="/verify" element={<Verify />} /> {/* Verify Page route */}
-        <Route path="/myReservations" element={<MyReservations />} /> {/* Reservation Page route */}
+      <Routes>
+        {/* Vendor Routes */}
+        <Route path="/vendor/" element={<VendorLayout />}>
+          <Route index element={<Login />} />
+          <Route path="add" element={<Add />} />
+          <Route path="list" element={<List />} />
+          <Route path="reservation" element={<Reservation />} />
+        </Route>
+
+        {/* Student Routes */}
+        <Route path="/" element={<StudentLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="order" element={<PlaceOrder />} />
+          <Route path="verify" element={<Verify />} />
+          <Route path="myReservations" element={<MyReservations />} />
+        </Route>
       </Routes>
-      </div>
-      <Footer />
     </Router>
   );
-}
-
+};
 
 export default App;
