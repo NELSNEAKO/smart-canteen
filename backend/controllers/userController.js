@@ -3,61 +3,45 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
-// Create JWT token
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+
+// Function to create JWT token
+const createToken = (id, userType) => {
+  return jwt.sign({ id, userType }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
-
-// Register user
+// 📌 Register Student
 const registerUser = async (req, res) => {
   const { student_id, name, email, password } = req.body;
 
-  // Validate if email and other fields are present
   if (!email || !student_id || !name || !password) {
     return res.json({ success: false, message: 'All fields are required' });
   }
 
   try {
-    // Check if user already exists
     const exists = await User.findOne({ where: { email } });
     if (exists) {
       return res.json({ success: false, message: 'Email already exists' });
     }
 
-    // Validate email format and password strength
     if (!validator.isEmail(email)) {
       return res.json({ success: false, message: 'Invalid email format' });
     }
 
-    if (password.length < 5) {
+    if (password.length < 8) {
       return res.json({ success: false, message: 'Password must be at least 8 characters' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({ student_id, name, email, password: hashedPassword });
 
-    // Create new user
-    const newUser = await User.create({
-      student_id,
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    const user = await newUser.save();
-
-    // Create token
-    const token = createToken(newUser.id);
-
-    // Respond with success and token
+    const token = createToken(newUser.id, 'student'); // 🔹 Token with 'student' role
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error' });
+    res.json({ success: false, message: 'Server error' });
   }
 };
+
 
 // Login user
 const loginUser = async (req, res) => {
@@ -65,30 +49,34 @@ const loginUser = async (req, res) => {
 
   // Validate if email and password are present
   if (!email || !password) {
-    return res.json({ success: false, message: 'All fields are required' });
+    return res.status(400).json({ success: false, message: 'All fields are required' });
   }
 
   try {
     // Check if user exists
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.json({ success: false, message: "User doesn't exist" });
+      return res.status(404).json({ success: false, message: "User doesn't exist" });
     }
 
     // Check if password is correct
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.json({ success: false, message: 'Invalid credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // Create token
-    const token = createToken(user.id);
+    // Create token with expiration & userType
+    const token = jwt.sign(
+      { id: user.id, userType: 'student' }, // You can adjust userType if needed
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' } // Token expires in 1 day
+    );
 
     // Respond with success and token
     res.json({ success: true, token });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: 'Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 

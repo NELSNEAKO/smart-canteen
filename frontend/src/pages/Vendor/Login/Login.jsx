@@ -50,7 +50,7 @@ const Login = () => {
     useEffect(() => {
       const token = localStorage.getItem('token');
       if (token) {
-        navigate('/add'); // Redirect to main page if token is found
+        navigate('/vendor/add'); // Redirect to main page if token is found
       }
     }, []);
 

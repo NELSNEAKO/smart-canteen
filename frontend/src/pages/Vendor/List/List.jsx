@@ -15,7 +15,7 @@ const List = ({ url }) => {
   const fetchList = async () => {
     if (!token) {
       toast.error("Unauthorized: No token provided"); 
-      navigate('/'); // ✅ Redirect after login
+      navigate('/vendor'); // ✅ Redirect after login
       return;
     }
 
