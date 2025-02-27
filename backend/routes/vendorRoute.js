@@ -2,7 +2,8 @@ const express = require('express')
 const {
     generateInviteCode,
     registerVendor,
-    loginVendor
+    loginVendor,
+    fetchInviteCodes
 } = require('../controllers/vendorController') //import controller
 
 const db = require('../config/db'); 
@@ -16,6 +17,9 @@ vendorRouter.post('/register', registerVendor);
 
 // Route for registration
 vendorRouter.post('/login', loginVendor);
+
+// Route for fetching all invite codes
+vendorRouter.get('/get-invite', fetchInviteCodes);
 
 module.exports = vendorRouter;
 

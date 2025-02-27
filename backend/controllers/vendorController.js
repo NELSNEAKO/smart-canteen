@@ -110,8 +110,18 @@ const generateInviteCode = async (req, res) => {
     }
 };
 
+const fetchInviteCodes = async (req, res) => {
+    try {
+        const codes = await VendorInviteCode.findAll();
+        res.json({ success: true, data: codes });
+    } catch (error) {
+        console.error("Error fetching invite codes:", error);
+    }
+};
+
 module.exports = {
     generateInviteCode,
     registerVendor,
     loginVendor,
+    fetchInviteCodes,
 }

@@ -10,7 +10,7 @@ const TopFoods = () => {
         try {
             const response = await axios.get(`${url}/api/food/top`);
             setTopList(response.data.data || []);
-            console.log("Top list:", response.data.data);
+            // console.log("Top list:", response.data.data);
         } catch (error) {
             console.error("Error fetching top foods:", error);
         }
