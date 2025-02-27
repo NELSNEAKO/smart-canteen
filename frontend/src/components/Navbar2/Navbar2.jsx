@@ -95,10 +95,6 @@ const Navbar2 = ({ setShowLogin }) => {
                                 <p>{user.name}</p>
                             </div>
                             <hr />
-                            <li onClick={() => navigate('/editProfile')}>
-                                <img src={assets.profile_icon} alt="Edit Profile" />
-                                <p>Edit Profile</p>
-                            </li>
                             <li onClick={() => navigate('/myReservations')}>
                                 <img src={assets.bag_icon} alt="Reservations" />
                                 <p>Reservations</p>
