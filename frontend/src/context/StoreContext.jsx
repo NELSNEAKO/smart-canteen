@@ -45,13 +45,13 @@ const StoreContextProvider = (props) => {
     const fetchFoodList = async () => {
         const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
-        console.log("Food list:", response.data.data);
+        // console.log("Food list:", response.data.data);
         
     };
     const fetchTopList = async () => {
         const response = await axios.get(`${url}/api/food/top`);
         setTopList(response.data.data);
-        console.log("Top list:", response.data.data);
+        // console.log("Top list:", response.data.data);
     };
 
     const loadCartData = async () => {
@@ -67,7 +67,7 @@ const StoreContextProvider = (props) => {
                 headers: { token: storedToken }
             });
     
-            console.log("Response data:", response.data);
+            // console.log("Response data:", response.data);
     
             // Convert the array into an object with itemId as keys
             const cartObject = response.data.reduce((acc, item) => {

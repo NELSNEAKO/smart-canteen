@@ -1,7 +1,7 @@
 /* Toggle Button (Arrow) */
 .toggle-btn {
     position: fixed;
-    top: 50%;
+    bottom: 20%;
     right: 10px;
     transform: translateY(-50%);
     background: #ff5722;
@@ -23,7 +23,7 @@
 /* Sidebar Container */
 .top-foods-container {
     position: fixed;
-    top: 80px;
+    top: 30%;
     right: -320px; /* Hidden by default */
     width: 280px;
     height: 550px;
