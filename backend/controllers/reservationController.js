@@ -110,5 +110,20 @@ const userReservations = async (req, res) => {
     }
 };
 
+const fetchAllReservations = async (req, res) => {
+    try {
+        const reservations = await reservationModel.find().populate('userId', 'student_id name email');
+        res.json({ success: true, data: reservations });
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ success: false, message: "Error fetching reservations" });
+    }
+};
 
-module.exports = { placeReservation,verifyReservation, userReservations };
+
+
+
+
+
+
+module.exports = { placeReservation,verifyReservation, userReservations, fetchAllReservations };

@@ -26,8 +26,6 @@ const MyReservations = () => {
 
             if (response.data.success) {
                 setData(response.data.data);
-                console.log("Reservations fetched:", response.data.data);
-                
             } else {
                 setError("Failed to fetch reservations.");
             }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reservationSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
   items: { type: Object, required: true },
   amount : { type: Number, required: true },
   status: { type: String, default: 'Food Processing' },
