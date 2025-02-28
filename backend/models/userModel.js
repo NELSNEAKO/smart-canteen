@@ -1,41 +1,25 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
-dotenv.config();
-
-// Ensure a single sequelize instance
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql',
-  port: process.env.DB_PORT || 3306,
-});
-
-const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true
-  },
+const userSchema = new mongoose.Schema({
   student_id: {
-    type: DataTypes.STRING(50),
-    allowNull: false
+    type: String,
+    required: true
   },
   name: {
-    type: DataTypes.STRING(255),
-    allowNull: false
+    type: String,
+    required: true
   },
   email: {
-    type: DataTypes.STRING(255),
-    allowNull: false,
-    unique: true
+    type: String,
+    required: true
   },
   password: {
-    type: DataTypes.STRING(255),
-    allowNull: false
+    type: String,
+    required: true
   }
-}, {
-  timestamps: true, // ✅ Automatically handle createdAt & updatedAt
-  tableName: 'users'
-});
+})
 
-module.exports = { sequelize, User };
+const userModel = mongoose.models.user || mongoose.model('user', userSchema);
+
+
+module.exports = userModel;

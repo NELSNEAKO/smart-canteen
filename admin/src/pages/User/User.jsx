@@ -53,7 +53,7 @@ function User({ url }) {
                             <p>{item.student_id}</p>
                             <p>{item.name}</p>
                             <p>{item.email}</p>
-                            <p onClick={() => deleteUser(item.id)} className="cursor action">X</p>
+                            <p onClick={() => deleteUser(item._id)} className="cursor action">X</p>
                             <p onClick={() => handleUpdateClick(item)} className="cursor action">Update</p>
                         </div>
                     );

@@ -1,4 +1,4 @@
-const { User } = require('../models/userModel');
+const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
@@ -14,31 +14,33 @@ const registerUser = async (req, res) => {
   const { student_id, name, email, password } = req.body;
 
   if (!email || !student_id || !name || !password) {
-    return res.json({ success: false, message: 'All fields are required' });
+    return res.status(400).json({ success: false, message: 'All fields are required' });
   }
 
   try {
-    const exists = await User.findOne({ where: { email } });
+    const exists = await userModel.findOne({ email });
     if (exists) {
-      return res.json({ success: false, message: 'Email already exists' });
+      return res.status(400).json({ success: false, message: 'Email already exists' });
     }
 
     if (!validator.isEmail(email)) {
-      return res.json({ success: false, message: 'Invalid email format' });
+      return res.status(400).json({ success: false, message: 'Invalid email format' });
     }
 
     if (password.length < 8) {
-      return res.json({ success: false, message: 'Password must be at least 8 characters' });
+      return res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ student_id, name, email, password: hashedPassword });
+    const newUser = new userModel({ student_id, name, email, password: hashedPassword });
 
-    const token = createToken(newUser.id, 'student'); // 🔹 Token with 'student' role
-    res.json({ success: true, token });
+    await newUser.save();
+
+    const token = createToken(newUser._id, 'student'); // 🔹 Token with 'student' role
+    res.status(201).json({ success: true, token });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: 'Server error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
@@ -51,8 +53,8 @@ const loginStudent = async (req, res) => {
   }
 
   try {
-    // 🔍 Find student by email
-    const user = await User.findOne({ where: { email } });
+    // 🔍 Find student by email (Mongoose query)
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ success: false, message: "User doesn't exist" });
     }
@@ -63,14 +65,14 @@ const loginStudent = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // 🔹 Hardcode "student" in the token (not in the database)
+    // 🔹 Hardcode "student" in the token
     const token = jwt.sign(
-      { id: user.id, userType: "student" }, // Always assign "student" here
+      { id: user._id, userType: "student" }, // ✅ Mongoose uses `_id`
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    res.json({ success: true, token, userType: 'student'});
+    res.json({ success: true, token, userType: 'student' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -79,29 +81,27 @@ const loginStudent = async (req, res) => {
 
 
 
-
-
-
 // Get all users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await userModel.find(); // ✅ Mongoose query
     res.json({ success: true, users });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error retrieving users' });
+    res.status(500).json({ success: false, message: 'Error retrieving users' });
   }
 };
 
-// Update user details
+
+// Update User
 const updateUser = async (req, res) => {
   const { userId } = req.params;
   const { student_id, name, email, password } = req.body;
 
   try {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findById(userId);
     if (!user) {
-      return res.json({ success: false, message: 'User not found' });
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
 
     // Update user fields
@@ -117,44 +117,42 @@ const updateUser = async (req, res) => {
     await user.save();
     res.json({ success: true, message: 'User updated successfully' });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: 'Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error updating user' });
   }
 };
 
-// Delete user
+// Delete User
 const deleteUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findByIdAndDelete(userId);
     if (!user) {
-      return res.json({ success: false, message: 'User not found' });
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    await user.destroy();
     res.json({ success: true, message: 'User deleted successfully' });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: 'Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error deleting user' });
   }
 };
 
+// Get User
 const getUser = async (req, res) => {
   try {
-      const userId = req.body.userId; // Extracted from the token in authMiddleware
+    const { userId } = req.body; // Extracted from the token in authMiddleware
 
-      // Fetch user data from the database
-      const user = await User.findByPk(userId); // Assuming Sequelize, modify if using another ORM
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
 
-      if (!user) {
-          return res.status(404).json({ success: false, message: 'User not found' });
-      }
-
-      res.status(200).json({ success: true, user });
+    res.status(200).json({ success: true, user });
   } catch (error) {
-      console.error('Error fetching user:', error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
+    console.error('Error fetching user:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
 
