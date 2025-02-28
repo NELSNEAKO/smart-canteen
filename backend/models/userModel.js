@@ -16,8 +16,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
-})
+  },
+  cartData: {type: Object , default: {}}
+},{minimize:false})
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);
 

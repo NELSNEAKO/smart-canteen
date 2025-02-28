@@ -11,7 +11,7 @@ const reservationRouter = express.Router();
 
 reservationRouter.post('/add', authMiddleware, addToCart);
 reservationRouter.post('/remove', authMiddleware, removeFromCart);
-reservationRouter.get('/get', authMiddleware, getCart);
+reservationRouter.post('/get', authMiddleware, getCart);
 reservationRouter.get('/getAll', getAllReservations);
 
 module.exports = reservationRouter;

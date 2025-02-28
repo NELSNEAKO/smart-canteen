@@ -13,7 +13,7 @@ function FoodDisplay({availability}) {
         <div className="food-display-list">
             {food_list.map((item,index)=>{
               if(availability==='All' || availability===item.availability ){
-                  return <FoodItem key={index} id={item.id} name={item.name} description={item.description} 
+                  return <FoodItem key={index} id={item._id} name={item.name} description={item.description} 
                   price={item.price} image={item.image} category={item.category}/>
               }
             })}

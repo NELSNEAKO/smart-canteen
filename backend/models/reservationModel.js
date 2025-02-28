@@ -1,30 +1,30 @@
-// const { DataTypes } = require('sequelize');
-// const { sequelize } = require('./userModel');
+const mongoose = require('mongoose');
 
-// const Reservation = sequelize.define('Reservation', {
-//   id: {
-//     type: DataTypes.INTEGER.UNSIGNED,
-//     autoIncrement: true,
-//     primaryKey: true
-//   },
-//   user_id: {
-//     type: DataTypes.INTEGER.UNSIGNED,
-//     allowNull: false,
-//     references: {
-//       model: 'users',
-//       key: 'id'
-//     },
-//     onDelete: 'CASCADE',
-//     onUpdate: 'CASCADE'
-//   },
-//   deleted_at: {
-//     type: DataTypes.DATE,
-//     allowNull: true // ✅ Soft delete support
-//   }
-// }, {
-//   timestamps: true, // ✅ Auto handle createdAt & updatedAt
-//   paranoid: true,  // ✅ Enable soft delete
-//   tableName: 'reservations'
-// });
+const reservationSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // References the User model
+    required: true
+  },
+  items: [
+    {
+      item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'FoodItem', // References the FoodItem model
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        default: 1
+      }
+    }
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+}, { timestamps: true });
 
-// module.exports = { Reservation };
+const Reservation = mongoose.model('Reservation', reservationSchema);
+module.exports = Reservation;
