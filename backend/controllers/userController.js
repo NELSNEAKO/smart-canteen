@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
+require('dotenv').config();
 
 // Function to create JWT token
 const createToken = (id, userType) => {

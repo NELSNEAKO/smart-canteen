@@ -1,285 +1,285 @@
-const { User } = require('../models/userModel');
-const { Reservation } = require('../models/reservationModel');
-const { ReservationItem } = require('../models/reservationItemModel');
-const { FoodItem } = require('../models/foodModel');
-const { Payment } = require("../models/paymentModel");
-const { Op } = require("sequelize");
+// const { User } = require('../models/userModel');
+// const { Reservation } = require('../models/reservationModel');
+// const { ReservationItem } = require('../models/reservationItemModel');
+// const { FoodItem } = require('../models/foodModel');
+// const { Payment } = require("../models/paymentModel");
+// const { Op } = require("sequelize");
 
 
-const getTopFoodItems = async (req, res) => {
-    try {
-      const topFoodItems = await ReservationItem.findAll({
-        attributes: [
-          'item_id',
-          [sequelize.fn('COUNT', sequelize.col('item_id')), 'count']
-        ],
-        include: [
-          {
-            model: FoodItem,
-            as: 'FoodItem', // Ensure alias matches your association
-            attributes: ['id', 'name', 'price', 'description'] // Select only necessary fields
-          }
-        ],
-        group: ['item_id', 'FoodItem.id'], // Group by both item_id and FoodItem's id
-        order: [[sequelize.literal('count'), 'DESC']],
-        limit: 5,
-      });
+// const getTopFoodItems = async (req, res) => {
+//     try {
+//       const topFoodItems = await ReservationItem.findAll({
+//         attributes: [
+//           'item_id',
+//           [sequelize.fn('COUNT', sequelize.col('item_id')), 'count']
+//         ],
+//         include: [
+//           {
+//             model: FoodItem,
+//             as: 'FoodItem', // Ensure alias matches your association
+//             attributes: ['id', 'name', 'price', 'description'] // Select only necessary fields
+//           }
+//         ],
+//         group: ['item_id', 'FoodItem.id'], // Group by both item_id and FoodItem's id
+//         order: [[sequelize.literal('count'), 'DESC']],
+//         limit: 5,
+//       });
   
-      res.json({ success: true, data: topFoodItems });
-    } catch (error) {
-      console.error("Error fetching top food items:", error);
-      res.status(500).json({ success: false, message: "Error fetching top food items" });
-    }
-  };
+//       res.json({ success: true, data: topFoodItems });
+//     } catch (error) {
+//       console.error("Error fetching top food items:", error);
+//       res.status(500).json({ success: false, message: "Error fetching top food items" });
+//     }
+//   };
 
-  const getTest = async (req, res) => {
-    try {
-      const now = new Date();
+//   const getTest = async (req, res) => {
+//     try {
+//       const now = new Date();
   
-      // Daily Orders
-      const startOfDay = new Date();
-      startOfDay.setHours(0, 0, 0, 0);
+//       // Daily Orders
+//       const startOfDay = new Date();
+//       startOfDay.setHours(0, 0, 0, 0);
   
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
+//       const endOfDay = new Date();
+//       endOfDay.setHours(23, 59, 59, 999);
   
-      const dailyOrders = await Reservation.findAll({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfDay, endOfDay]
-          }
-        },
-        attributes: ["id", "createdAt"], // Only return these attributes
-        paranoid: false,
-        include: [
-          { 
-            model: User, 
-            as: "User", 
-            attributes: ["id", "name"], // Return only user ID and name
-            paranoid: false 
-          },
-          { 
-            model: ReservationItem, 
-            as: "ReservationItems", 
-            attributes: ["id", "quantity"], // Return only ID and quantity
-            paranoid: false,
-            include: [{ 
-              model: FoodItem, 
-              as: "FoodItem", 
-              attributes: ["id", "name", "price"], // Return only food item details
-              paranoid: false 
-            }]
-          }
-        ]
-      });
+//       const dailyOrders = await Reservation.findAll({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfDay, endOfDay]
+//           }
+//         },
+//         attributes: ["id", "createdAt"], // Only return these attributes
+//         paranoid: false,
+//         include: [
+//           { 
+//             model: User, 
+//             as: "User", 
+//             attributes: ["id", "name"], // Return only user ID and name
+//             paranoid: false 
+//           },
+//           { 
+//             model: ReservationItem, 
+//             as: "ReservationItems", 
+//             attributes: ["id", "quantity"], // Return only ID and quantity
+//             paranoid: false,
+//             include: [{ 
+//               model: FoodItem, 
+//               as: "FoodItem", 
+//               attributes: ["id", "name", "price"], // Return only food item details
+//               paranoid: false 
+//             }]
+//           }
+//         ]
+//       });
   
-      // Weekly Orders
-      const startOfWeek = new Date();
-      startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-      startOfWeek.setHours(0, 0, 0, 0);
+//       // Weekly Orders
+//       const startOfWeek = new Date();
+//       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
   
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(endOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
+//       const endOfWeek = new Date(startOfWeek);
+//       endOfWeek.setDate(endOfWeek.getDate() + 6);
+//       endOfWeek.setHours(23, 59, 59, 999);
   
-      const weeklyOrders = await Reservation.findAll({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfWeek, endOfWeek]
-          }
-        },
-        attributes: ["id", "createdAt"],
-        paranoid: false,
-        include: [
-          { 
-            model: User, 
-            as: "User", 
-            attributes: ["id", "name"], 
-            paranoid: false 
-          },
-          { 
-            model: ReservationItem, 
-            as: "ReservationItems", 
-            attributes: ["id", "quantity"], 
-            paranoid: false,
-            include: [{ 
-              model: FoodItem, 
-              as: "FoodItem", 
-              attributes: ["id", "name", "price"], 
-              paranoid: false 
-            }]
-          }
-        ]
-      });
+//       const weeklyOrders = await Reservation.findAll({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfWeek, endOfWeek]
+//           }
+//         },
+//         attributes: ["id", "createdAt"],
+//         paranoid: false,
+//         include: [
+//           { 
+//             model: User, 
+//             as: "User", 
+//             attributes: ["id", "name"], 
+//             paranoid: false 
+//           },
+//           { 
+//             model: ReservationItem, 
+//             as: "ReservationItems", 
+//             attributes: ["id", "quantity"], 
+//             paranoid: false,
+//             include: [{ 
+//               model: FoodItem, 
+//               as: "FoodItem", 
+//               attributes: ["id", "name", "price"], 
+//               paranoid: false 
+//             }]
+//           }
+//         ]
+//       });
   
-      // Monthly Orders
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      endOfMonth.setHours(23, 59, 59, 999);
+//       // Monthly Orders
+//       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+//       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+//       endOfMonth.setHours(23, 59, 59, 999);
   
-      const monthlyOrders = await Reservation.findAll({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfMonth, endOfMonth]
-          }
-        },
-        attributes: ["id", "createdAt"],
-        paranoid: false,
-        include: [
-          { 
-            model: User, 
-            as: "User", 
-            attributes: ["id", "name"], 
-            paranoid: false 
-          },
-          { 
-            model: ReservationItem, 
-            as: "ReservationItems", 
-            attributes: ["id", "quantity"], 
-            paranoid: false,
-            include: [{ 
-              model: FoodItem, 
-              as: "FoodItem", 
-              attributes: ["id", "name", "price"], 
-              paranoid: false 
-            }]
-          }
-        ]
-      });
+//       const monthlyOrders = await Reservation.findAll({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfMonth, endOfMonth]
+//           }
+//         },
+//         attributes: ["id", "createdAt"],
+//         paranoid: false,
+//         include: [
+//           { 
+//             model: User, 
+//             as: "User", 
+//             attributes: ["id", "name"], 
+//             paranoid: false 
+//           },
+//           { 
+//             model: ReservationItem, 
+//             as: "ReservationItems", 
+//             attributes: ["id", "quantity"], 
+//             paranoid: false,
+//             include: [{ 
+//               model: FoodItem, 
+//               as: "FoodItem", 
+//               attributes: ["id", "name", "price"], 
+//               paranoid: false 
+//             }]
+//           }
+//         ]
+//       });
   
-      // Return the results
-      res.json({
-        success: true,
-        data: {
-          daily: dailyOrders,
-          weekly: weeklyOrders,
-          monthly: monthlyOrders
-        }
-      });
-    } catch (error) {
-      console.error("Error fetching total orders:", error);
-      res.status(500).json({ success: false, message: "Error fetching total orders", error: error.message });
-    }
-  };
+//       // Return the results
+//       res.json({
+//         success: true,
+//         data: {
+//           daily: dailyOrders,
+//           weekly: weeklyOrders,
+//           monthly: monthlyOrders
+//         }
+//       });
+//     } catch (error) {
+//       console.error("Error fetching total orders:", error);
+//       res.status(500).json({ success: false, message: "Error fetching total orders", error: error.message });
+//     }
+//   };
 
-  const getTotalReservations = async (req, res) => {
-    try {
-      const now = new Date();
+//   const getTotalReservations = async (req, res) => {
+//     try {
+//       const now = new Date();
   
-      // Daily Orders Count
-      const startOfDay = new Date();
-      startOfDay.setHours(0, 0, 0, 0);
+//       // Daily Orders Count
+//       const startOfDay = new Date();
+//       startOfDay.setHours(0, 0, 0, 0);
   
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
+//       const endOfDay = new Date();
+//       endOfDay.setHours(23, 59, 59, 999);
   
-      const dailyOrders = await Reservation.count({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfDay, endOfDay]
-          }
-        },  
-        paranoid: false
-      });
+//       const dailyOrders = await Reservation.count({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfDay, endOfDay]
+//           }
+//         },  
+//         paranoid: false
+//       });
   
-      // Weekly Orders Count
-      const startOfWeek = new Date();
-      startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-      startOfWeek.setHours(0, 0, 0, 0);
+//       // Weekly Orders Count
+//       const startOfWeek = new Date();
+//       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
   
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(endOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
+//       const endOfWeek = new Date(startOfWeek);
+//       endOfWeek.setDate(endOfWeek.getDate() + 6);
+//       endOfWeek.setHours(23, 59, 59, 999);
   
-      const weeklyOrders = await Reservation.count({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfWeek, endOfWeek]
-          }
-        },
-        paranoid: false
-      });
+//       const weeklyOrders = await Reservation.count({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfWeek, endOfWeek]
+//           }
+//         },
+//         paranoid: false
+//       });
   
-      // Monthly Orders Count
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      endOfMonth.setHours(23, 59, 59, 999);
+//       // Monthly Orders Count
+//       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+//       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+//       endOfMonth.setHours(23, 59, 59, 999);
   
-      const monthlyOrders = await Reservation.count({
-        where: {
-          createdAt: {
-            [Op.between]: [startOfMonth, endOfMonth]
-          }
-        },
-        paranoid: false
-      });
+//       const monthlyOrders = await Reservation.count({
+//         where: {
+//           createdAt: {
+//             [Op.between]: [startOfMonth, endOfMonth]
+//           }
+//         },
+//         paranoid: false
+//       });
   
-      // Return the total counts
-      res.json({
-        success: true,
-        data: {
-          daily: dailyOrders,
-          weekly: weeklyOrders,
-          monthly: monthlyOrders
-        }
-      });
-    } catch (error) {
-      console.error("Error fetching total orders:", error);
-      res.status(500).json({ success: false, message: "Error fetching total orders", error: error.message });
-    }
-  };
-
-
-const getTotalAmounts = async (req, res) => {
-  try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startOfWeek = new Date();
-    startOfWeek.setDate(today.getDate() - today.getDay());
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-
-    const totalToday = await Payment.sum("amount", {
-      where: {
-        status: "Completed",
-        created_at: { [Op.gte]: today }
-      }
-    });
-
-    const totalWeekly = await Payment.sum("amount", {
-      where: {
-        status: "Completed",
-        created_at: { [Op.gte]: startOfWeek }
-      }
-    });
-
-    const totalMonthly = await Payment.sum("amount", {
-      where: {
-        status: "Completed",
-        created_at: { [Op.gte]: startOfMonth }
-      }
-    });
-
-    return res.json({
-      success: true,
-      data: {
-        daily: totalToday || 0,
-        weekly: totalWeekly || 0,
-        monthly: totalMonthly || 0
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching total amounts:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
-  }
-};
+//       // Return the total counts
+//       res.json({
+//         success: true,
+//         data: {
+//           daily: dailyOrders,
+//           weekly: weeklyOrders,
+//           monthly: monthlyOrders
+//         }
+//       });
+//     } catch (error) {
+//       console.error("Error fetching total orders:", error);
+//       res.status(500).json({ success: false, message: "Error fetching total orders", error: error.message });
+//     }
+//   };
 
 
+// const getTotalAmounts = async (req, res) => {
+//   try {
+//     const today = new Date();
+//     today.setHours(0, 0, 0, 0);
 
-module.exports = {
-    getTopFoodItems,
-    getTotalAmounts,
-    getTotalReservations,
-};
+//     const startOfWeek = new Date();
+//     startOfWeek.setDate(today.getDate() - today.getDay());
+//     startOfWeek.setHours(0, 0, 0, 0);
+
+//     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//     const totalToday = await Payment.sum("amount", {
+//       where: {
+//         status: "Completed",
+//         created_at: { [Op.gte]: today }
+//       }
+//     });
+
+//     const totalWeekly = await Payment.sum("amount", {
+//       where: {
+//         status: "Completed",
+//         created_at: { [Op.gte]: startOfWeek }
+//       }
+//     });
+
+//     const totalMonthly = await Payment.sum("amount", {
+//       where: {
+//         status: "Completed",
+//         created_at: { [Op.gte]: startOfMonth }
+//       }
+//     });
+
+//     return res.json({
+//       success: true,
+//       data: {
+//         daily: totalToday || 0,
+//         weekly: totalWeekly || 0,
+//         monthly: totalMonthly || 0
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error fetching total amounts:", error);
+//     return res.status(500).json({ success: false, message: "Server error" });
+//   }
+// };
+
+
+
+// module.exports = {
+//     getTopFoodItems,
+//     getTotalAmounts,
+//     getTotalReservations,
+// };

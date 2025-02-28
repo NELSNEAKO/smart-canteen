@@ -1,30 +1,14 @@
 const mongoose = require('mongoose');
 
 const reservationSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // References the User model
-    required: true
-  },
-  items: [
-    {
-      item: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'FoodItem', // References the FoodItem model
-        required: true
-      },
-      quantity: {
-        type: Number,
-        required: true,
-        default: 1
-      }
-    }
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-}, { timestamps: true });
+  userId: { type: String, required: true },
+  items: { type: Object, required: true },
+  amount : { type: Number, required: true },
+  status: { type: String, default: 'Food Processing' },
+  data: { type: Date, default: Date.now },
+  payment: { type: Boolean, default: false }
+});
 
-const Reservation = mongoose.model('Reservation', reservationSchema);
-module.exports = Reservation;
+const reservationModel = mongoose.model('reservation', reservationSchema);
+
+module.exports = reservationModel;

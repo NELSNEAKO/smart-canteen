@@ -7,23 +7,23 @@ import axios from 'axios';
 function Verify() {
     const [searchParams] = useSearchParams();
     const success = searchParams.get('success');
-    const userId = searchParams.get('userId');  // Ensure PayMongo sends the correct userId
+    const reservationId = searchParams.get('reservationId');  // Ensure PayMongo sends the correct userId
     const { url } = useContext(StoreContext);
     const navigate = useNavigate();
 
-    console.log('Verifying payment:', { success, userId });
+    console.log('Verifying payment:', { success, reservationId });
 
     const verifyPayment = async () => {
         try {
-            const response = await axios.post(`${url}/api/payment/verify`, { success, userId });
+            const response = await axios.post(`${url}/api/reservation/verify`, { success, reservationId });
             if (response.data.success) {
                 navigate('/myReservations'); // Redirect to reservations if successful
             } else {
-                navigate('/failed'); // Redirect to a failure page
+                navigate('/'); // Redirect to a failure page
             }
         } catch (error) {
             console.error('Error verifying payment:', error);
-            navigate('/failed');
+            navigate('/');
         }
     };
 

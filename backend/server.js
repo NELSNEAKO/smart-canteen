@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const reservationRoutes = require('./routes/reservationRoutes');
+const cartRouter = require('./routes/cartRoute');
 const foodRouter = require('./routes/foodRoute'); // Correct import
 const userRouter = require('./routes/userRoutes');
-const paymentRouter = require('./routes/paymentRoute')
-const vendorRouter = require('./routes/vendorRoute')
-const adminRouter = require('./routes/adminRoute');
+// const paymentRouter = require('./routes/paymentRoute')
+// const adminRouter = require('./routes/adminRoute');
+const reservationRouter = require('./routes/reservationRoute');
 
 const connectDB = require('./config/db');
 
@@ -36,10 +36,10 @@ app.use((req, res, next) => {
 app.use('/api/food', foodRouter); // Use the correct router variable
 app.use('/images', express.static('uploads'));
 app.use('/api/user', userRouter);
-app.use('/api/reservation', reservationRoutes);
-app.use('/api/payment', paymentRouter);
-app.use('/api/vendor', vendorRouter);
-app.use('/api/admin', adminRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/reservation', reservationRouter);
+// app.use('/api/payment', paymentRouter);
+// app.use('/api/admin', adminRouter);
 
 // Test Root Route
 app.get('/', (req, res) => {

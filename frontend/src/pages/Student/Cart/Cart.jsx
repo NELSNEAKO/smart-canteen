@@ -31,7 +31,7 @@ function Cart() {
                                     <p>₱{item.price}</p>
                                     <p>{cartItems[item._id]}</p> {/* Quantity of product */}
                                     <p>₱{item.price * cartItems[item._id]}</p> {/* Total amount */}
-                                    <p onClick={() => removeFromCart(item._)} className='cross'>x</p>
+                                    <p onClick={() => removeFromCart(item._id)} className='cross'>x</p>
                                 </div>
                                 <hr />
                             </div>

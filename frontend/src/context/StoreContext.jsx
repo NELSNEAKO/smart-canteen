@@ -18,25 +18,24 @@ const StoreContextProvider = (props) => {
             setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
         }
         if (token) {
-            await axios.post(url + '/api/reservation/add', {itemId}, {headers:{token}});
+            await axios.post(url + '/api/cart/add', {itemId}, {headers:{token}});
         }
     };
 
     const removeFromCart = async (itemId) => {
        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
         if (token) {
-            await axios.post(url + '/api/reservation/remove', {itemId}, {headers:{token}});
+            await axios.post(url + '/api/cart/remove', {itemId}, {headers:{token}});
         }
     };
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                let itemInfo = food_list.find((product) => product.id === parseInt(item));
-                if (itemInfo) {
-                    totalAmount += itemInfo.price * cartItems[item];
-                }
+        for (const item in cartItems) 
+        {
+            if(cartItems[item] > 0){
+                let itemInfo = food_list.find((product)=> product._id === item);
+                totalAmount += itemInfo.price * cartItems[item];
             }
         }
         return totalAmount;
@@ -45,7 +44,7 @@ const StoreContextProvider = (props) => {
     const fetchFoodList = async () => {
         const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
-        // console.log("Food list:", response.data.data);
+        console.log("Food list:", response.data.data);
         
     };
     // const fetchTopList = async () => {
@@ -63,7 +62,7 @@ const StoreContextProvider = (props) => {
             }
     
             const response = await axios.post(
-                url + '/api/reservation/get', 
+                url + '/api/cart/get', 
                 {}, // Empty body since middleware extracts userId
                 { headers: { token } } // Auth middleware will handle user extraction
             );
@@ -87,6 +86,8 @@ const StoreContextProvider = (props) => {
             }
         }
         fetchData();
+        console.log('total ammount', getTotalCartAmount());
+        console.log('cart items', cartItems);
     }, []);
     
 
