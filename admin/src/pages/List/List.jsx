@@ -87,7 +87,7 @@ const List = ({ url }) => {
             {/* Status Dropdown */}
             <div className='list-table-status'>
               <select
-                onChange={(event) => statusHandler(event, item.id, "status")}
+                onChange={(event) => statusHandler(event, item._id, "status")}
                 value={item.status}
               >
                 <option value="Available">Available</option>
@@ -98,7 +98,7 @@ const List = ({ url }) => {
             {/* Availability Dropdown */}
             <div className='list-table-availability'>
               <select
-                onChange={(event) => statusHandler(event, item.id, "availability")}
+                onChange={(event) => statusHandler(event, item._id, "availability")}
                 value={item.availability}
               >
                 <option value="Breakfast">Breakfast</option>
@@ -106,7 +106,7 @@ const List = ({ url }) => {
               </select>
             </div>
 
-            <p onClick={() => removeFood(item.id)} className="cursor">
+            <p onClick={() => removeFood(item._id)} className="cursor">
               X
             </p>
           </div>

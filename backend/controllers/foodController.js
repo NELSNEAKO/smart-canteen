@@ -1,7 +1,6 @@
-const { FoodItem } = require('../models/foodModel');
-const { ReservationItem } = require('../models/reservationItemModel');
-const { sequelize } = require('../models/userModel');
+const foodModel = require('../models/foodModel');
 const fs = require('fs');
+const path = require('path');
 
 
 // Add food item
@@ -17,14 +16,14 @@ const addFood = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Please provide name, price, status, and availability' });
   }
 
-  const food = new FoodItem({
+  const food = new foodModel({
     name,
     price,
     category,
     description,
     status,
     availability,
-    image: image_filename,
+    image: image_filename
   });
 
   try {
@@ -39,49 +38,51 @@ const addFood = async (req, res) => {
 // all food list
 const listFood = async (req, res) => {
   try {
-    const foods = await FoodItem.findAll();
-    res.json({ success:true, data: foods });
+    const foods = await foodModel.find({}); // Use .find() instead of findAll()
+    res.json({ success: true, data: foods });
   } catch (error) {
     console.error(error);
-    res.json({ success:false, message: 'An error occurred, please try again' });
+    res.status(500).json({ success: false, message: 'An error occurred, please try again' });
   }
-}
+};
 
 const removeFood = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
 
   try {
-    const food = await FoodItem.findByPk(id);
-    if (!food) {
-      return res.status(404).json({ success: false, message: 'Food not found' });
-    }
-
-    // Delete the image file
+    // Find the food item by ID
+    const food = await foodModel.findById(id);
+    // Delete the image file if it exists
     if (food.image) {
-      fs.unlinkSync(`uploads/${food.image}`);
+      const imagePath = path.join(__dirname, '../uploads', food.image);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
     }
-
-    await food.destroy();
+    await foodModel.findByIdAndDelete(id);
     res.json({ success: true, message: 'Food removed successfully' });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: 'An error occurred, please try again' });
+    res.status(500).json({ success: false, message: 'An error occurred, please try again' });
   }
-}
+};
 
 const updateStatus = async (req, res) => {
   try {
-    const food = await FoodItem.findByPk(req.body.foodId);
+    const { foodId, status, availability } = req.body;
+
+    // Find and update the food item
+    const food = await foodModel.findByIdAndUpdate(
+      foodId,
+      { status, availability },
+      { new: true } // Returns the updated document
+    );
 
     if (!food) {
       return res.status(404).json({ success: false, message: "Food Item record not found" });
     }
-    await food.update({
-      status: req.body.status,
-      availability: req.body.availability
-    });
 
-    res.json({ success: true, message: "Status Updated" });
+    res.json({ success: true, message: "Status Updated", data: food });
   } catch (error) {
     console.error("Error updating status:", error);
     res.status(500).json({ success: false, message: "Error updating status" });

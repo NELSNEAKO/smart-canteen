@@ -2,19 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const reservationRoutes = require('./routes/reservationRoutes');
-const dotenv = require('dotenv');
 const foodRouter = require('./routes/foodRoute'); // Correct import
 const userRouter = require('./routes/userRoutes');
 const paymentRouter = require('./routes/paymentRoute')
 const vendorRouter = require('./routes/vendorRoute')
 const adminRouter = require('./routes/adminRoute');
 
-const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
+const connectDB = require('./config/db');
+
+// const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
 // console.log('Loaded Environment Variables:', process.env); // Log all environment variables for debugging
 
 
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +21,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+
+// db connection
+connectDB();
 
 // Log all requests
 app.use((req, res, next) => {
@@ -52,3 +55,6 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server Started on http://localhost:${PORT}`);
 });
+
+// mongodb://Janjo:<db_password>@<hostname>/?
+// mongodb://Janjo:<db_password>@<hostname>/?ssl=true&replicaSet=atlas-3wsebt-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0
