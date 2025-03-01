@@ -1,37 +1,37 @@
-// const { DataTypes } = require("sequelize");
-// const { sequelize } = require("./userModel");
+const mongoose = require('mongoose');
 
-// const Vendor = sequelize.define("Vendor", {
-//   id: {
-//     type: DataTypes.INTEGER.UNSIGNED,
-//     autoIncrement: true,
-//     primaryKey: true
-//   },
-//   name: {
-//     type: DataTypes.STRING(255),
-//     allowNull: false
-//   },
-//   email: {
-//     type: DataTypes.STRING(255),
-//     allowNull: false,
-//     unique: true
-//   },
-//   password: {
-//     type: DataTypes.STRING(255),
-//     allowNull: false
-//   },
-//   invite_code: {
-//     type: DataTypes.STRING(50),
-//     allowNull: true // ✅ Nullable FK
-//   },
-//   created_at: {
-//     type: DataTypes.DATE,
-//     defaultValue: DataTypes.NOW
-//   }
-// }, {
-//   timestamps: true, // ✅ Automatically adds createdAt & updatedAt
-//   tableName: "vendors"
-// });
+const vendorSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    invite_code: {
+        code: {
+            type: String,
+            required: false,
+            unique: true
+        },
+        status: {
+            type: String,
+            enum: ["unused", "used"],
+            default: "unused"
+        },
+        created_at: {
+            type: Date,
+            default: Date.now
+        }
+    }
+}, { timestamps: true });
 
+const vendorModel = mongoose.models.Vendor || mongoose.model('Vendor', vendorSchema);
 
-// module.exports = { Vendor }
+module.exports = vendorModel; 
