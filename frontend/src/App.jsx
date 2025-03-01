@@ -18,14 +18,14 @@ import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
 
 const App = () => {
-  const url = "http://localhost:5000";
+  const url = "https://smart-canteen-backend.onrender.com";
 
   return (
     <Router>
       <Routes>
         {/* Vendor Routes */}
         <Route path="/vendor" element={<VendorLayout />}>
-          <Route index element={<Login />} />
+          <Route index element={<Login url={url}/>} />
           <Route element={<ProtectedRoute allowedUserType="vendor" />}>
             <Route path="add" element={<Add url={url} />} />
             <Route path="list" element={<List url={url} />} />

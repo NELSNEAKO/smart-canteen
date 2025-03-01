@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
-  const url = 'http://localhost:5000';
+const Login = ({url}) => {
   const navigate = useNavigate();
 
   const [currState, setCurrState] = useState('Login');
