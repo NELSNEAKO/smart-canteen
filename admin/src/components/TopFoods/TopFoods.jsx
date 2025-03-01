@@ -37,11 +37,11 @@ const TopFoods = () => {
                         <div className="topFood-table-format">
                             <p>#{index + 1}</p>
                             <img 
-                                src={food.FoodItem?.image ? `${url}/images/${food.FoodItem.image}` : ''} 
+                                src={food.image ? `${url}/images/${food.image}` : ''} 
                                 alt="food" 
                                 className="food-image" 
                              />
-                            <p>{food.FoodItem?.name || "Unknown"}</p>
+                            <p>{food.name || "Unknown"}</p>
                         </div>
                     </div>
                 ))

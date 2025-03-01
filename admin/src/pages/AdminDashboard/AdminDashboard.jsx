@@ -9,8 +9,8 @@ const AdminPanel = () => {
   return (
     <div className="container">
       <TotalReservations   />
-      <TopFoods />
-      <TotalRevenue />
+      {/* <TopFoods /> */}
+      {/* <TotalRevenue /> */}
       <InviteCodeGenerator />
     </div>
   );

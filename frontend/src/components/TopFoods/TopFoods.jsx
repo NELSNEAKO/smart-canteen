@@ -24,13 +24,13 @@ const TopFoods = () => {
                     {topList.map((food, index) => (
                         <div key={food.FoodItem?.id || index} className="food-card"> {/* Fixed key issue */}
                             <img 
-                                src={food.FoodItem?.image ? `${url}/images/${food.FoodItem.image}` : ''} 
+                                src={food.image ? `${url}/images/${food.image}` : ''} 
                                 alt="food" 
                                 className="food-image" 
                             />
                             <div className="food-info">
                                 <span className="rank">#{index + 1}</span>
-                                <h3 className="food-name">{food.FoodItem?.name || "Unknown"}</h3>
+                                <h3 className="food-name">{food.name || "Unknown"}</h3>
                             </div>
                         </div>
                     ))}

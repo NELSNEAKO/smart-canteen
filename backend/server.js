@@ -4,7 +4,7 @@ const path = require('path');
 const cartRouter = require('./routes/cartRoute');
 const foodRouter = require('./routes/foodRoute'); // Correct import
 const userRouter = require('./routes/userRoutes');
-// const adminRouter = require('./routes/adminRoute');
+const adminRouter = require('./routes/adminRoute');
 const reservationRouter = require('./routes/reservationRoute');
 const vendorRouter = require('./routes/vendorRoute');
 
@@ -39,7 +39,7 @@ app.use('/api/user', userRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/reservation', reservationRouter);
 app.use('/api/vendor', vendorRouter);
-// app.use('/api/admin', adminRouter);
+app.use('/api/admin', adminRouter);
 
 // Test Root Route
 app.get('/', (req, res) => {
