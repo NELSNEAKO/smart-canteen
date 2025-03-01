@@ -21,6 +21,7 @@ const FoodItem = ({ id, name, price, description, image, category }) => {
                 <div className="food-item-info">
                     <p className="food-item-calories">{category}</p>
                     <p className="food-item-desc">{description}</p>
+                    <p className="food-item-sec">₱{price}</p>
                     <img className="food-item-rating" src={assets.rating_starts} alt="rating" />
                 </div>
                 {!cartItems[id] ? (

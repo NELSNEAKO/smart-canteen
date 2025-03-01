@@ -75,8 +75,8 @@ const Reservation = ({ url }) => {
                 </p>
               </div>
 
-              {/* Display Total Amount */}
               <p><b>Total:</b> ₱{reservation.amount}</p>
+              
 
               {/* Status Dropdown */}
               <div>

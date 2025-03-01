@@ -30,7 +30,7 @@ const Navbar = () => {
           <ul className="nav-profile-dropdown">
             <div className="profile-header">
               <img className="profile-img" src={assets.profile_icon} alt="User" />
-              <p className="profile-name">John Petro</p>
+              <p className="profile-name">Vendor</p>
             </div>
             <hr />
             <li>

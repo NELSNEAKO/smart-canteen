@@ -14,7 +14,7 @@ const Reservation = ({ url }) => {
       const response = await axios.get(`${url}/api/reservation/list`);
       if (response.data.success) {
         setReservations(response.data.data);
-        // console.log('Reservations:', response.data.data);
+        console.log('Reservations:', response.data.data);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -60,8 +60,8 @@ const Reservation = ({ url }) => {
                 <p className="reservation-item-food">
                   {reservation.items.map((item, idx) =>
                     idx === reservation.items.length - 1
-                      ? `${item.name} x ${item.quantity}`
-                      : `${item.name} x ${item.quantity}, `
+                      ? `${item.foodName} x ${item.quantity}`
+                      : `${item.foodName} x ${item.quantity}, `
                   )}
                 </p>
 

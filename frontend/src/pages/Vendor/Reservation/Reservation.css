@@ -43,3 +43,19 @@
         width: 40px;
     }
 }
+
+@media (max-width: 414px) {
+    .reservation-item {
+        font-size: 10px;
+        grid-template-columns: 1fr 1fr;
+        padding: 10px 5px;
+    }
+    .reservation-item select {
+        padding: 5px;
+        font-size: 10px;
+        width: 100px;
+    }
+    .reservation-item img {
+        width: 70px;
+    }
+}

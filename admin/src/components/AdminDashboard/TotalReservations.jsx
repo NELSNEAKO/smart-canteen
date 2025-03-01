@@ -14,12 +14,8 @@ const TotalReservations = () => {
   const fetchReservations = async () => {
     try {
       const response = await axios.get(`${url}/api/admin/total-reservations`);
-      if (response.data.success) {
-        setReservations(response.data); // ✅ Corrected mapping
-        // console.log("Fetched Reservations:", response.data);
-      } else {
-        console.error("Error:", response.data.message);
-      }
+      setReservations(response.data);
+      console.log("Fetched reservations:", response.data);
     } catch (error) {
       console.error("Error fetching total reservations:", error);
     }

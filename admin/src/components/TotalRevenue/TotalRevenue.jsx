@@ -9,8 +9,13 @@ const TotalRevenue = () => {
     const fetchTotalRevenue = async () => {
         try {
             const response = await axios.get(`${url}/api/admin/total-amounts`);
-            setTotalRevenue(response.data.data);
-            console.log("Fetched revenue:", response.data.data);
+            
+            if (response.data.success) {
+                setTotalRevenue(response.data.data);  // Now correctly mapping daily, weekly, monthly
+                console.log("Fetched revenue:", response.data.data);
+            } else {
+                console.error("Error fetching revenue:", response.data.message);
+            }
         } catch (error) {
             console.error("Error fetching total revenue:", error);
         }
@@ -22,7 +27,7 @@ const TotalRevenue = () => {
 
     return (
         <div className='totalRevenue-container'>
-            <h2>💰Total Revenue</h2>
+            <h2>💰 Total Revenue</h2>
             <div className="revenue-table">
                 <div className="revenue-table-format title">
                     <b>Daily</b>

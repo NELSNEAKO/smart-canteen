@@ -124,23 +124,33 @@ const generateInviteCode = async (req, res) => {
 
         await newVendor.save();
 
-        return res.status(201).json({ inviteCode });
+        res.json({ success: true, inviteCode });
     } catch (error) {
         console.error("Error generating invite code:", error);
-        return res.status(500).json({ message: "Server error" });
+        res.status(500).json({ success: false, message: "Server error" });
     }
 };
 
 // 📌 Fetch Invite Codes
 const fetchInviteCodes = async (req, res) => {
     try {
-        const codes = await vendorModel.find({ "invite_code.status": "unused" }, { "invite_code.code": 1, _id: 0 });
-        res.json({ success: true, data: codes });
+        // Fetch all invite codes along with their status
+        const codes = await vendorModel.find({}, { "invite_code": 1, _id: 0 });
+
+        // Map through the codes to extract only the invite code and status
+        const inviteCodes = codes.map((vendor) => ({
+            code: vendor.invite_code.code,
+            status: vendor.invite_code.status
+        }));
+
+        res.json({ success: true, data: inviteCodes });
     } catch (error) {
         console.error("Error fetching invite codes:", error);
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
+
 
 module.exports = {
     generateInviteCode,

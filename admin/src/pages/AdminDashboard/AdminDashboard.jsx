@@ -8,8 +8,8 @@ import "./AdminDashboard.css";
 const AdminPanel = () => {
   return (
     <div className="container">
-      <TotalReservations   />
-      {/* <TopFoods /> */}
+      {/* <TotalReservations   /> */}
+      <TopFoods />
       {/* <TotalRevenue /> */}
       <InviteCodeGenerator />
     </div>
