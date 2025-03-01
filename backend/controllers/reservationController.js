@@ -4,7 +4,7 @@ const reservationModel = require('../models/reservationModel');
 const foodModel = require('../models/foodModel');
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+const frontendUrl = process.env.FRONTEND_URL || 'https://smart-canteen-frontend.onrender.com';
 
 
 const placeReservation = async (req, res) => {
