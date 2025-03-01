@@ -23,9 +23,11 @@ const MyReservations = () => {
                 {},  // ✅ No need to send userId, extracted from token
                 { headers: { token } }  // ✅ Send token in headers
             );
-
+            
             if (response.data.success) {
                 setData(response.data.data);
+                console.log("Reservations:", response.data.data);
+                
             } else {
                 setError("Failed to fetch reservations.");
             }
@@ -56,7 +58,7 @@ const MyReservations = () => {
                             {/* Display Food Items */}
                             <p>
                                 {reservation.items?.map(
-                                    (item) => `${item.name} x ${item.quantity}`
+                                    (item) => `${item.foodName} x ${item.quantity}`
                                 ).join(", ")}
                             </p>
 

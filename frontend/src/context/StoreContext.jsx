@@ -44,14 +44,14 @@ const StoreContextProvider = (props) => {
     const fetchFoodList = async () => {
         const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
-        console.log("Food list:", response.data.data);
+        // console.log("Food list:", response.data.data);
         
     };
-    // const fetchTopList = async () => {
-    //     const response = await axios.get(`${url}/api/food/top`);
-    //     setTopList(response.data.data);
-    //     // console.log("Top list:", response.data.data);
-    // };
+    const fetchTopList = async () => {
+        const response = await axios.get(`${url}/api/food/top`);
+        setTopList(response.data.data);
+        console.log("Top list:", response.data.data);
+    };
 
     const loadCartData = async () => {
         try {
@@ -80,14 +80,14 @@ const StoreContextProvider = (props) => {
     useEffect(() => {
         async function fetchData() {
             await fetchFoodList();
+            await fetchTopList();
             if (localStorage.getItem('token')) {
                 setToken(localStorage.getItem('token'));
                 await loadCartData(); // Calls API with middleware handling userId
             }
         }
         fetchData();
-        console.log('total ammount', getTotalCartAmount());
-        console.log('cart items', cartItems);
+        // console.log('cart items', cartItems);
     }, []);
     
 

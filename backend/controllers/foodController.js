@@ -1,6 +1,9 @@
 const foodModel = require('../models/foodModel');
+const reservationModel = require('../models/reservationModel');
+const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const { log } = require('console');
 
 
 // Add food item
@@ -89,32 +92,51 @@ const updateStatus = async (req, res) => {
   }
 };
 
+
+
 const getTopFoodItems = async (req, res) => {
   try {
-    const topFoodItems = await ReservationItem.findAll({
-      attributes: [
-        'item_id',
-        [sequelize.fn('COUNT', sequelize.col('item_id')), 'count']
-      ],
-      include: [
-        {
-          model: FoodItem,
-          as: 'FoodItem', // Ensure alias matches your association
-          attributes: ['id', 'name', 'price', 'image'] // Select only necessary fields
+    // Step 1: Aggregate to find top food item IDs
+    const topItems = await reservationModel.aggregate([
+      { $unwind: "$items" },
+      { 
+        $group: {
+          _id: "$items.foodId",  // Make sure this matches the field in your schema
+          totalQuantity: { $sum: "$items.quantity" }
         }
-      ],
-      group: ['item_id', 'FoodItem.id'], // Group by both item_id and FoodItem's id
-      order: [[sequelize.literal('count'), 'DESC']],
-      limit: 5,
-    });
+      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 5 }
+    ]);
 
-    res.json({ success: true, data: topFoodItems });
+    console.log("Top Items from Aggregation:", topItems);
+
+    if (topItems.length === 0) {
+      return res.json({ success: true, data: [] });
+    }
+
+    // Step 2: Convert _id to ObjectId if necessary
+    const topFoodIds = topItems
+      .filter(item => item._id) // Avoid null values
+      .map(item => new mongoose.Types.ObjectId(item._id)); // Convert explicitly
+
+    console.log("Fetching food details for IDs:", topFoodIds);
+
+    // Step 3: Debugging food collection
+    const allFoods = await foodModel.find();
+    console.log("All Food Items in DB:", allFoods);
+
+    // Step 4: Query for food items matching top IDs
+    const foods = await foodModel.find({ _id: { $in: topFoodIds } });
+
+    console.log("Top Food Items:", foods);
+    
+    res.json({ success: true, data: foods });
   } catch (error) {
-    console.error("Error fetching top food items:", error);
-    res.status(500).json({ success: false, message: "Error fetching top food items" });
+    console.error("Error fetching top items:", error);
+    res.status(500).json({ success: false, message: "Error fetching top items" });
   }
 };
-
 
  
 module.exports = {

@@ -58,8 +58,8 @@ const Reservation = ({ url }) => {
                 <p className="reservation-item-food">
                   {reservation.items.map((item, idx) =>
                     idx === reservation.items.length - 1
-                      ? `${item.name} x ${item.quantity}`
-                      : `${item.name} x ${item.quantity}, `
+                      ? `${item.foodName} x ${item.quantity}`
+                      : `${item.foodName} x ${item.quantity}, `
                   )}
                 </p>
 

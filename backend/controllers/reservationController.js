@@ -1,6 +1,7 @@
 const axios = require('axios');
 const userModel = require('../models/userModel');
 const reservationModel = require('../models/reservationModel');
+const foodModel = require('../models/foodModel');
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -12,16 +13,23 @@ const placeReservation = async (req, res) => {
         console.log("Decoded User from Token:", req.user); // Debugging: Check extracted userId
 
         // Extract userId from token instead of req.body
-        const userId = req.user?.userId; 
+        const userId = req.user?.userId;
 
         if (!userId || !req.body.items || req.body.items.length === 0) {
             return res.status(400).json({ success: false, message: "Missing userId or items" });
         }
 
+        // ✅ Use food name from frontend request
+        const formattedItems = req.body.items.map(item => ({
+            foodId: item.id,      // Keep foodId
+            foodName: item.name,  // Use food name directly from request
+            quantity: item.quantity
+        }));
+
         // Create new reservation
         const newReservation = new reservationModel({
-            userId: userId, // Extracted from token
-            items: req.body.items,
+            userId,
+            items: formattedItems, // ✅ Use formatted items with food names
             amount: req.body.amount,
         });
 
@@ -35,10 +43,10 @@ const placeReservation = async (req, res) => {
         }
 
         // PayMongo Integration
-        const line_items = req.body.items.map((item) => ({
+        const line_items = formattedItems.map(item => ({
             currency: 'PHP',
-            amount: item.price * 100,
-            name: item.name, // Changed from item.name to item.description
+            amount: req.body.items.find(i => i.id === item.foodId).price * 100, // Get price from request
+            name: item.foodName, // ✅ Use food name from request
             quantity: item.quantity,
         }));
 
@@ -80,12 +88,13 @@ const placeReservation = async (req, res) => {
 };
 
 
+
 const verifyReservation = async (req, res) => {
     const { success, reservationId } = req.body;
     try {
         if (success === 'true') {
             await reservationModel.findByIdAndUpdate(reservationId, { payment: 'true' });
-            res.json({ success: true, message: "Payment successful" });
+            res.json({ success: true, message: "Payment successf    ul" });
         } else {
             await reservationModel.findByIdAndDelete(reservationId);
             res.json({ success: false, message: "Payment failed" });
@@ -99,16 +108,32 @@ const verifyReservation = async (req, res) => {
 // user reservations for frontend
 const userReservations = async (req, res) => {
     try {
-        console.log("Decoded User:", req.body); // Debugging: Check extracted user
+        console.log("Decoded Request Body:", req.body); // Debug request body
 
-        const reservations = await reservationModel.find({ userId: req.body.userId }); // Corrected access
+        const userId = req.body?.userId; // Extract userId
 
-        res.json({ success: true, data: reservations });
+        if (!userId) {
+            return res.status(400).json({ success: false, message: "User ID is required" });
+        }
+
+        const reservations = await reservationModel.find({ userId });
+
+        if (!reservations || reservations.length === 0) {
+            return res.status(200).json({ success: true, message: "No reservations found", data: [] });
+        }
+
+        console.log("Fetched Reservations:", reservations); // Debug fetched data
+
+        res.status(200).json({ success: true, data: reservations });
+
     } catch (error) {
-        console.log("Error fetching user reservations:", error);
-        res.status(500).json({ success: false, message: "Error fetching user reservations" });
+        console.error("Error fetching user reservations:", error);
+        res.status(500).json({ success: false, message: "Failed to retrieve reservations" });
     }
 };
+
+
+
 
 const fetchAllReservations = async (req, res) => {
     try {
@@ -120,10 +145,28 @@ const fetchAllReservations = async (req, res) => {
     }
 };
 
+const updateStatus = async (req, res) => {
+    try {
+        // Find the reservation record by _id
+        const reservation = await reservationModel.findById(req.body.reservationId);
+
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: "Reservation record not found" });
+        }
+
+        // Update the status field and save
+        reservation.status = req.body.status;
+        await reservation.save();
+
+        res.json({ success: true, message: "Status Updated" });
+    } catch (error) {
+        console.error("Error updating status:", error);
+        res.status(500).json({ success: false, message: "Error updating status" });
+    }
+};
 
 
 
 
 
-
-module.exports = { placeReservation,verifyReservation, userReservations, fetchAllReservations };
+module.exports = { placeReservation,verifyReservation, userReservations, fetchAllReservations, updateStatus };
