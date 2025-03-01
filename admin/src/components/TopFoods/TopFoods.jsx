@@ -3,7 +3,7 @@ import './TopFoods.css';
 import axios from 'axios';
 
 const TopFoods = () => {
-    const url = 'http://localhost:5000';
+    const url = 'https://smart-canteen-backend.onrender.com';
     const [topList, setTopList] = useState([]);
 
     const fetchTopList = async () => {

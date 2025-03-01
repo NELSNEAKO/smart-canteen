@@ -16,7 +16,7 @@ import UpdatePopup from './components/UpdatePopup/UpdatePopup'
 
 const App = () => {
 
-  const url = 'http://localhost:5000'
+  const url = 'https://smart-canteen-backend.onrender.com'
   const [showUpdate, setShowUpdate] = useState(false)
 
   return (

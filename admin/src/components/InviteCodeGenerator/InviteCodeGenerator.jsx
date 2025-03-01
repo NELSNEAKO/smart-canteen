@@ -3,7 +3,7 @@ import axios from "axios";
 import "./InviteCodeGenerator.css";
 
 const InviteCodeGenerator = () => {
-    const url = "http://localhost:5000";
+    const url = "https://smart-canteen-backend.onrender.com";
     const [inviteList, setInviteList] = useState([]);
 
     // Fetch stored invite codes from the database
