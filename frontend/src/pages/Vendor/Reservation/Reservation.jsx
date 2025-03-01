@@ -7,7 +7,6 @@ import { assets } from '../../../assets/admin_assets/assets'
 
 const Reservation = ({ url }) => {
   const [reservations, setReservations] = useState([]);
-  const token = localStorage.getItem('token'); // Get token from local storage
 
   const fetchAllReservations = async () => {
     try {
