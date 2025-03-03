@@ -6,10 +6,9 @@ import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 
 const Navbar2 = ({ setShowLogin }) => {
-    const url = 'http://localhost:5000';
     const [menu, setMenu] = useState('home');
     const [user, setUser] = useState({});
-    const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+    const { getTotalCartAmount, token, setToken, url } = useContext(StoreContext);
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);

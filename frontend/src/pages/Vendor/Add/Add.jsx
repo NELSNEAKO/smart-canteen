@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import './Add.css'
 import { assets } from '../../../assets/admin_assets/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../../context/StoreContext';
 
-const Add = ({url}) => {
 
+const Add = () => {
+    const { url } = useContext(StoreContext);
     const [image, setImage] = useState(false);
     const [data, setData] = useState({
         name: '',

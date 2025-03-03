@@ -3,8 +3,10 @@ import './Navbar.css';
 import { assets } from '../../assets/admin_assets/assets';
 import { useNavigate } from 'react-router-dom';
 
+
 const Navbar = () => {
   const navigate = useNavigate();
+
 
   const logout = () => {
     localStorage.removeItem('token');

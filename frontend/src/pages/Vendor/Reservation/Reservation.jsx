@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Reservation.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { assets } from '../../../assets/admin_assets/assets'
+import { StoreContext } from '../../../context/StoreContext';
 
 
-const Reservation = ({ url }) => {
+
+const Reservation = () => {
   const [reservations, setReservations] = useState([]);
+  const { url } = useContext(StoreContext);
+
 
   const fetchAllReservations = async () => {
     try {

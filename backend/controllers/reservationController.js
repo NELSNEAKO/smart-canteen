@@ -94,7 +94,7 @@ const verifyReservation = async (req, res) => {
     try {
         if (success === 'true') {
             await reservationModel.findByIdAndUpdate(reservationId, { payment: 'true' });
-            res.json({ success: true, message: "Payment successf    ul" });
+            res.json({ success: true, message: "Payment successful" });
         } else {
             await reservationModel.findByIdAndDelete(reservationId);
             res.json({ success: false, message: "Payment failed" });

@@ -32,7 +32,7 @@ function UpdatePopup({ user, setShowUpdate, url, fetchUser }) {
         e.preventDefault();
         
         try {
-            const response = await axios.put(`${url}/api/user/update/${user.id}`, data);
+            const response = await axios.put(`${url}/api/user/update/${user._id}`, data);
             if (response.data.success) {
                 alert(response.data.message || 'User updated successfully.');
                 fetchUser();

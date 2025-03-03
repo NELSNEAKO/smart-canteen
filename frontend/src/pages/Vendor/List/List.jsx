@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../../context/StoreContext';
 
 
-const List = ({ url }) => {
+
+const List = () => {
   const [list, setList] = useState([]);
   const token = localStorage.getItem('token'); // Get token from local storage
   const navigate = useNavigate();
+  const { url } = useContext(StoreContext);
+
 
 
 

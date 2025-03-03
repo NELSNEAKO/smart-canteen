@@ -1,10 +1,14 @@
 import './Login.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { StoreContext } from '../../../context/StoreContext';
 
-const Login = ({url}) => {
+
+const Login = () => {
   const navigate = useNavigate();
+  const { url } = useContext(StoreContext);
+
 
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
