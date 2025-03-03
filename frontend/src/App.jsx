@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // ✅ Import Navigate
 import StudentLayout from "./layouts/StudentLayout";
 import VendorLayout from "./layouts/VendorLayout";
 import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import protected route
@@ -18,7 +18,6 @@ import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
 
 const App = () => {
-
   return (
     <Router>
       <Routes>
@@ -42,6 +41,9 @@ const App = () => {
             <Route path="myReservations" element={<MyReservations />} />
           </Route>
         </Route>
+
+        {/* Redirect unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
