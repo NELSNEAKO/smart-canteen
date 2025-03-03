@@ -87,7 +87,7 @@ const StoreContextProvider = (props) => {
             }
         }
         fetchData();
-        // console.log('cart items', cartItems);
+        console.log('cart items', cartItems);
     }, []);
     
 
