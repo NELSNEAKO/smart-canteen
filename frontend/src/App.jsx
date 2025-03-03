@@ -28,7 +28,7 @@ const App = () => {
           <Route element={<ProtectedRoute allowedUserType="vendor" />}>
             <Route path="add" element={<Add />} />
             <Route path="list" element={<List />} />
-            <Route path="reservation" element={<Reservation url={url} />} />
+            <Route path="reservation" element={<Reservation />} />
           </Route>
         </Route>
 
