@@ -1,28 +1,43 @@
 const userModel = require('../models/userModel');
 
-// Add items to user cart
+
 const addToCart = async (req, res) => {
   try {
+    const { userId, itemId } = req.body;
 
-    // Find the user
-    let userData = await userModel.findById(req.body.userId);
-    let cartData = userData.cartData || {}; 
-
-    if (!cartData[req.body.itemId]) { 
-      cartData[req.body.itemId] = 1;
-    } else {
-      cartData[req.body.itemId] += 1;
+    if (!userId || !itemId) {
+      return res.status(400).json({ success: false, message: "Invalid input data" });
     }
 
-    // Update user's cart data
-    await userModel.findByIdAndUpdate(req.body.userId, { cartData: cartData });
+    // Find the user
+    let userData = await userModel.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
 
-    res.json({ success: true, message: "Item added to cart successfully" });
+    // Ensure cartData is an object, not an array or Map
+    let cartData = userData.cartData || {}; 
+
+    if (!cartData[itemId]) {
+      cartData[itemId] = 1;
+    } else {
+      cartData[itemId] += 1;
+    }
+
+    // Update user's cart data (Ensure it's an object)
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId, 
+      { cartData }, 
+      { new: true }
+    );
+
+    res.json({ success: true, message: "Item added to cart successfully", cartData: updatedUser.cartData });
   } catch (error) {
     console.error("Error in addToCart:", error);
-    res.status(500).json({ success: false, message: "Error adding item to cart" });
+    res.status(500).json({ success: false, message: "Error adding item to cart", error: error.message });
   }
 };
+
 
 
 

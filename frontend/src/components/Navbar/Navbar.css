@@ -92,3 +92,17 @@ hr {
     border-top: 1px solid #ddd;
     margin: 5px 15px;
 }
+
+@media (max-width: 600px) {
+    .navbar .profile {
+        margin-right: 40px;
+    }
+    .navbar .details {
+        top: 70px;
+        left: 45px;
+    }
+    .navbar-left {
+        margin-left: 40px;
+    }
+
+}

@@ -46,7 +46,7 @@ const LoginPopup = ({ setShowLogin }) => {
           localStorage.setItem("userType", response.data.userType); // 🔹 Store userType
           setShowLogin(false);
         } else {
-          alert(response.data.message || 'Registration successful.');
+          alert(response.data.message || 'Student Registration successful.');
         }
       } else {
         alert('Error: ' + response.data.message || 'Something went wrong.');

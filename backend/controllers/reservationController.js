@@ -4,7 +4,8 @@ const reservationModel = require('../models/reservationModel');
 const foodModel = require('../models/foodModel');
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
-const frontendUrl = process.env.FRONTEND_URL || 'https://smart-canteen-frontend.onrender.com';
+const frontendUrl = process.env.FRONTEND_URL;
+// const frontendUrl = 'http://localhost:3000';
 
 
 const placeReservation = async (req, res) => {
@@ -34,7 +35,7 @@ const placeReservation = async (req, res) => {
         });
 
         await newReservation.save();
-        await userModel.findByIdAndUpdate(userId, { cartData: [] });
+        await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
         // Fetch user details for PayMongo
         const user = await userModel.findById(userId);
@@ -56,7 +57,7 @@ const placeReservation = async (req, res) => {
                 data: {
                     attributes: {
                         billing: {
-                            name: user.name,
+                            name: user.name,    
                             email: user.email
                         },
                         description: 'SmartCanteen Reservation Payment',
