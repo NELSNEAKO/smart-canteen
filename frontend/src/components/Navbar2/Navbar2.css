@@ -1,14 +1,15 @@
 .navbar2 {
-    padding: 20px 150px;
+    padding: 15px 150px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 100px;
 }
 
 .navbar2 .logo {
-    width: 80px;
+    width: 60px;
 }
 
 .navbar2-menu {
@@ -137,7 +138,7 @@ hr {
 /* Responsive Styles */
 @media (max-width: 1050px) {
     .navbar2 .logo {
-        width: 65px;
+        width: 50px;
     }
     .navbar2-menu {
         gap: 20px;
@@ -173,9 +174,13 @@ hr {
 
 @media (max-width: 750px) {
     .navbar2 {
-        padding: 20px 30px;
+        padding: 10px 30px;
+        height: 60px;
     }
     .navbar2-menu {
         display: none;
+    }
+    .navbar2 .logo {
+        width: 40px;
     }
 }

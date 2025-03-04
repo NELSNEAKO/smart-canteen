@@ -65,12 +65,7 @@ const MyReservations = () => {
                             {/* Calculate Total Amount */}
                             <p>
                                 Total: ₱
-                                {Math.round(
-                                    (reservation.items || []).reduce(
-                                        (total, item) => total + (item.price * item.quantity || 0),
-                                        0
-                                    )
-                                )}
+                                {reservation.amount}
                             </p>
 
                             {/* Display Item Count */}

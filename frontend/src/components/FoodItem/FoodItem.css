@@ -1,7 +1,7 @@
 .food-item {
     display: flex;
     align-items: center;
-    width: 250px;
+    width: auto;
     height: 300px;
     background: #fff;
     border-radius: 15px;
@@ -13,9 +13,9 @@
     position: relative;
 }
 
-/* .food-item:hover {
+.food-item:hover {
     transform: scale(1.02);
-} */
+}
 
 /* Left Side - Image */
 .food-item-left {

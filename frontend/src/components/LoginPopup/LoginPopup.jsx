@@ -4,13 +4,13 @@ import { assets } from '../../assets/frontend_assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import Spinner from '../Spinner'; // Import the spinner
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
-  
   const navigate = useNavigate();
   const [currState, setCurrState] = useState('Login');
+  const [loading, setLoading] = useState(false); // Loading state
   const [data, setData] = useState({
     name: '',
     student_id: '',
@@ -22,28 +22,26 @@ const LoginPopup = ({ setShowLogin }) => {
     const name = e.target.name;
     const value = e.target.value;
     setData((prevData) => ({ ...prevData, [name]: value }));
-    // console.log('Updated Data:', data);
   };
 
   const onLogin = async (e) => {
     e.preventDefault();
-    let newUrl = url; // url = http://localhost:5000
+    setLoading(true); // Start loading
+
+    let newUrl = url; 
     if (currState === 'Login') {
       newUrl += '/api/user/login';
     } else {
       newUrl += '/api/user/register';
     }
-    console.log('Constructed URL:', newUrl); // Log the final URL
 
     try {
       const response = await axios.post(newUrl, data);
-      console.log('API Response:', response);
-
       if (response.data.success) {
         if (currState === 'Login') {
           setToken(response.data.token);
           localStorage.setItem('token', response.data.token);
-          localStorage.setItem("userType", response.data.userType); // 🔹 Store userType
+          localStorage.setItem("userType", response.data.userType);
           setShowLogin(false);
         } else {
           alert(response.data.message || 'Student Registration successful.');
@@ -54,11 +52,14 @@ const LoginPopup = ({ setShowLogin }) => {
     } catch (error) {
       console.error('Error occurred:', error);
       alert('An error occurred while processing your request. Please try again.');
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   return (
     <div className="login-popup">
+      {loading && <Spinner />} {/* Show spinner when loading */}
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
           <h2>{currState}</h2>
@@ -102,7 +103,9 @@ const LoginPopup = ({ setShowLogin }) => {
             required
           />
         </div>
-        <button type="submit">{currState === 'Sign Up' ? 'Create Account' : 'Login'}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : currState === 'Sign Up' ? 'Create Account' : 'Login'}
+        </button>
         {currState === 'Sign Up' ? (
           <div className="login-popup-condition">
             <input type="checkbox" required />
@@ -112,7 +115,6 @@ const LoginPopup = ({ setShowLogin }) => {
         {currState === 'Login' ? (
           <p>
             Are you a Vendor? <span onClick={() => navigate('/vendor')}>Click here</span> <br />
-
             Create a new account? <span onClick={() => setCurrState('Sign Up')}>Click here</span>
           </p>
         ) : (

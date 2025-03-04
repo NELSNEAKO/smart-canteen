@@ -3,13 +3,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { StoreContext } from '../../../context/StoreContext';
-
+import Spinner from '../Spinner'; // Import the spinner
 
 const Login = () => {
   const navigate = useNavigate();
   const { url } = useContext(StoreContext);
-
-
+  const [loading, setLoading] = useState(false); // Loading state
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
     name: '',
@@ -25,6 +24,7 @@ const Login = () => {
 
   const onLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     let newUrl = url + (currState === 'Login' ? '/api/vendor/login' : '/api/vendor/register');
 
     try {
@@ -35,30 +35,31 @@ const Login = () => {
       if (response.data.success) {
         if (currState === 'Login' && response.data.token) {
           localStorage.setItem('token', response.data.token);
-          localStorage.setItem('userType', response.data.userType); // ✅ Store userType
+          localStorage.setItem('userType', response.data.userType);
           alert('Login successful!');
-          navigate(response.data.userType === 'vendor' ? '/vendor/add' : '/'); // Redirect based on user type
+          navigate(response.data.userType === 'vendor' ? '/vendor/add' : '/');
         }
-      }
-       else {
+      } else {
         alert('Error: ' + (response.data.message || 'Something went wrong.'));
       }
     } catch (error) {
       console.error('Error occurred:', error);
       alert('An error occurred while processing your request. Please try again.');
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
-    // ✅ Auto-redirect if token exists
-    useEffect(() => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        navigate('/vendor/add'); // Redirect to main page if token is found
-      }
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/vendor/add');
+    }
+  }, []);
 
   return (
     <div className='login'>
+      {loading && <Spinner />} {/* Show spinner when loading */}
       <form onSubmit={onLogin} className='login-container'>
         <div className='login-title'>
           <h2>{currState}</h2>
@@ -101,7 +102,9 @@ const Login = () => {
             required
           />
         </div>
-        <button type='submit'>{currState === 'Sign Up' ? 'Create Account' : 'Login'}</button>
+        <button type='submit' disabled={loading}>
+          {loading ? 'Logging in...' : currState === 'Sign Up' ? 'Create Account' : 'Login'}
+        </button>
         {currState === 'Sign Up' ? (
           <div className='login-condition'>
             <input type='checkbox' required />
@@ -123,4 +126,3 @@ const Login = () => {
 };
 
 export default Login;
-  

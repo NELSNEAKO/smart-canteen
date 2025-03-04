@@ -31,7 +31,8 @@
 }
 .my-reservations-reservation button{
     border: none;
-    padding: 12px 0px;
+    width: 100px;
+    padding: 12px 10px;
     border-radius: 4px;
     background-color: #ffe1e1;
     color: #454545;
