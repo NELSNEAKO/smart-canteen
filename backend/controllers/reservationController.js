@@ -1,10 +1,9 @@
 const axios = require('axios');
 const userModel = require('../models/userModel');
 const reservationModel = require('../models/reservationModel');
-const foodModel = require('../models/foodModel');
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
-const frontendUrl = process.env.FRONTEND_URL;
+// const frontendUrl = process.env.FRONTEND_URL;
 // const frontendUrl = 'http://localhost:3000';
 
 

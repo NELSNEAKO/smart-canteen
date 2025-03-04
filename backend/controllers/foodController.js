@@ -120,16 +120,16 @@ const getTopFoodItems = async (req, res) => {
       .filter(item => item._id) // Avoid null values
       .map(item => new mongoose.Types.ObjectId(item._id)); // Convert explicitly
 
-    console.log("Fetching food details for IDs:", topFoodIds);
+    // console.log("Fetching food details for IDs:", topFoodIds);
 
     // Step 3: Debugging food collection
     const allFoods = await foodModel.find();
-    console.log("All Food Items in DB:", allFoods);
+    // console.log("All Food Items in DB:", allFoods);
 
     // Step 4: Query for food items matching top IDs
     const foods = await foodModel.find({ _id: { $in: topFoodIds } });
 
-    console.log("Top Food Items:", foods);
+    // console.log("Top Food Items:", foods);
     
     res.json({ success: true, data: foods });
   } catch (error) {
