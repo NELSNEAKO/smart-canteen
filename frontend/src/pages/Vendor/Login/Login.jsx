@@ -38,6 +38,8 @@ const Login = () => {
           localStorage.setItem('userType', response.data.userType);
           alert('Login successful!');
           navigate(response.data.userType === 'vendor' ? '/vendor/add' : '/');
+        }else {
+          alert(response.data.message || 'Vendor Registration successful.');
         }
       } else {
         alert('Error: ' + (response.data.message || 'Something went wrong.'));
