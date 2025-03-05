@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { StoreContext } from '../../../context/StoreContext';
-import Spinner from '../Spinner'; // Import the spinner
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Login = () => {
   const navigate = useNavigate();
