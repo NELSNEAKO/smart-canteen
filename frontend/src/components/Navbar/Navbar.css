@@ -14,7 +14,7 @@
 }
 
 .navbar .logo {
-    width: 65px;
+    width: 60px;
 }
 
 .navbar .details {
@@ -98,11 +98,19 @@ hr {
         margin-right: 40px;
     }
     .navbar .details {
-        top: 70px;
-        left: 45px;
+        top: 45px;
+        left: 40px;
+        font-size: 15px;
     }
     .navbar-left {
         margin-left: 40px;
     }
-
+    .navbar .logo {
+        width: 40px;
+    }
+    .navbar .profile {
+        width: 25px;
+        cursor: pointer;
+    }
+   
 }
