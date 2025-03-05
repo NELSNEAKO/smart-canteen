@@ -4,7 +4,7 @@ import { assets } from '../../assets/frontend_assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import Spinner from '../Spinner'; // Import the spinner
+import Spinner from '../Spinner/Spinner';
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
