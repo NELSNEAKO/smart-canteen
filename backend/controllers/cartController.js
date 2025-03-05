@@ -24,10 +24,9 @@ const addToCart = async (req, res) => {
       cartData[itemId] += 1;
     }
 
-    // Update user's cart data (Ensure it's an object)
-    const updatedUser = await userModel.findByIdAndUpdate(
+    await userModel.findByIdAndUpdate(
       userId, 
-      { cartData }, 
+      { $set: { cartData } },  
       { new: true }
     );
 
