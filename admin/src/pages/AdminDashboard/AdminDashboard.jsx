@@ -5,13 +5,13 @@ import TotalRevenue from "../../components/TotalRevenue/TotalRevenue";
 import InviteCodeGenerator from "../../components/InviteCodeGenerator/InviteCodeGenerator";
 import "./AdminDashboard.css";
 
-const AdminPanel = () => {
+const AdminPanel = ({url}) => {
   return (
     <div className="container">
-      {/* <TotalReservations   /> */}
-      <TopFoods />
-      {/* <TotalRevenue /> */}
-      <InviteCodeGenerator />
+      <TotalReservations url={url}/>
+      <TopFoods url={url}/>
+      <TotalRevenue url={url}/>
+      <InviteCodeGenerator url={url}/>
     </div>
   );
 };

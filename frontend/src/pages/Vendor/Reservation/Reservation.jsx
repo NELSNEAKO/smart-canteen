@@ -53,53 +53,55 @@ const Reservation = () => {
     <div className="reservation add">
       <h3>Reservation Page</h3>
       <div className="reservation-list">
-        {reservations.length > 0 ? (
-          reservations.map((reservation) => (
-            <div key={reservation._id} className="reservation-item">
-              <img src={assets.parcel_icon} alt="Reservation Icon" />
-              
-              <div>
-                {/* Display Food Items */}
-                <p className="reservation-item-food">
-                  {reservation.items.map((item, idx) =>
-                    idx === reservation.items.length - 1
-                      ? `${item.foodName} x ${item.quantity}`
-                      : `${item.foodName} x ${item.quantity}, `
-                  )}
-                </p>
+          {reservations.length > 0 ? (
+            reservations
+              .filter((reservation) => reservation.status !== "Completed") // Filter out completed reservations
+              .map((reservation) => (
+                <div key={reservation._id} className="reservation-item">
+                  <img src={assets.parcel_icon} alt="Reservation Icon" />
 
-                {/* ✅ Fixed: Properly displaying user information */}
-                <p className="reservation-item-name">
-                  <b>Student ID:</b> {reservation.userId?.student_id || "N/A"}
-                </p>
-                <p className="reservation-item-name">
-                  <b>Name:</b> {reservation.userId?.name || "N/A"}
-                </p>
-                <p className="reservation-item-name">
-                  <b>Email:</b> {reservation.userId?.email || "N/A"}
-                </p>
-              </div>
+                  <div>
+                    {/* Display Food Items */}
+                    <p className="reservation-item-food">
+                      {reservation.items.map((item, idx) =>
+                        idx === reservation.items.length - 1
+                          ? `${item.foodName} x ${item.quantity}`
+                          : `${item.foodName} x ${item.quantity}, `
+                      )}
+                    </p>
 
-              {/* Display Total Amount */}
-              <p><b>Total:</b> ₱{reservation.amount}</p>
+                    {/* Display user information */}
+                    <p className="reservation-item-name">
+                      <b>Student ID:</b> {reservation.userId?.student_id || "N/A"}
+                    </p>
+                    <p className="reservation-item-name">
+                      <b>Name:</b> {reservation.userId?.name || "N/A"}
+                    </p>
+                    <p className="reservation-item-name">
+                      <b>Email:</b> {reservation.userId?.email || "N/A"}
+                    </p>
+                  </div>
 
-              {/* Status Dropdown */}
-              <div>
-                <select
-                  onChange={(event) => statusHandler(event, reservation._id)}
-                  value={reservation.status}
-                >
-                  <option value="Food Processing">Food Processing</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Failed">Payment Failed</option>
-                  <option value="Ready for Pickup">Ready for Pickup</option>
-                </select>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No reservations found.</p>
-        )}
+                  {/* Display Total Amount */}
+                  <p><b>Total:</b> ₱{reservation.amount}</p>
+
+                  {/* Status Dropdown */}
+                  <div>
+                    <select
+                      onChange={(event) => statusHandler(event, reservation._id)}
+                      value={reservation.status}
+                    >
+                      <option value="Food Processing">Food Processing</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Failed">Payment Failed</option>
+                      <option value="Ready for Pickup">Ready for Pickup</option>
+                    </select>
+                  </div>
+                </div>
+              ))
+          ) : (
+            <p>No reservations found.</p>
+          )}
       </div>
     </div>
   );

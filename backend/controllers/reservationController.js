@@ -3,8 +3,8 @@ const userModel = require('../models/userModel');
 const reservationModel = require('../models/reservationModel');
 
 const payMongoKey = process.env.PAYMONGO_SECRET_KEY;
-// const frontendUrl = "https://smart-canteen-frontend.onrender.com";
-const frontendUrl = 'http://localhost:3000';
+const frontendUrl = "https://smart-canteen-frontend.onrender.com";
+// const frontendUrl = 'http://localhost:3000';
 
 
 const placeReservation = async (req, res) => {

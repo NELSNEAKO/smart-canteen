@@ -7,7 +7,7 @@
 
 .reservations-table-format {
     display: grid;
-    grid-template-columns: repeat(2 , 1fr); /* Corrected syntax */
+    grid-template-columns: repeat(3 , 1fr); /* Corrected syntax */
     align-items: center;
     gap: 20px;
     padding: 12px 15px;

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TotalRevenue.css';
 import axios from 'axios';
 
-const TotalRevenue = () => {
-    const url = "http://localhost:5000";
+const TotalRevenue = ({url}) => {
     const [totalRevenue, setTotalRevenue] = useState({ daily: 0, weekly: 0, monthly: 0 });
 
     const fetchTotalRevenue = async () => {
@@ -12,7 +11,7 @@ const TotalRevenue = () => {
             
             if (response.data.success) {
                 setTotalRevenue(response.data.data);  // Now correctly mapping daily, weekly, monthly
-                console.log("Fetched revenue:", response.data.data);
+                // console.log("Fetched revenue:", response.data.data);
             } else {
                 console.error("Error fetching revenue:", response.data.message);
             }
@@ -37,9 +36,9 @@ const TotalRevenue = () => {
             </div>
             <div className="revenue-table">
                 <div className="revenue-table-format">
-                    <p>₱{totalRevenue.daily.toFixed(2)}</p>
-                    <p>₱{totalRevenue.weekly.toFixed(2)}</p>
-                    <p>₱{totalRevenue.monthly.toFixed(2)}</p>
+                    <p>₱{totalRevenue.dailyRevenue}</p>
+                    <p>₱{totalRevenue.monthlyRevenue}</p>
+                    <p>₱{totalRevenue.weeklyRevenue}</p>
                 </div>
             </div>
         </div>

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TopFoods.css';
 import axios from 'axios';
 
-const TopFoods = () => {
-    const url = 'https://smart-canteen-backend.onrender.com';
+const TopFoods = ({url}) => {
     const [topList, setTopList] = useState([]);
 
     const fetchTopList = async () => {
@@ -33,7 +32,7 @@ const TopFoods = () => {
 
             {topList.length > 0 ? (
                 topList.map((food, index) => (
-                    <div key={food.id} className="topFood-table">
+                    <div key={food._id} className="topFood-table">
                         <div className="topFood-table-format">
                             <p>#{index + 1}</p>
                             <img 

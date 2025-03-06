@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import './TotalReservations.css';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./TotalReservations.css";
+import axios from "axios";
 
-const TotalReservations = () => {
-  const url = "http://localhost:5000";
-  const [reservations, setReservations] = useState({
-    total: 0,
-    today: 0,
+const TotalReservations = ({url}) => {
+  const [totalReservations, setTotalReservations] = useState({
+    daily: 0,
     weekly: 0,
-    monthly: 0
+    monthly: 0,
   });
 
-  const fetchReservations = async () => {
-    try {
-      const response = await axios.get(`${url}/api/admin/total-reservations`);
-      setReservations(response.data);
-      console.log("Fetched reservations:", response.data);
-    } catch (error) {
-      console.error("Error fetching total reservations:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchReservations();
+    const fetchTotalReservations = async () => {
+      try {
+        const response = await axios.get(`${url}/api/admin/total-reservations`);
+        if (response.data.success) {
+          setTotalReservations(response.data.data);
+          // console.log("Fetched reservations:", response.data.data);
+        } else {
+          console.error("Error fetching reservations:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching total reservations:", error);
+      }
+    };
+
+    fetchTotalReservations();
   }, []);
 
   return (
@@ -30,35 +32,16 @@ const TotalReservations = () => {
       <h2>📅 Total Reservations</h2>
       <div className="reservations-table">
         <div className="reservations-table-format title">
-          <b>Time Period</b>
-          <b>Reservations</b>
-        </div>
-      </div>
-
-      <div className="reservations-table">
-        <div className="reservations-table-format">
-          <p>📅 Today</p>
-          <p>{reservations.reservationsToday}</p>
-        </div>
-      </div>
-
-      <div className="reservations-table">
-        <div className="reservations-table-format">
-          <p>📆 Weekly</p>
-          <p>{reservations.reservationsThisWeek}</p>
-        </div>
-      </div>
-
-      <div className="reservations-table">
-        <div className="reservations-table-format">
-          <p>📅 Monthly</p>
-          <p>{reservations.reservationsThisMonth}</p>
+          <b>Daily</b>
+          <b>Weekly</b>
+          <b>Monthly</b>
         </div>
       </div>
       <div className="reservations-table">
         <div className="reservations-table-format">
-          <p>📅 Total</p>
-          <p>{reservations.totalReservations}</p>
+          <p>{totalReservations.dailyReservations}</p>
+          <p>{totalReservations.weeklyReservations}</p>
+          <p>{totalReservations.monthlyReservations}</p>
         </div>
       </div>
     </div>

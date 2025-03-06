@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./InviteCodeGenerator.css";
 
-const InviteCodeGenerator = () => {
-    const url = "https://smart-canteen-backend.onrender.com";
+const InviteCodeGenerator = ({url}) => {
     const [inviteList, setInviteList] = useState([]);
 
     // Fetch stored invite codes from the database
@@ -11,7 +10,7 @@ const InviteCodeGenerator = () => {
         try {
             const response = await axios.get(`${url}/api/vendor/get-invite`);
             setInviteList(response.data.data);
-            console.log("Invite codes:", response.data.data);
+            // console.log("Invite codes:", response.data.data);
             
         } catch (error) {
             console.error("Error fetching invite codes:", error);

@@ -130,7 +130,7 @@ const getTopFoodItems = async (req, res) => {
     const foods = await foodModel.find({ _id: { $in: topFoodIds } });
 
     // console.log("Top Food Items:", foods);
-    
+ 
     res.json({ success: true, data: foods });
   } catch (error) {
     console.error("Error fetching top items:", error);
