@@ -10,8 +10,8 @@ function Footer() {
           <div className="footer-content-left">
               <Link to='/'><img src='https://upload.wikimedia.org/wikipedia/en/8/8c/Cebu_Institute_of_Technology_University_logo.png' alt="cit-u logo" className="logo" /></Link>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed, numquam! Optio aliquam 
-                ex laboriosam natus corrupti nisi, distinctio laborum enim accusamus! Cum fugiat, ad excepturi commodi architecto repellat ipsam natus.
+              SmartCanteen simplifies food reservations and order tracking for students and vendors, ensuring a seamless and efficient dining experience. With a user-friendly
+               interface and real-time updates, we make mealtime hassle-free. Order, track, and enjoy—SmartCanteen is here to serve you!
                 </p>
                 <div className="footer-social-icons">
                   <img src={assets.facebook_icon} alt="" />
