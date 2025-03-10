@@ -5,8 +5,8 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
-    const url = "https://smart-canteen-backend.onrender.com";
-    // const url = "http://localhost:5000";
+    // const url = "https://smart-canteen-backend.onrender.com";
+    const url = "http://localhost:5000";
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
     const [topList, setTopList] = useState([]);
@@ -45,7 +45,7 @@ const StoreContextProvider = (props) => {
     const fetchFoodList = async () => {
         const response = await axios.get(url + '/api/food/list');
         setFoodList(response.data.data);
-        // console.log("Food list:", response.data.data);
+        console.log("Food list:", response.data.data);
         
     };
     const fetchTopList = async () => {
