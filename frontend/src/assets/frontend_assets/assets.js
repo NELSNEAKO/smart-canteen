@@ -22,6 +22,7 @@ import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
 import breakfast from './breakfast.png'
 import lunch from './lunch.png'
+import drinks from './drinks.png'
 
 export const assets = {
     logo,
@@ -54,6 +55,10 @@ export const menu_list = [
     {
         menu_name: "Lunch",
         menu_image: lunch
+    },
+    {
+        menu_name: "Drinks",
+        menu_image: drinks
     }
 
     ]

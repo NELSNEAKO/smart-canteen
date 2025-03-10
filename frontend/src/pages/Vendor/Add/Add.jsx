@@ -87,7 +87,6 @@ const Add = () => {
                         <option value="Main Dishes">Main Dishes</option>
                         <option value="Snacks">Snacks</option>
                         <option value="Desert">Desert</option>
-                        <option value="Drinks">Drinks</option>
                         <option value="Pasta">Pasta</option>    
                         <option value="Healthy Options">Healthy Options</option>
                         <option value="Rice Meals">Rice Meals</option>
@@ -102,6 +101,7 @@ const Add = () => {
                     <select onChange={onChangeHandler} name="availability">
                         <option value="Break Fast">Break Fast</option>
                         <option value="Lunch">Lunch</option>
+                        <option value="Drinks">Drinks</option>
                     </select>
                 </div>
                 <div className="add-status flex-col">

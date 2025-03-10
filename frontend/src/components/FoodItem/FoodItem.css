@@ -2,14 +2,14 @@
     display: flex;
     align-items: center;
     width: auto;
-    height: 300px;
+    height: 250px;
     background: #fff;
     border-radius: 15px;
     padding: 15px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.05);
     transition: 0.3s ease-in-out;
     animation: fadeIn 0.8s;
-    gap: 28px;
+    gap: 20px;
     position: relative;
 }
 
@@ -110,4 +110,23 @@
 .food-item-counter img {
     width: 20px;
     cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .food-item-counter {
+        gap: 10px;
+        padding: 2px;
+    }
+
+    .add-button {
+        width: 40px;
+        position: absolute;
+        top: -50px;
+        right: 20px;
+        cursor: pointer;
+    }
+    .food-item-image {
+        width: 120px;
+        height: 120px;
+    }
 }
