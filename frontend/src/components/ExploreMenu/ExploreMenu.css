@@ -68,10 +68,8 @@
 /* Responsive design */
 @media (max-width: 768px) {
     .explore-menu-list {
-
-        justify-content: center;
         flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-    
+        gap: 2px;
     }
     .explore-menu-list-item {
         width: 100px;
@@ -80,5 +78,8 @@
     .explore-menu-list-item img {
         width: 60px;
         transition: 0.3s ease-in-out;
+    }
+    .meal-card p {
+        font-size: 12px;
     }
 }
