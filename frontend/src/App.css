@@ -61,3 +61,9 @@ hr{
     opacity: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .app{
+    width: 90%;
+  }
+}
