@@ -13,9 +13,9 @@ function HomePage() {
   return (
     <>
       <Header />
+      <TopFoods />
       <ExploreMenu availability={availability} setAvailability={setAvailability}/>
       <FoodDisplay  availability={availability}/>
-      <TopFoods />
       <AppDownload />
     </>
   );

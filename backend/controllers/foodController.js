@@ -120,7 +120,7 @@ const getTopFoodItems = async (req, res) => {
       .filter(item => item._id) // Avoid null values
       .map(item => new mongoose.Types.ObjectId(item._id)); // Convert explicitly
 
-    // console.log("Fetching food details for IDs:", topFoodIds);
+    console.log("Fetching food details for IDs:", topFoodIds);
 
     // Step 3: Debugging food collection
     const allFoods = await foodModel.find();

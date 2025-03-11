@@ -1,145 +1,70 @@
-/* Toggle Button (Arrow) */
-.toggle-btn {
-    position: fixed;
-    bottom: 20%;
-    right: 10px;
-    transform: translateY(-50%);
-    background: #ff5722;
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 50%;
-    font-size: 20px;
+.toplist-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.top-header{
+    color: #262626;
+    font-weight: 600;
+}
+
+.toplist-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-    transform: rotate(180deg); /* Always rotated */
-}
-
-/* Sidebar Container */
-.top-foods-container {
-    position: fixed;
-    top: 30%;
-    right: -320px; /* Hidden by default */
-    width: 280px;
-    height: 550px;
-    background: white;
+    gap: 30px;
     padding: 20px;
-    text-align: center;
-    box-shadow: -5px 0px 12px rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
-    transition: right 0.4s ease-in-out;
-    border-radius: 10px 0 0 10px;
 }
 
-/* When the sidebar is open */
-.top-foods-container.open {
-    right: 0; /* Slide in */
+.toplist-item {
+    position: relative;
+    width: 350px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Close (X) Button Inside Sidebar */
-.close-btn {
+.rank{
     position: absolute;
-    top: 10px;
-    left: 20px;
-    background: none;
-    border: none;
-    font-size: 18px;
+    bottom: 10px;
+    right: 20px;
+    font-size: 70px;
     font-weight: bold;
-    cursor: pointer;
-    color: #ff5722;
-    transition: color 0.3s ease-in-out;
+    color: #555;
+    text-transform: uppercase;
+}
+.rank-number{
+    font-size: 30px;
+}
+.toplist-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+.toplist-image:hover{
+    transform: scale(1.05);
 }
 
-.close-btn:hover {
-    color: #e64a19;
+.toplist-content {
+    padding: 15px;
 }
 
+.category {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    text-transform: uppercase;
+}
 
-/* Header */
-h2 {
-    font-size: 18px;
+.food-title {
+    font-size: 20px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 12px;
+    margin: 8px 0;
 }
 
-/* Food List */
-.top-foods-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* Individual Food Card */
-.food-card {
-    background: #f8f8f8;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Food Image */
-.food-card img {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-
-/* Food Info */
-.food-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex-grow: 1;
-}
-
-/* Rank */
-.rank {
+.date-comments {
     font-size: 14px;
-    font-weight: bold;
-    color: #ff5722;
-}
-
-/* Food Name */
-.food-name {
-    font-size: 14px;
-    font-weight: bold;
-    color: #444;
-    margin: 2px 0 0;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .top-foods-container {
-        width: 260px;
-        height: 500px;
-    }
-    
-    .toggle-btn {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-    
-    .food-card img {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .rank {
-        font-size: 13px;
-    }
-    
-    .food-name {
-        font-size: 13px;
-    }
+    color: #777;
 }

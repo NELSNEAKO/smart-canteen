@@ -1,43 +1,31 @@
-import React, { useState, useContext } from 'react';
-import { StoreContext } from '../../context/StoreContext';
-import './TopFoods.css';
+import React, { useContext } from "react";
+import { StoreContext } from "../../context/StoreContext";
+import "./TopFoods.css";
 
 const TopFoods = () => {
-    const { url, topList } = useContext(StoreContext);
-    const [isOpen, setIsOpen] = useState(false);
+  const { url, topList } = useContext(StoreContext);
 
-
-    return (
-        <>
-            {/* Toggle Button (Arrow) */}
-            <button className="toggle-btn" onClick={() => setIsOpen(true)}>
-                ➤
-            </button>
-
-            {/* Sidebar Container */}
-            <div className={`top-foods-container ${isOpen ? 'open' : ''}`}>
-                {/* Close Button */}
-                <button className="close-btn" onClick={() => setIsOpen(false)}>✖</button>
-
-                <h2>Top Food Items</h2>
-                <div className="top-foods-grid">
-                    {topList.map((food, index) => (
-                        <div key={food.FoodItem?.id || index} className="food-card"> {/* Fixed key issue */}
-                            <img 
-                                src={food.image ? `${url}/images/${food.image}` : ''} 
-                                alt="food" 
-                                className="food-image" 
-                            />
-                            <div className="food-info">
-                                <span className="rank">#{index + 1}</span>
-                                <h3 className="food-name">{food.name || "Unknown"}</h3>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  return (
+    <>
+    <h1 className="top-header">Your top foods!</h1>
+      <div className="toplist-container">
+        {topList.map((item, index) => (
+          <div key={index} className="toplist-item">
+            <img
+              src={`${url}/images/${item.image}`}
+              alt={item.name}
+              className="toplist-image"
+            />
+            <div className="toplist-content">
+              <span className="category">{item.category}</span>
+              <h3 className="food-title">{item.name}</h3>
+              <p className="rank">#<span className="rank-number">{index + 1}</span></p>
             </div>
-        </>
-    );
+          </div>
+        ))}
+      </div>
+    </>
+  );
 };
 
 export default TopFoods;
