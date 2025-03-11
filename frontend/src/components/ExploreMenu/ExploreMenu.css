@@ -72,11 +72,11 @@
         gap: 2px;
     }
     .explore-menu-list-item {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
     }
     .explore-menu-list-item img {
-        width: 60px;
+        width: 50px;
         transition: 0.3s ease-in-out;
     }
     .meal-card p {

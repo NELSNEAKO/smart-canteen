@@ -150,6 +150,37 @@ const fetchInviteCodes = async (req, res) => {
     }
 };
 
+const getVendor = async (req, res) => {
+    try {
+        const vendor = await vendorModel.find({ "invite_code.status": "used" });
+
+        if (!vendor) {
+            return res.status(404).json({ success: false, message: "No vendor found with 'used' invite code" });
+        }
+
+        res.json({ success: true, vendor });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Error retrieving vendor" });
+    }
+};
+
+// Delete Vendor
+const deleteVendor = async (req,res) =>{
+    const {vendorId} = req.params;
+
+    try {
+        const vendor = vendorModel.findByIdAndDelete(vendorId);
+        if(!vendor){
+            return res.status(404).json({success: false, message: 'Vendor not found'})
+        }
+        res.json({ success: true, message: 'Vendor deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error deleting vendor' });
+    }
+}
+
 
 
 module.exports = {
@@ -157,4 +188,6 @@ module.exports = {
     registerVendor,
     loginVendor,
     fetchInviteCodes,
+    getVendor,
+    deleteVendor,
 };

@@ -3,7 +3,9 @@ const {
     generateInviteCode,
     registerVendor,
     loginVendor,
-    fetchInviteCodes
+    fetchInviteCodes,
+    getVendor,
+    deleteVendor,
 } = require('../controllers/vendorController') //import controller
 
 const db = require('../config/db'); 
@@ -20,6 +22,13 @@ vendorRouter.post('/login', loginVendor);
 
 // Route for fetching all invite codes
 vendorRouter.get('/get-invite', fetchInviteCodes);
+
+// route for all vendors
+vendorRouter.get('/vendors', getVendor);
+
+// route for deleting vendor
+vendorRouter.delete('/delete/:vendorId', deleteVendor);
+
 
 module.exports = vendorRouter;
 

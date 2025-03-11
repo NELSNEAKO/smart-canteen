@@ -1,4 +1,30 @@
-.user-table-format{
+
+.users {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.user-table {
+    max-height: 500px; /* Set a fixed height for scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    border: 1px solid #cacaca; /* Optional: Keeps the table visually structured */
+}
+
+/* Optional: Improve scrollbar appearance */
+.user-table::-webkit-scrollbar {
+    width: 8px;
+}
+
+.user-table::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.user-table::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.user-table-format {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
@@ -8,28 +34,27 @@
     font-size: 13px;
 }
 
-.action{
+.action {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
-.action-title{
+
+.action-title {
     margin-left: 200px;
 }
-.user-table-format.title{
+
+.user-table-format.title {
     background-color: #f9f9f9;
     gap: 20px;
 }
 
-@media (max-width: 600px){
-    .user-table-format{
+@media (max-width: 600px) {
+    .user-table-format {
         grid-template-columns: 1fr 1fr 1fr;
         gap: 15px;
     }
-    .user-table-format.title{
-        display: none;        
+    .user-table-format.title {
+        display: none;
     }
-    
 }
-
-
