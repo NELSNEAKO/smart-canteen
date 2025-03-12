@@ -10,15 +10,16 @@ function PlaceOrder() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // ✅ Define totalAmount and reservationFee here so they can be used everywhere
+  const totalAmount = getTotalCartAmount(); 
+  const reservationFee = totalAmount * 0.5; 
+
   const placeOrder = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
 
-    
-
-    // Extracting user ID from token
-    const userId = token; // Ensure token exists
+    const userId = token;
     console.log("User ID from Token:", userId);
     
     if (!userId) {
@@ -26,7 +27,6 @@ function PlaceOrder() {
       return;
     }
 
-    // Constructing items array
     let items = food_list
       .filter(item => cartItems[item._id] > 0)
       .map(item => ({
@@ -41,10 +41,9 @@ function PlaceOrder() {
       return;
     }
 
-    // Creating reservation data
     let reservationData = {
-      amount: getTotalCartAmount(),
-      items, // Ensure it's "items" not "reservationItems"
+      amount: totalAmount, // ✅ Send full amount to backend
+      items,
     };
 
     try {
@@ -54,7 +53,7 @@ function PlaceOrder() {
       });
 
       if (response.data.session_url) {
-        window.location.href = response.data.session_url; // Redirect to PayMongo
+        window.location.href = response.data.session_url; // ✅ Redirect to PayMongo
       } else {
         setError('Failed to create checkout session.');
       }
@@ -82,9 +81,14 @@ function PlaceOrder() {
             <h2>Cart Totals</h2>
             <div>
               <hr />
+              {/* ✅ Show full price and reservation fee separately */}
               <div className="cart-total-details">
-                <b>Total</b>
-                <b>₱{getTotalCartAmount()}</b>
+                <b>Total (Full Price)</b>
+                <b>₱{totalAmount}</b>
+              </div>
+              <div className="cart-total-details">
+                <b>Reservation Fee (50%)</b>
+                <b>₱{reservationFee.toFixed(2)}</b>
               </div>
             </div>
             <button type='submit' disabled={loading}>

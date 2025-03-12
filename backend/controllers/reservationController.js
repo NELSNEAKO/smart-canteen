@@ -9,44 +9,54 @@ const frontendUrl = "https://smart-canteen-frontend.onrender.com";
 
 const placeReservation = async (req, res) => {
     try {
-        console.log("Request Body:", req.body); // Debugging: Check incoming data
-        console.log("Decoded User from Token:", req.user); // Debugging: Check extracted userId
+        console.log("Request Body:", req.body);
+        console.log("Decoded User from Token:", req.user);
 
-        // Extract userId from token instead of req.body
         const userId = req.user?.userId;
 
         if (!userId || !req.body.items || req.body.items.length === 0) {
             return res.status(400).json({ success: false, message: "Missing userId or items" });
         }
 
-        // ✅ Use food name from frontend request
-        const formattedItems = req.body.items.map(item => ({
-            foodId: item.id,      // Keep foodId
-            foodName: item.name,  // Use food name directly from request
-            quantity: item.quantity
-        }));
+        // ✅ Format items and calculate total amount
+        let totalAmount = 0;
+        const formattedItems = req.body.items.map(item => {
+            totalAmount += item.price * item.quantity; // Calculate full price
+            return {
+                foodId: item.id,
+                foodName: item.name,
+                quantity: item.quantity
+            };
+        });
 
-        // Create new reservation
+        // ✅ Calculate reservation fee (50%)
+        const reservationFee = totalAmount * 0.5;
+        const remainingBalance = totalAmount * 0.5;
+
+        // ✅ Create new reservation with full amount & track remaining balance
         const newReservation = new reservationModel({
             userId,
-            items: formattedItems, // ✅ Use formatted items with food names
-            amount: req.body.amount,
+            items: formattedItems,
+            amount: totalAmount,        // Full price stored
+            paidAmount: reservationFee, // Initial 50% payment
+            remainingBalance,           // Remaining 50% to be paid later
+            status: "Food Processing"   // Status to track remaining payment
         });
 
         await newReservation.save();
         await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-        // Fetch user details for PayMongo
+        // ✅ Fetch user details for PayMongo
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(400).json({ success: false, message: "User not found" });
         }
 
-        // PayMongo Integration
+        // ✅ Prepare PayMongo payment with 50% fee
         const line_items = formattedItems.map(item => ({
             currency: 'PHP',
-            amount: req.body.items.find(i => i.id === item.foodId).price * 100, // Get price from request
-            name: item.foodName, // ✅ Use food name from request
+            amount: (req.body.items.find(i => i.id === item.foodId).price * 100) * 0.5, // 50% charge
+            name: item.foodName,
             quantity: item.quantity,
         }));
 
@@ -59,7 +69,7 @@ const placeReservation = async (req, res) => {
                             name: user.name,    
                             email: user.email
                         },
-                        description: 'SmartCanteen Reservation Payment',
+                        description: 'SmartCanteen 50% Reservation Payment',
                         line_items,
                         payment_method_types: ['gcash', 'card'],
                         send_email_receipt: true,
@@ -79,13 +89,14 @@ const placeReservation = async (req, res) => {
 
         const session_url = session.data?.data?.attributes?.checkout_url;
 
-        res.json({ success: true, session_url });
+        res.json({ success: true, session_url, remainingBalance });
 
     } catch (error) {
         console.error("Error creating PayMongo session:", error.response?.data || error.message);
         res.status(500).json({ success: false, message: "Error creating PayMongo session" });
     }
 };
+
 
 
 
@@ -96,7 +107,7 @@ const verifyReservation = async (req, res) => {
             await reservationModel.findByIdAndUpdate(reservationId, { payment: 'true' });
             res.json({ success: true, message: "Payment successful" });
         } else {
-            await reservationModel.findByIdAndDelete(reservationId);
+            await reservationModel.findByIdAndUpdate(reservationId, { payment: 'false', status: 'Payment Failed' });
             res.json({ success: false, message: "Payment failed" });
         }
     } catch (error) {

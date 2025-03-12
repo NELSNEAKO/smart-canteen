@@ -27,7 +27,6 @@ const MyReservations = () => {
             if (response.data.success) {
                 setData(response.data.data);
                 console.log("Reservations:", response.data.data);
-                
             } else {
                 setError("Failed to fetch reservations.");
             }
@@ -61,21 +60,21 @@ const MyReservations = () => {
                                     (item) => `${item.foodName} x ${item.quantity}`
                                 ).join(", ")}
                             </p>
+                            <div>
+                                {/* Calculate Total Amount */}
+                                <p>Total: ₱{reservation.amount}</p>
 
-                            {/* Calculate Total Amount */}
-                            <p>
-                                Total: ₱
-                                {reservation.amount}
-                            </p>
-
-                            {/* Display Item Count */}
-                            <p>Items: {reservation.items?.length || 0}</p>
+                                {/* ✅ Show Balance only if payment is NOT failed */}
+                                {reservation.status !== "Payment Failed" && (
+                                    <p>Balance pay at counter: ₱{reservation.remainingBalance}</p>
+                                )}
+                            </div>        
 
                             {/* Display Status */}
                             <p>
                                 <span>&#x25cf;</span> <b>{reservation.status || "Pending"}</b>
                             </p>
-
+                                
                             <button onClick={fetchReservations}>Track Reservation</button>
                         </div>
                     ))
