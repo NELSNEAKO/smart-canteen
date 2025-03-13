@@ -18,7 +18,7 @@ const DropdownNotif = () => {
         headers: { token },
       });
       setNotifications(response.data.data || []); // Ensure it's an array
-      // console.log(response.data.data);
+      console.log(response.data.data);
       
     } catch (error) {
       console.error("Error fetching latest reservation:", error);
@@ -54,7 +54,7 @@ const DropdownNotif = () => {
                         (item) => `${item.foodName} x ${item.quantity}`
                           ).join(", ")}
                   </p>
-                  <p>Status: {notif.status}</p>
+                  <p>Payment: {notif.payment == true ? "Successful": "Failed"}</p>
                   <small>{new Date(notif.date).toLocaleString()}</small>
                 </div>
               </li>
