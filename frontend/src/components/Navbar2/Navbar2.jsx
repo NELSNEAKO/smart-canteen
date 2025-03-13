@@ -4,6 +4,7 @@ import { assets } from '../../assets/frontend_assets/assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import DropdownNotif from '../DropdownNotif/DropdownNotif';
 
 const Navbar2 = ({ setShowLogin }) => {
     const [menu, setMenu] = useState('home');
@@ -73,6 +74,11 @@ const Navbar2 = ({ setShowLogin }) => {
             </ul>
             <div className="navbar2-right">
                 <img src={assets.search_icon} alt="Search Icon" />
+                <div className="nav2-notif-con">
+                    <Link to="/" >
+                        <DropdownNotif />
+                    </Link>
+                </div>
                 <div className="navbar2-search-icon">
                     <Link to="/cart">
                         <img src={assets.basket_icon} alt="Cart Icon" />

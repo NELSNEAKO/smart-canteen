@@ -135,6 +135,10 @@ hr {
     margin: 5px 15px;
 }
 
+.nav2-notif-con img{
+    width: 36px;
+}
+
 /* Responsive Styles */
 @media (max-width: 1050px) {
     .navbar2 .logo {

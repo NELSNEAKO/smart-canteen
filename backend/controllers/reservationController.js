@@ -116,7 +116,6 @@ const verifyReservation = async (req, res) => {
 }
 
 
-// user reservations for frontend
 const userReservations = async (req, res) => {
     try {
         console.log("Decoded Request Body:", req.body); // Debug request body
@@ -127,11 +126,10 @@ const userReservations = async (req, res) => {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
 
-        const reservations = await reservationModel.find({ userId });
-
-        if (!reservations || reservations.length === 0) {
-            return res.status(200).json({ success: true, message: "No reservations found", data: [] });
-        }
+        const reservations = await reservationModel
+            .find({ userId })
+            .sort({ date: -1 }) // Sort by newest first
+            .limit(5); // Get only the latest 5
 
         console.log("Fetched Reservations:", reservations); // Debug fetched data
 
@@ -145,16 +143,20 @@ const userReservations = async (req, res) => {
 
 
 
-
 const fetchAllReservations = async (req, res) => {
     try {
-        const reservations = await reservationModel.find().populate('userId', 'student_id name email');
+        const reservations = await reservationModel
+            .find()
+            .populate('userId', 'student_id name email')
+            .sort({ date: -1 }); // Sort by oldest first
+
         res.json({ success: true, data: reservations });
     } catch (error) {
         console.error("Error fetching reservations:", error);
         res.status(500).json({ success: false, message: "Error fetching reservations" });
     }
 };
+
 
 const updateStatus = async (req, res) => {
     try {
@@ -177,7 +179,36 @@ const updateStatus = async (req, res) => {
 };
 
 
+const getLatestReservation = async (req, res) => {
+    try {
+        console.log("Decoded Request Body:", req.body); // Debug request body
+
+        const userId = req.body?.userId; // Extract userId
+
+        if (!userId) {
+            return res.status(400).json({ success: false, message: "User ID is required" });
+        }
+
+        const reservations = await reservationModel
+            .find({ userId })
+            .sort({ date: -1 }) // Sort by newest first
+            .limit(5); // Get only the latest 5
+
+        console.log("Fetched Reservations:", reservations); // Debug fetched data
+
+        res.status(200).json({ success: true, data: reservations });
+
+    } catch (error) {
+        console.error("Error fetching user reservations:", error);
+        res.status(500).json({ success: false, message: "Failed to retrieve reservations" });
+    }
+};
 
 
-
-module.exports = { placeReservation,verifyReservation, userReservations, fetchAllReservations, updateStatus };
+ module.exports = { placeReservation, 
+                    verifyReservation, 
+                    userReservations, 
+                    fetchAllReservations, 
+                    updateStatus,
+                    getLatestReservation, 
+                  };

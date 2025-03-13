@@ -23,6 +23,7 @@ import parcel_icon from './parcel_icon.png'
 import breakfast from './breakfast.png'
 import lunch from './lunch.png'
 import drinks from './drinks.png'
+import notification from './notification.png'
 
 export const assets = {
     logo,
@@ -44,7 +45,8 @@ export const assets = {
     logout_icon,
     bag_icon,
     parcel_icon,
-    background
+    background,
+    notification,
 }
 
 export const menu_list = [
