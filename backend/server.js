@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require("cookie-parser"); // Import cookie-parser
 const cors = require('cors');
 const path = require('path');
 const cartRouter = require('./routes/cartRoute');
@@ -7,19 +8,17 @@ const userRouter = require('./routes/userRoutes');
 const adminRouter = require('./routes/adminRoute');
 const reservationRouter = require('./routes/reservationRoute');
 const vendorRouter = require('./routes/vendorRoute');
+const authRouter = require('./routes/authRoute');
 
 const connectDB = require('./config/db');
-
-// const { sequelize } = require('./models/associations'); // Import sequelize instance to ensure associations are set up
-// console.log('Loaded Environment Variables:', process.env); // Log all environment variables for debugging
-
 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({credentials: true}));
+app.use(cookieParser());
 app.use(express.json());
 
 
@@ -40,6 +39,8 @@ app.use('/api/cart', cartRouter);
 app.use('/api/reservation', reservationRouter);
 app.use('/api/vendor', vendorRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/auth', authRouter);
+
 
 // Test Root Route
 app.get('/', (req, res) => {

@@ -58,7 +58,7 @@ const MyReservations = () => {
                             <p>
                                 {reservation.items?.map(
                                     (item) => `${item.foodName} x ${item.quantity}`
-                                ).join(", ")}
+                                ).join(", ")}   
                             </p>
                             <div>
                                 {/* Calculate Total Amount */}
