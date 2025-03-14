@@ -65,9 +65,9 @@ const MyReservations = () => {
                                 <p>Total: ₱{reservation.amount}</p>
 
                                 {/* ✅ Show Balance only if payment is NOT failed and NOT completed */}
-                                {reservation.status !== "Payment Failed" && reservation.status !== "Completed" && (
-                                    <p>Balance pay at counter: ₱{reservation.remainingBalance}</p>
-                                )}
+                                {reservation.status === "Completed" ? ( <p>Balance: Paid</p> ) : reservation.status !== "Payment Failed" && 
+                                 ( <p>Balance pay at counter: ₱{reservation.remainingBalance}</p> )
+                                }
                             </div>        
 
                             {/* Display Status */}

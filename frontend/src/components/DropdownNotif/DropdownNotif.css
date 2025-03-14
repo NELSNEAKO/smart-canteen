@@ -64,6 +64,7 @@
   
   /* Notification Items */
   .notif-item {
+    position: relative;
     display: flex;
     gap: 20px;
     background-color: #fff;
@@ -83,5 +84,17 @@
     text-align: center;
     color: gray;
     font-size: 14px;
+  }
+
+  .notif-close{
+    z-index: 1000;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .notif-close:hover{
+    color: tomato;
   }
   

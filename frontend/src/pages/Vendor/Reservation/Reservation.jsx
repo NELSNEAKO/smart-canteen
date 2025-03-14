@@ -17,7 +17,7 @@ const Reservation = () => {
       const response = await axios.get(`${url}/api/reservation/list`);
       if (response.data.success) {
         setReservations(response.data.data);
-        console.log('Reservations:', response.data.data);
+        // console.log('Reservations:', response.data.data);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -83,8 +83,10 @@ const Reservation = () => {
                   </div>
 
                   {/* Display Total Amount */}
-                  <p><b>Total:</b> ₱{reservation.amount}</p>
-
+                  <div>
+                    <p><b>Total:</b> ₱{reservation.amount}</p>
+                    <p>Balance: ₱{reservation.remainingBalance}</p>
+                  </div>
                   {/* Status Dropdown */}
                   <div>
                     <select

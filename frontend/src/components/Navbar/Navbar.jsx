@@ -1,7 +1,8 @@
 import React from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/admin_assets/assets';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import VendorNotif from '../VendorNotif/VendorNotif';
 
 
 const Navbar = () => {
@@ -27,13 +28,14 @@ const Navbar = () => {
         <p className="details">Vendor Panel</p>
       </div>
       <div className="navbar-right">
+        <VendorNotif />
         <div className="navbar-profile">
-          <img className="profile" src={assets.profile_icon} alt="Profile" />
+          <img src={assets.profile_icon} alt="Profile" />
           <ul className="nav-profile-dropdown">
             <div className="profile-header">
               <img className="profile-img" src={assets.profile_icon} alt="User" />
               <p className="profile-name">Vendor</p>
-            </div>
+            </div>  
             <hr />
             <li>
               <img src={assets.edit_icon} alt="" />

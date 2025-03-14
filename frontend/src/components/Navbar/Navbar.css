@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 4%;
+    padding: 10px 10%;
     padding-bottom: 20px;
     position: fixed;
     top: 0;
@@ -12,16 +12,21 @@
     z-index: 1;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.navbar-right{
+    display: flex;
+    gap: 20px;
+}
+.navbar-left{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
 
 .navbar .logo {
     width: 60px;
-}
-
-.navbar .details {
-    position: absolute;
-    font-size: 17px;
-    top: 70px;
-    left: 70px;
+    margin-left: 12px;
 }
 
 .navbar .profile {
@@ -94,18 +99,17 @@ hr {
 }
 
 @media (max-width: 600px) {
+    .navbar {
+        padding: 10px 5%;
+    }
     .navbar .profile {
         margin-right: 40px;
     }
-    .navbar .details {
-        top: 45px;
-        left: 40px;
-        font-size: 15px;
-    }
     .navbar-left {
-        margin-left: 40px;
+        margin-left: 20px;
     }
     .navbar .logo {
+        margin-left: 20px;
         width: 40px;
     }
     .navbar .profile {
