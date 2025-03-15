@@ -157,11 +157,36 @@ const getUser = async (req, res) => {
   }
 };
 
+const getStudentData = async (req,res) => {
+  try {
+    const {studentId} = req.body;
+
+    const student = await userModel.findById(studentId);
+
+    if(!student){
+      return res.json({success: false, message: 'Student not found'})
+    }
+
+    res.json({success: true,
+      studentData: {
+        name: student.name,
+        isAccountVerified: student.isAccountVerified
+      }
+    });
+
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+    
+  }
+}
+
 module.exports = { 
    loginStudent, 
    registerUser,
    getAllUsers, 
    updateUser, 
    deleteUser,
-   getUser 
+   getUser,
+   getStudentData, 
   };

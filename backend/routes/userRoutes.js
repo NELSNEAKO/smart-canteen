@@ -6,8 +6,10 @@ const {
     updateUser,
     deleteUser,
     getUser,
+    getStudentData,
 } = require('../controllers/userController') //import controller
 const authMiddleware = require('../middleware/auth');
+const userAuth = require('../middleware/userAuth')
 
 
 const db = require('../config/db'); 
@@ -31,6 +33,9 @@ userRouter.put('/update/:userId', updateUser);
 
 // Route for deleting user
 userRouter.delete('/delete/:userId', deleteUser);
+
+userRouter.get('/data', userAuth, getStudentData);
+
 
 
 

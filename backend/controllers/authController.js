@@ -229,6 +229,44 @@ const sendResetOtp = async (req, res)=>{
     }
 }
 
+// Reser Student Password
+const studentResetPass = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.json({ success: false, message: "Email, OTP, and new password are required" });
+    }
+
+    try {
+        const student = await userModel.findOne({ email });
+        if (!student) {
+            return res.json({ success: false, message: "Student not found" });
+        }
+
+        if (student.resetOtp === "" || student.resetOtp !== otp) {
+            return res.json({ success: false, message: "Invalid OTP" });
+        }
+
+        if (student.resetOtpExpireAt < Date.now()) {
+            return res.json({ success: false, message: "OTP expired" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 8);
+
+        student.password = hashedPassword;
+        student.resetOtp = '';
+        student.resetOtpExpireAt = 0;
+
+        await student.save();
+
+        return res.json({ success: true, message: "Password has been reset successfully" });
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+
 module.exports = {
     studentRegister,
     studentLogin,
@@ -236,4 +274,6 @@ module.exports = {
     sendVerifyOtp,
     verifyEmail,
     isAuthenticated,
+    studentResetPass,
+    sendResetOtp,
   };
