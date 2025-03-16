@@ -3,81 +3,98 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 const transporter = require('../config/nodemailer');
 
-const studentRegister = async (req, res) =>{
+const studentRegister = async (req, res) => {
+    const { student_id, name, email, password } = req.body;
 
-    const {student_id, name, email, password} = req.body;
-
-    if(!name || !email || !password){
-        return res.json({success: false, message: 'Missing Details!'})
+    if (!student_id || !name || !email || !password) {
+        return res.json({ success: false, message: "Missing Details!" });
     }
 
     try {
+        const existingStudent = await userModel.findOne({ email });
 
-        const existingStudent = await userModel.findOne({email})
-
-        if(existingStudent){
-            return res.json({success: false, message: 'User already exist!'})
+        if (existingStudent) {
+            return res.json({ success: false, message: "User already exists!" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 8);
 
-        const student = new userModel({student_id, name, email, password: hashedPassword});
+        const student = new userModel({
+            student_id,
+            name,
+            email,
+            password: hashedPassword,
+        });
+
         await student.save();
 
-        const token = jwt.sign({id: userModel._id}, process.env.JWT_SECRET, {expiresIn: '7d'});
+        // ✅ Corrected token generation
+        const token = jwt.sign(
+            { id: student._id, userType: "student" },  // Include userType
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
 
-        res.cookie('token', token, {
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000 
+            // secure: process.env.NODE_ENV === "production",
+            secure: false,
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
         // Sending welcome email
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
-            subject: 'Welcome to SmartCanteen',
-            text: `Welcome to Smart Canteen website. Your account has been created with email id: ${email}`
-        }
+            subject: "Welcome to SmartCanteen",
+            text: `Welcome to Smart Canteen website. Your account has been created with email ID: ${email}.`,
+        };
 
         await transporter.sendMail(mailOptions);
 
-        return res.json({success: true});
+        return res.json({ success: true, message: "Registration successful", token });
+
     } catch (error) {
-        return res.json({success: false, message: error.message})
+        return res.json({ success: false, message: error.message });
     }
-}
+};
+
 const studentLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.json({ success: false, message: 'Email and password are required!' });
+        return res.json({ success: false, message: "Email and password are required!" });
     }
 
     try {
         const student = await userModel.findOne({ email });
 
         if (!student) {
-            return res.json({ success: false, message: 'Invalid email' });
+            return res.json({ success: false, message: "Invalid email" });
         }
 
         const isMatch = await bcrypt.compare(password, student.password);
         if (!isMatch) {
-            return res.json({ success: false, message: 'Invalid password' });
+            return res.json({ success: false, message: "Invalid password" });
         }
 
         // ✅ Use student._id instead of userModel._id
-        const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign(
+            { id: student._id, userType: "student" },  // Include userType
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
 
-        res.cookie('token', token, {
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            // secure: process.env.NODE_ENV === "production",
+            secure: false,
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        return res.json({ success: true, message: 'Login successful', token });
+        return res.json({ success: true, message: "Login successful", token, userType: 'student' });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });

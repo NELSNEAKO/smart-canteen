@@ -5,6 +5,8 @@ import VendorLayout from "./layouts/VendorLayout";
 import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import protected route
 
 // Student Pages
+import ResetPasswordForm from "./components/ResetPasswordForm/ResetPasswordForm";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import HomePage from "./pages/Student/Home/HomePage";
 import Cart from "./pages/Student/Cart/Cart";
 import PlaceOrder from "./pages/Student/PlaceOrder/PlaceOrder";
@@ -16,7 +18,6 @@ import Add from "./pages/Vendor/Add/Add";
 import List from "./pages/Vendor/List/List";
 import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
-
 const App = () => {
   return (
     <Router>
@@ -34,6 +35,8 @@ const App = () => {
         {/* Student Routes */}
         <Route path="/" element={<StudentLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="send-reset-otp" element={<ResetPassword />} />
+          <Route path="reset-password" element={<ResetPasswordForm />} />
           <Route element={<ProtectedRoute allowedUserType="student" />}>
             <Route path="cart" element={<Cart />} />
             <Route path="order" element={<PlaceOrder />} />

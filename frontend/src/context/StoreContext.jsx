@@ -10,6 +10,7 @@ const StoreContextProvider = (props) => {
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
     const [topList, setTopList] = useState([]);
+    const [studentData, setStudentData] = useState(false);
 
     const addToCart = async (itemId) => {
        if (!cartItems[itemId]) {
@@ -77,6 +78,15 @@ const StoreContextProvider = (props) => {
             console.error("Error fetching cart:", error);
         }
     };
+
+    const getUserData = async ()=> {
+        try {
+            const {data} = await axios.get(`${url}/api/user/data`)
+            data.success ? setStudentData(data.studentData) : toast.error(data.message);
+        } catch (error) {
+            
+        }
+    }
     
     useEffect(() => {
         async function fetchData() {

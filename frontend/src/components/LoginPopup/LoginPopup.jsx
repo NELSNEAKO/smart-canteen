@@ -3,7 +3,7 @@ import './LoginPopup.css';
 import { assets } from '../../assets/frontend_assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Spinner from '../Spinner/Spinner';
 
 const LoginPopup = ({ setShowLogin }) => {
@@ -30,13 +30,15 @@ const LoginPopup = ({ setShowLogin }) => {
 
     let newUrl = url; 
     if (currState === 'Login') {
-      newUrl += '/api/user/login';
+      newUrl += '/api/auth/login';
     } else {
-      newUrl += '/api/user/register';
+      newUrl += '/api/auth/register';
     }
 
     try {
-      const response = await axios.post(newUrl, data);
+      const response = await axios.post(newUrl, data,{
+        withCredentials: true, // ✅ Include cookies
+      });
       if (response.data.success) {
         if (currState === 'Login') {
           setToken(response.data.token);
@@ -102,6 +104,7 @@ const LoginPopup = ({ setShowLogin }) => {
             placeholder="Your password"
             required
           />
+          {currState === 'Login' ? <p onClick={()=> {navigate('/send-reset-otp'); setShowLogin(false)}} className='forgot-pass'>Forgot password?</p> : ''}
         </div>
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : currState === 'Sign Up' ? 'Create Account' : 'Login'}
