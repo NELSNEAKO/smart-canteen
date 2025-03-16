@@ -13,7 +13,7 @@ const reservationSchema = new mongoose.Schema({
   status: { type: String, default: 'Food Processing' }, // ✅ Update status dynamically
   date: { type: Date, default: Date.now },
   payment: { type: Boolean, default: false } // ✅ Can update to true when fully paid
-});
+},{ strictPopulate: false });
 
 const reservationModel = mongoose.models.reservation || mongoose.model('Reservation', reservationSchema);
 

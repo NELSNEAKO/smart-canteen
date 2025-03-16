@@ -12,7 +12,7 @@ const Reservation = ({ url }) => {
       const response = await axios.get(`${url}/api/reservation/list`);
       if (response.data.success) {
         setReservations(response.data.data);
-        console.log('Reservations:', response.data.data);
+        // console.log('Reservations:', response.data.data);
       }
     } catch (error) {
       console.error('Error:', error);

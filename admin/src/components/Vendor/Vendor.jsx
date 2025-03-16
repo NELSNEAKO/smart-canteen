@@ -11,7 +11,7 @@ const Vendor = ({ url }) => {
             const response = await axios.get(`${url}/api/vendor/vendors`);
             if (response.data.success) {
                 setVendor(response.data.vendor);
-                console.log(response.data.vendor);
+                // console.log(response.data.vendor);
             } else {
                 toast.error(response.data.message);
             }
