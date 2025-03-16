@@ -54,6 +54,11 @@ hr{
   font-weight: 900;
 }
 
+.black{
+  filter: grayscale(100%) brightness(0%);
+  width: 100%;
+}
+
 
 @keyframes fadeIn{
   0%{

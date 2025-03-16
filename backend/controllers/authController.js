@@ -220,6 +220,10 @@ const sendResetOtp = async (req, res)=>{
             return res.json({success: false, message: "Student not found"})
         }
 
+        if(!student.isAccountVerified){
+            return res.json({success: false, message: "Account is not Verified"})
+        }
+
         // Generate a 6-digit OTP
         const otp = String(Math.floor(100000 + Math.random() * 900000)); 
 

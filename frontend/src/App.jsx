@@ -14,6 +14,7 @@ import Cart from "./pages/Student/Cart/Cart";
 import PlaceOrder from "./pages/Student/PlaceOrder/PlaceOrder";
 import Verify from "./pages/Student/Verify/Verify";
 import MyReservations from "./pages/Student/MyReservations/MyReservations";
+import EmailVerify from "./components/EmailVerify/EmailVerify";
 
 // Vendor Pages
 import Add from "./pages/Vendor/Add/Add";
@@ -43,6 +44,7 @@ const App = () => {
           <Route element={<ProtectedRoute allowedUserType="student" />}>
             <Route path="cart" element={<Cart />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="verify-email" element={<EmailVerify />} />
             <Route path="order" element={<PlaceOrder />} />
             <Route path="verify" element={<Verify />} />
             <Route path="myReservations" element={<MyReservations />} />

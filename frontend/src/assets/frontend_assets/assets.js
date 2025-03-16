@@ -25,6 +25,7 @@ import lunch from './lunch.png'
 import drinks from './drinks.png'
 import notification from './notification.png'
 import verified from './verified.png'
+import profile_light from './profile-light.png';
 
 export const assets = {
     logo,
@@ -49,6 +50,7 @@ export const assets = {
     background,
     notification,
     verified,
+    profile_light,
 }
 
 export const menu_list = [

@@ -103,7 +103,7 @@ const Navbar2 = ({ setShowLogin }) => {
                                 <p>{user.name}</p>
                             </div>
                             <li onClick={() => navigate('/profile')}>
-                                <img src={assets.bag_icon} alt="Reservations" />
+                                <img src='https://i0.wp.com/thelegalquotient.com/wp-content/uploads/2023/04/Person.jpg?w=225&ssl=1' alt="Profile" />
                                 <p>My Profile</p>
                             </li>
                             <li onClick={() => navigate('/myReservations')}>

@@ -23,7 +23,7 @@ const Profile = () => {
   
           if (response.data.success) {
             setStudent(response.data.studentData);
-            console.log(response.data.studentData);
+            // console.log(response.data.studentData);
           } else {
             console.log('error fetching student data');
           }
@@ -31,6 +31,18 @@ const Profile = () => {
           console.error(err);
         } 
       };
+
+      const handleSendOtp = async () => {
+        try {
+           
+            const response = await axios.post(`${url}/api/auth/send-verify-otp`, {},{ withCredentials: true });
+            setTimeout(() => navigate("/verify-email"), 100);
+            console.log('sending OTP EMAIL');
+        } catch (error) {
+          console.log('error sending OTP');
+          
+        }
+    };
 
     useEffect(() => {
         fetchStudentData();
@@ -46,9 +58,9 @@ const Profile = () => {
         <div className="verify-btn">
             {student.isAccountVerified 
                 ? <div className="verified"> <img src={assets.verified} alt="" /> <p>Verified</p> </div>
-                : <button onClick={()=> navigate('/verify')}>Verify account</button>
+                : <button onClick={()=> handleSendOtp()}>Verify account</button>
             }
-        </div>
+        </div>  
       </div>
 
       <div className="profile-details">
