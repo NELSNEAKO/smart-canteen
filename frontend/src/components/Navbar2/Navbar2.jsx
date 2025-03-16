@@ -32,11 +32,23 @@ const Navbar2 = ({ setShowLogin }) => {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userType');
-        setToken("");
-        navigate('/');
+    const logout = async () => {
+        try {
+            // Send request to backend to clear the cookie
+            await axios.post(`${url}/api/auth/logout`, {}, { withCredentials: true });
+    
+            // Remove localStorage data
+            localStorage.removeItem('token');
+            localStorage.removeItem('userType');
+    
+            // Clear frontend state if needed
+            setToken("");
+    
+            // Redirect user to home/login page
+            navigate('/');
+        } catch (error) {
+            console.log('Error logging out:', error.response?.data?.message || error.message);
+        }
     };
 
     useEffect(() => {

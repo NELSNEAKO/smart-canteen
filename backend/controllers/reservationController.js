@@ -147,7 +147,7 @@ const fetchAllReservations = async (req, res) => {
     try {
         const reservations = await reservationModel
             .find()
-            .populate('userId', 'student_id name email')
+            .populate('userId   ', 'student_id name email')
             .sort({ date: -1 }); // Sort by oldest first
 
         res.json({ success: true, data: reservations });

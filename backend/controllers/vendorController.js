@@ -9,7 +9,6 @@ const createToken = (id, type) => {
     return jwt.sign({ id, type }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-// 📌 Register Vendor
 // 📌 Register Vendor (Fixed)
 const registerVendor = async (req, res) => {
     const { invite_code, name, email, password } = req.body;

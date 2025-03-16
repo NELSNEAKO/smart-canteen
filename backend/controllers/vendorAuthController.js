@@ -1,54 +1,65 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/userModel');
+const vendorModel = require('../models/vendorModel');
 const transporter = require('../config/nodemailer');
 
-const studentRegister = async (req, res) => {
-    const { student_id, name, email, password } = req.body;
+const vendorRegister = async (req, res) => {
+    const { invite_code, name, email, password } = req.body;
 
-    if (!student_id || !name || !email || !password) {
+    if (!invite_code || !name || !email || !password) {
         return res.json({ success: false, message: "Missing Details!" });
     }
 
     try {
-        const existingStudent = await userModel.findOne({ email });
-
-        if (existingStudent) {
-            return res.json({ success: false, message: "User already exists!" });
+        // 1️⃣ Check if vendor already exists by email
+        const existingVendor = await vendorModel.findOne({ email });
+        if (existingVendor) {
+            return res.json({ success: false, message: "Vendor already exists!" });
         }
 
+
+        // 2️⃣ Hash Password
         const hashedPassword = await bcrypt.hash(password, 8);
 
-        const student = new userModel({
-            student_id,
-            name,
-            email,
-            password: hashedPassword,
-        });
+        // 3️⃣ Update the existing vendor entry instead of creating a new one
+        const updatedVendor = await vendorModel.findOneAndUpdate(
+            { "invite_code.code": invite_code},
+            {
+                $set: {
+                    name,
+                    email,
+                    password: hashedPassword,
+                    "invite_code.status": "used"
+                }
+            },
+            { new: true }
+        );
 
-        await student.save();
+        if (!updatedVendor) {
+            return res.json({ success: false, message: "Invalid or already used invite code!" });
+        }
 
-        // ✅ Corrected token generation
+        // 4️⃣ ✅ Corrected Token Generation
         const token = jwt.sign(
-            { id: student._id, userType: "student" },  // Include userType
+            { id: updatedVendor._id, vendorype: "vendor" }, // ✅ Fix: Use updatedVendor
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
 
+        // 5️⃣ Set Secure Cookie
         res.cookie("token", token, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production",
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        // Sending welcome email
+        // 6️⃣ Sending Welcome Email
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
-            subject: "Welcome to SmartCanteen",
-            text: `Welcome to Smart Canteen website. Your account has been created with email ID: ${email}.`,
+            subject: "Welcome Vendors to SmartCanteen",
+            text: `Welcome to SmartCanteen! Your account has been created with email: ${email}.`,
         };
 
         await transporter.sendMail(mailOptions);
@@ -56,11 +67,12 @@ const studentRegister = async (req, res) => {
         return res.json({ success: true, message: "Registration successful", token });
 
     } catch (error) {
+        console.error("Vendor Registration Error:", error);
         return res.json({ success: false, message: error.message });
     }
 };
 
-const studentLogin = async (req, res) => {
+const vendorLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -68,20 +80,20 @@ const studentLogin = async (req, res) => {
     }
 
     try {
-        const student = await userModel.findOne({ email });
+        const vendor = await vendorModel.findOne({ email });
 
-        if (!student) {
+        if (!vendor) {
             return res.json({ success: false, message: "Invalid email" });
         }
 
-        const isMatch = await bcrypt.compare(password, student.password);
+        const isMatch = await bcrypt.compare(password, vendor.password);
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid password" });
         }
 
-        // ✅ Use student._id instead of userModel._id
+        // ✅ Use vendor._id instead of vendorodel._id
         const token = jwt.sign(
-            { id: student._id, userType: "student" },  // Include userType
+            { id: vendor._id, vendorype: "vendor" },  // Include vendorype
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
@@ -94,7 +106,7 @@ const studentLogin = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        return res.json({ success: true, message: "Login successful", token, userType: 'student' });
+        return res.json({ success: true, message: "Login successful", token, vendorype: 'vendor' });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -118,16 +130,16 @@ const logout = async (req, res) =>{
 
 const sendVerifyOtp = async (req, res) => {
     try {
-        const { studentId } = req.body;
+        const { vendorId } = req.body;
 
-        // Check if student exists
-        const student = await userModel.findById(studentId);
-        if (!student) {
-            return res.json({ success: false, message: "Student not found" });
-        }
+        // Check if vendor exists
+        const vendor = await vendorModel.findById(vendorId);
+        if (!vendor) {
+            return res.json({ success: false, message: "vendor not found" });
+        }   
 
         // Check if account is already verified
-        if (student.isAccountVerified) {
+        if (vendor.isAccountVerified) {
             return res.json({ success: false, message: "Account already verified" });
         }
 
@@ -135,15 +147,15 @@ const sendVerifyOtp = async (req, res) => {
         const otp = String(Math.floor(100000 + Math.random() * 900000)); 
 
         // Save OTP and expiration time
-        student.verifyOtp = otp;
-        student.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+        vendor.verifyOtp = otp;
+        vendor.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-        await student.save();
+        await vendor.save();
 
         // Email options
         const mailOption = {
             from: process.env.SENDER_EMAIL,
-            to: student.email,
+            to: vendor.email,
             subject: 'Account Verification OTP',
             text: `Your OTP is ${otp}. Verify your account using this OTP.`
         };
@@ -160,32 +172,32 @@ const sendVerifyOtp = async (req, res) => {
 
 
 const verifyEmail = async (req, res)=>{
-    const {studentId, otp} = req.body;
+    const {vendorId, otp} = req.body;
 
-    if(!studentId || !otp){
+    if(!vendorId || !otp){
         return res.json({success:false, message: 'Missing Details'});
     }
     
     try {
-        const student = await userModel.findById(studentId);
+        const vendor = await vendorModel.findById(vendorId);
 
-        if(!student){
-            return res.json({success:false, message: 'User not Found'});
+        if(!vendor){
+            return res.json({success:false, message: 'vendornot Found'});
         }
 
-        if(student.verifyOtp === '' || student.verifyOtp !== otp){
+        if(vendor.verifyOtp === '' || vendor.verifyOtp !== otp){
             return res.json({success:false, message: 'Invalid OTP'});
         }
 
-        if(student.verifyOtpExpireAt < Date.now()){
+        if(vendor.verifyOtpExpireAt < Date.now()){
             return res.json({success:false, message: 'OTP Expired'});
         }
 
-        student.isAccountVerified = true;
-        student.verifyOtp = '';
-        student.verifyOtpExpireAt = 0;
+        vendor.isAccountVerified = true;
+        vendor.verifyOtp = '';
+        vendor.verifyOtpExpireAt = 0;
 
-        await student.save();
+        await vendor.save();
 
         return res.json({success:true, message: 'Email verified successfully'});
 
@@ -215,12 +227,12 @@ const sendResetOtp = async (req, res)=>{
     
     try {
         
-        const student = await userModel.findOne({email});
-        if(!student){
-            return res.json({success: false, message: "Student not found"})
+        const vendor = await vendorModel.findOne({email});
+        if(!vendor){
+            return res.json({success: false, message: "vendor not found"})
         }
 
-        if(!student.isAccountVerified){
+        if(!vendor.isAccountVerified){
             return res.json({success: false, message: "Account is not Verified"})
         }
 
@@ -228,15 +240,15 @@ const sendResetOtp = async (req, res)=>{
         const otp = String(Math.floor(100000 + Math.random() * 900000)); 
 
         // Save OTP and expiration time
-        student.resetOtp = otp;
-        student.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+        vendor.resetOtp = otp;
+        vendor.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-        await student.save();
+        await vendor.save();
 
         // Email options
         const mailOption = {
             from: process.env.SENDER_EMAIL,
-            to: student.email,
+            to: vendor.email,
             subject: 'Password Reset OTP',
             text: `Your OTP for resseting your password is  ${otp}. Use this OTP to proceed with resetting your password.`
         };
@@ -250,8 +262,8 @@ const sendResetOtp = async (req, res)=>{
     }
 }
 
-// Reser Student Password
-const studentResetPass = async (req, res) => {
+// Reser vendor Password
+const vendorResetPass = async (req, res) => {
     const { email, otp, newPassword } = req.body;
 
     if (!email || !otp || !newPassword) {
@@ -259,26 +271,26 @@ const studentResetPass = async (req, res) => {
     }
 
     try {
-        const student = await userModel.findOne({ email });
-        if (!student) {
-            return res.json({ success: false, message: "Student not found" });
+        const vendor = await vendorModel.findOne({ email });
+        if (!vendor) {
+            return res.json({ success: false, message: "vendor not found" });
         }
 
-        if (student.resetOtp === "" || student.resetOtp !== otp) {
+        if (vendor.resetOtp === "" || vendor.resetOtp !== otp) {
             return res.json({ success: false, message: "Invalid OTP" });
         }
 
-        if (student.resetOtpExpireAt < Date.now()) {
+        if (vendor.resetOtpExpireAt < Date.now()) {
             return res.json({ success: false, message: "OTP expired" });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 8);
 
-        student.password = hashedPassword;
-        student.resetOtp = '';
-        student.resetOtpExpireAt = 0;
+        vendor.password = hashedPassword;
+        vendor.resetOtp = '';
+        vendor.resetOtpExpireAt = 0;
 
-        await student.save();
+        await vendor.save();
 
         return res.json({ success: true, message: "Password has been reset successfully" });
 
@@ -289,12 +301,12 @@ const studentResetPass = async (req, res) => {
 
 
 module.exports = {
-    studentRegister,
-    studentLogin,
+    vendorRegister,
+    vendorLogin,
     logout,
     sendVerifyOtp,
     verifyEmail,
     isAuthenticated,
-    studentResetPass,
+    vendorResetPass,
     sendResetOtp,
   };

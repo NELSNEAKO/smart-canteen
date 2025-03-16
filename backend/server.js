@@ -9,6 +9,8 @@ const adminRouter = require('./routes/adminRoute');
 const reservationRouter = require('./routes/reservationRoute');
 const vendorRouter = require('./routes/vendorRoute');
 const authRouter = require('./routes/authRoute');
+const vendorAuthRoute = require('./routes/vendorAuthRoute');
+
 
 const connectDB = require('./config/db');
 
@@ -42,6 +44,8 @@ app.use('/api/reservation', reservationRouter);
 app.use('/api/vendor', vendorRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/vendor-auth', vendorAuthRoute);
+
 
 
 // Test Root Route

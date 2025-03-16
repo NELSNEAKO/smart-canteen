@@ -10,15 +10,13 @@ const VendorNotif = () => {
   const { url } = useContext(StoreContext);
   const [notifications, setNotifications] = useState([]);
 
-  // Load hidden notifications and fetch data
-  useEffect(() => {
-    fetchAllReservations();
-  }, []);
-
+  
   const fetchAllReservations = async () => {
     try {
       const response = await axios.get(`${url}/api/reservation/list`);
       if (response.data.success) {
+        console.log(response.data.data);
+        
         const hiddenNotifs = JSON.parse(localStorage.getItem("hiddenNotifs")) || [];
         
         // Filter out hidden notifications
@@ -29,7 +27,16 @@ const VendorNotif = () => {
       console.error("Error:", error);
       toast.error("Something went wrong!");
     }
+
   };
+
+     // Load hidden notifications and fetch data only if the token exists
+     useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        fetchAllReservations();
+      }
+    }, []);
 
   // Hide notification and store in localStorage
   const handleRemoveNotif = (notifId) => {
@@ -40,6 +47,7 @@ const VendorNotif = () => {
     const hiddenNotifs = JSON.parse(localStorage.getItem("hiddenNotifs")) || [];
     hiddenNotifs.push(notifId);
     localStorage.setItem("hiddenNotifs", JSON.stringify(hiddenNotifs));
+
   };
 
   return (
@@ -58,8 +66,8 @@ const VendorNotif = () => {
                   <img src={assets.parcel_icon} alt="" />
                 </div>
                 <div className="notif-item-right">
-                  <p>Name: {notif.userId.name}</p>
-                  <p>Student Id: {notif.userId.student_id}</p>
+                  <p>Name: {notif.userId?.name || 'Uknown'}</p>
+                  <p>Student Id: {notif.userId?.student_id || 'N/A'}</p>
                   <p>Payment: {notif.payment ? "Successful" : "Failed"}</p>
                   <small>{new Date(notif.date).toLocaleString()}</small>
                 </div>
