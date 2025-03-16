@@ -170,11 +170,12 @@ const getStudentData = async (req,res) => {
     res.json({success: true,
       studentData: {
         name: student.name,
+        email: student.email,
+        studentId: student.student_id,
+        password: student.password,
         isAccountVerified: student.isAccountVerified
       }
     });
-
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
     

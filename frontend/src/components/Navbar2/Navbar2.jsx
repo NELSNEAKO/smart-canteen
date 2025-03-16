@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import DropdownNotif from '../DropdownNotif/DropdownNotif';
+import Profile from '../Profile/Profile';
 
 const Navbar2 = ({ setShowLogin }) => {
     const [menu, setMenu] = useState('home');
@@ -92,14 +93,19 @@ const Navbar2 = ({ setShowLogin }) => {
                         <img 
                             src={assets.profile_icon} 
                             alt="Profile Icon" 
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
+                            onClick={() => {
+                                setIsDropdownOpen(!isDropdownOpen);
+                            }} 
                         />
                         <ul className={`nav2-profile-dropdown ${isDropdownOpen ? 'open' : ''}`}>
-                            <div className="profile-header">
+                            <div className="nav-profile-header">
                                 <img className="profile-img" src={assets.profile_icon} alt="User Profile" />
                                 <p>{user.name}</p>
                             </div>
-                            <hr />
+                            <li onClick={() => navigate('/profile')}>
+                                <img src={assets.bag_icon} alt="Reservations" />
+                                <p>My Profile</p>
+                            </li>
                             <li onClick={() => navigate('/myReservations')}>
                                 <img src={assets.bag_icon} alt="Reservations" />
                                 <p>Reservations</p>

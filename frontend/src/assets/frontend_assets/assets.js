@@ -24,6 +24,7 @@ import breakfast from './breakfast.png'
 import lunch from './lunch.png'
 import drinks from './drinks.png'
 import notification from './notification.png'
+import verified from './verified.png'
 
 export const assets = {
     logo,
@@ -47,6 +48,7 @@ export const assets = {
     parcel_icon,
     background,
     notification,
+    verified,
 }
 
 export const menu_list = [

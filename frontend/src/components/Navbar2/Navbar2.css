@@ -96,12 +96,13 @@
 }
 
 
-.profile-header {
+.nav-profile-header {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     padding: 10px 15px;
 }
+
 
 .profile-img {
     width: 40px;

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import StudentLayout from "./layouts/StudentLayout";
 import VendorLayout from "./layouts/VendorLayout";
 import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import protected route
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Student Pages
 import ResetPasswordForm from "./components/ResetPasswordForm/ResetPasswordForm";
@@ -18,6 +20,7 @@ import Add from "./pages/Vendor/Add/Add";
 import List from "./pages/Vendor/List/List";
 import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
+import Profile from "./components/Profile/Profile";
 const App = () => {
   return (
     <Router>
@@ -39,6 +42,7 @@ const App = () => {
           <Route path="reset-password" element={<ResetPasswordForm />} />
           <Route element={<ProtectedRoute allowedUserType="student" />}>
             <Route path="cart" element={<Cart />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="order" element={<PlaceOrder />} />
             <Route path="verify" element={<Verify />} />
             <Route path="myReservations" element={<MyReservations />} />

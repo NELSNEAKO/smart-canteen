@@ -5,9 +5,11 @@ import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
 import Spinner from '../Spinner/Spinner';
+import { toast } from "react-toastify"; // Import Toast
+import "react-toastify/dist/ReactToastify.css"; // Import CSS
 
 const LoginPopup = ({ setShowLogin }) => {
-  const { url, setToken } = useContext(StoreContext);
+  const { url, setToken, getUserData } = useContext(StoreContext);
   const navigate = useNavigate();
   const [currState, setCurrState] = useState('Login');
   const [loading, setLoading] = useState(false); // Loading state
@@ -45,11 +47,13 @@ const LoginPopup = ({ setShowLogin }) => {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem("userType", response.data.userType);
           setShowLogin(false);
+          toast.success('Login Successfully')
         } else {
-          alert(response.data.message || 'Student Registration successful.');
+          toast.success(response.data.message || 'Student Registration successful.');
         }
       } else {
         alert('Error: ' + response.data.message || 'Something went wrong.');
+        
       }
     } catch (error) {
       console.error('Error occurred:', error);

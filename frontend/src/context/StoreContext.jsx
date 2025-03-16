@@ -79,15 +79,8 @@ const StoreContextProvider = (props) => {
         }
     };
 
-    const getUserData = async ()=> {
-        try {
-            const {data} = await axios.get(`${url}/api/user/data`)
-            data.success ? setStudentData(data.studentData) : toast.error(data.message);
-        } catch (error) {
-            
-        }
-    }
-    
+
+  
     useEffect(() => {
         async function fetchData() {
             await fetchFoodList();
