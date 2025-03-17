@@ -41,7 +41,7 @@ const vendorRegister = async (req, res) => {
 
         // 4️⃣ ✅ Corrected Token Generation
         const token = jwt.sign(
-            { id: updatedVendor._id, vendorype: "vendor" }, // ✅ Fix: Use updatedVendor
+            { id: updatedVendor._id, userType: "vendor" }, // ✅ Fix: Use updatedVendor
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
@@ -100,8 +100,8 @@ const vendorLogin = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production",
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
+            // secure: false,
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
