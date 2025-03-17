@@ -16,9 +16,7 @@ const DropdownNotif = () => {
 
   const fetchReservations = async () => {
     try {
-      const response = await axios.get(`${url}/api/reservation/latest`, {
-        headers: { token },
-      });
+      const response = await axios.get(`${url}/api/reservation/latest`, { withCredentials: true});
       
       const hiddenNotifs = JSON.parse(localStorage.getItem("studentHiddenNotifs")) || [];
 
