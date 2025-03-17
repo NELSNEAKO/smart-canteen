@@ -15,7 +15,7 @@ const VendorNotif = () => {
     try {
       const response = await axios.get(`${url}/api/reservation/list`);
       if (response.data.success) {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         
         const hiddenNotifs = JSON.parse(localStorage.getItem("hiddenNotifs")) || [];
         

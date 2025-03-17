@@ -15,13 +15,19 @@ import PlaceOrder from "./pages/Student/PlaceOrder/PlaceOrder";
 import Verify from "./pages/Student/Verify/Verify";
 import MyReservations from "./pages/Student/MyReservations/MyReservations";
 import EmailVerify from "./components/EmailVerify/EmailVerify";
+import Profile from "./components/Profile/Profile";
+
 
 // Vendor Pages
 import Add from "./pages/Vendor/Add/Add";
 import List from "./pages/Vendor/List/List";
 import Reservation from "./pages/Vendor/Reservation/Reservation";
 import Login from "./pages/Vendor/Login/Login";
-import Profile from "./components/Profile/Profile";
+import VendorResetPass from "./components/VendorResetPass/VendorResetPass";
+import VendorResetPassForm from "./components/VendorResetPassForm/VendorResetPassForm";
+import VendorProfile from "./components/VendorProfile/VendorProfile";
+import VendorEmailVerify from "./components/VendorEmailVerify/VendorEmailVerify";
+
 const App = () => {
   return (
     <Router>
@@ -29,7 +35,11 @@ const App = () => {
         {/* Vendor Routes */}
         <Route path="/vendor" element={<VendorLayout />}>
           <Route index element={<Login />} />
+          <Route path="send-reset-otp" element={<VendorResetPass />} />
+          <Route path="reset-password" element={<VendorResetPassForm />} />
           <Route element={<ProtectedRoute allowedUserType="vendor" />}>
+            <Route path="profile" element={<VendorProfile />} />
+            <Route path="verify-email" element={<VendorEmailVerify />} />
             <Route path="add" element={<Add />} />
             <Route path="list" element={<List />} />
             <Route path="reservation" element={<Reservation />} />

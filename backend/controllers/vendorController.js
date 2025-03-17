@@ -180,6 +180,34 @@ const deleteVendor = async (req,res) =>{
     }
 }
 
+const getVendorData = async (req, res) => {
+    try {
+      console.log("Fetching vendor data..."); // Add log
+      const { vendorId } = req.body;
+  
+      const vendor = await vendorModel.findById(vendorId);
+  
+      if (!vendor) {
+        console.log("Vendor not found"); // Add log
+        return res.json({ success: false, message: 'Vendor not found' });
+      }
+  
+      res.json({
+        success: true,
+        vendorData: {
+          name: vendor.name,
+          email: vendor.email,
+          password: vendor.password,
+          isAccountVerified: vendor.isAccountVerified
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching vendor:", error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+  
+
 
 
 module.exports = {
@@ -189,4 +217,5 @@ module.exports = {
     fetchInviteCodes,
     getVendor,
     deleteVendor,
+    getVendorData,
 };

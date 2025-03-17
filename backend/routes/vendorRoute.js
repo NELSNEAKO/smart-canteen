@@ -6,7 +6,11 @@ const {
     fetchInviteCodes,
     getVendor,
     deleteVendor,
+    getVendorData
 } = require('../controllers/vendorController') //import controller
+
+const vendorAuth = require('../middleware/vendorAuth');
+
 
 const db = require('../config/db'); 
 const vendorRouter = express.Router();
@@ -25,6 +29,8 @@ vendorRouter.get('/get-invite', fetchInviteCodes);
 
 // route for all vendors
 vendorRouter.get('/vendors', getVendor);
+
+vendorRouter.get('/data',vendorAuth, getVendorData);
 
 // route for deleting vendor
 vendorRouter.delete('/delete/:vendorId', deleteVendor);

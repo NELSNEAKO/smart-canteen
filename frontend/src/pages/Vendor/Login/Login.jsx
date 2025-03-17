@@ -25,11 +25,11 @@ const Login = () => {
   const onLogin = async (e) => {
     e.preventDefault();
     setLoading(true); // Start loading
-    let newUrl = url + (currState === 'Login' ? '/api/vendor/login' : '/api/vendor/register');
+    let newUrl = url + (currState === 'Login' ? '/api/vendor-auth/login' : '/api/vendor-auth/register');
 
     try {
-      const response = await axios.post(newUrl, data, {
-        headers: { "Content-Type": "application/json" }
+      const response = await axios.post(newUrl, data,{
+        withCredentials: true, // ✅ Include cookies
       });
 
       if (response.data.success) {
