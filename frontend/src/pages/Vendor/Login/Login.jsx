@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { StoreContext } from '../../../context/StoreContext';
 import Spinner from '../../../components/Spinner/Spinner';
+import { toast } from "react-toastify"; // Import Toast
+import "react-toastify/dist/ReactToastify.css"; // Import CSS
 
 const Login = () => {
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ const Login = () => {
         if (currState === 'Login' && response.data.token) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('userType', response.data.userType);
-          alert('Login successful!');
+          toast.success('Login Successfully')
           navigate(response.data.userType === 'vendor' ? '/vendor/add' : '/');
         }else {
-          alert(response.data.message || 'Vendor Registration successful.');
+          toast.success(response.data.message || 'Student Registration successful.');
         }
       } else {
         alert('Error: ' + (response.data.message || 'Something went wrong.'));
@@ -52,12 +54,6 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/vendor/add');
-    }
-  }, []);
 
   return (
     <div className='login'>
@@ -103,6 +99,7 @@ const Login = () => {
             placeholder='Your password'
             required
           />
+          {currState === 'Login' ? <p onClick={()=> navigate('/vendor/send-reset-otp')} className='forgot-pass'>Forgot password?</p> : ''}
         </div>
         <button type='submit' disabled={loading}>
           {loading ? 'Logging in...' : currState === 'Sign Up' ? 'Create Account' : 'Login'}

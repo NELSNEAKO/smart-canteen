@@ -20,12 +20,10 @@ const VendorProfile = () => {
             const response = await axios.get(`${url}/api/vendor/data`, {
                 withCredentials: true, // Ensure cookies are sent with the request
             });
-            console.log(response);
-            
     
             if (response.data.success) {
                 setVendor(response.data.vendorData);
-                console.log(response.data.vendorData);
+                // console.log(response.data.vendorData);
             } else {
                 console.log('Error: Vendor data not fetched correctly');
             }

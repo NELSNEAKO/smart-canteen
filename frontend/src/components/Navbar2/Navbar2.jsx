@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import DropdownNotif from '../DropdownNotif/DropdownNotif';
-import Profile from '../Profile/Profile';
 
 const Navbar2 = ({ setShowLogin }) => {
     const [menu, setMenu] = useState('home');

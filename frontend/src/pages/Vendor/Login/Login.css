@@ -16,7 +16,7 @@
     border-radius: 8px;
     font-size: 14px;
     animation: fadeIn 0.5s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
 }
 .login-title{

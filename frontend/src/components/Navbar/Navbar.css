@@ -61,9 +61,7 @@
 
 .profile-header {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 15px;
+    padding: 10px 1px;
 }
 
 .profile-img {
