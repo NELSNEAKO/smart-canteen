@@ -8,25 +8,23 @@ import { StoreContext } from "../../context/StoreContext";
 const DropdownNotif = () => {
   const { url } = useContext(StoreContext);
   const [notifications, setNotifications] = useState([]);
-  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    fetchReservations();
-  }, [token]);
+  
 
   const fetchReservations = async () => {
     try {
-      const response = await axios.get(`${url}/api/reservation/latest`, { withCredentials: true});
-      
-      const hiddenNotifs = JSON.parse(localStorage.getItem("studentHiddenNotifs")) || [];
+        const response = await axios.get(`${url}/api/reservation/latest`, { withCredentials: true });
+        console.log('response', response);
 
-      // Filter out hidden notifications
-      const filteredNotifs = response.data.data.filter(notif => !hiddenNotifs.includes(notif._id));
-      setNotifications(filteredNotifs);
+        const hiddenNotifs = JSON.parse(localStorage.getItem("studentHiddenNotifs")) || [];
+        const filteredNotifs = response.data.data.filter(notif => !hiddenNotifs.includes(notif._id));
+        
+        setNotifications(filteredNotifs);
     } catch (error) {
-      console.error("Error fetching latest reservation:", error);
+        console.error("Error fetching latest reservation:", error);
     }
-  };
+};
+
 
   // Hide notification and store in localStorage
   const handleRemoveNotif = (notifId) => {
@@ -37,6 +35,10 @@ const DropdownNotif = () => {
     hiddenNotifs.push(notifId);
     localStorage.setItem("studentHiddenNotifs", JSON.stringify(hiddenNotifs));
   };
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
 
   return (
     <div className="nav2-notif">

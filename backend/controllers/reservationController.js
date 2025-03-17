@@ -181,20 +181,20 @@ const updateStatus = async (req, res) => {
 
 const getLatestReservation = async (req, res) => {
     try {
-        console.log("Decoded Request Body:", req.body); // Debug request body
+        console.log("Request Body:", req.body); // Debug
 
-        const userId = req.body?.userId; // Extract userId
+        const studentId = req.body.studentId; // Now coming from middleware
 
-        if (!userId) {
+        if (!studentId) {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
 
         const reservations = await reservationModel
-            .find({ userId })
-            .sort({ date: -1 }) // Sort by newest first
-            .limit(5); // Get only the latest 5
+            .find({ userId: studentId }) // Ensure correct field
+            .sort({ date: -1 })
+            .limit(5);
 
-        console.log("Fetched Reservations:", reservations); // Debug fetched data
+        console.log("Fetched Reservations:", reservations);
 
         res.status(200).json({ success: true, data: reservations });
 
