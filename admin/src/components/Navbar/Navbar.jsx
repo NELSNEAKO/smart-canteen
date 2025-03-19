@@ -41,7 +41,7 @@ const Navbar = ({url}) => {
           localStorage.removeItem('userType');
   
           // Redirect user to home/login page
-          navigate('/login');
+          navigate('/');
       } catch (error) {
           console.log('Error logging out:', error.response?.data?.message || error.message);
       }
@@ -56,7 +56,7 @@ const Navbar = ({url}) => {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <img onClick={()=> navigate('/')}
+        <img onClick={()=> navigate('/add')}
           className="logo"
           src="https://upload.wikimedia.org/wikipedia/en/8/8c/Cebu_Institute_of_Technology_University_logo.png"
           alt="Logo"

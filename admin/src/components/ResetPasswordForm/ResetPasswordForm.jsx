@@ -1,11 +1,9 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./ResetPasswordForm.css";
-import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const ResetPasswordForm = () => {
-  const { url } = useContext(StoreContext);
+const ResetPasswordForm = ({url}) => {
   const navigate = useNavigate();
   
   const [email, setEmail] = useState("");
@@ -22,7 +20,7 @@ const ResetPasswordForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${url}/api/auth/reset-password`, {
+      const response = await axios.post(`${url}/api/admin/reset-password`, {
         email,
         otp,
         newPassword
@@ -30,7 +28,7 @@ const ResetPasswordForm = () => {
 
       if (response.data.success) {
         setMessage("Password reset successfully. You can now login.");
-        setTimeout(() => navigate("/login"), 2000);
+        setTimeout(() => navigate("/"), 2000);
       } else {
         setError(response.data.message || "Failed to reset password.");
       }

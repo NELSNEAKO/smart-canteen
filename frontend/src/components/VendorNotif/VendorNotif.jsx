@@ -56,7 +56,7 @@ const VendorNotif = () => {
         <img src={assets.notification} alt="notif icon" />
         {notifications.some(n => n.status !== "Completed") && <div className="dot"></div>}
 
-        <ul className="nav2-notif-dropdown">
+        <ul className="nav2-notif-dropdown-vendor">
           <h2 className="notif-header">Notifications</h2>
 
           {notifications.length > 0 ? (

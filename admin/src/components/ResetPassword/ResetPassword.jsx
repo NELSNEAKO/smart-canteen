@@ -1,11 +1,9 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./ResetPassword.css";
-import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const ResetPassword = () => {
-  const { url } = useContext(StoreContext);
+const ResetPassword = ({url}) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +18,7 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${url}/api/auth/send-reset-otp`, { email });
+      const response = await axios.post(`${url}/api/admin/send-reset-otp`, { email });
 
       if (response.data.success) {
         setMessage("OTP sent to your email. Please check your inbox.");

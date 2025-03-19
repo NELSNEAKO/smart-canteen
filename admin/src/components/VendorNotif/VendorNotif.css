@@ -43,7 +43,7 @@
   /* Dropdown (Hidden by Default) */
   .nav2-notif-dropdown {
     position: absolute;
-    right: -90px;
+    right: -10px;
     top: 35px;
     background: white;
     border: 1px solid #ddd;

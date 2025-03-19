@@ -80,3 +80,43 @@
     align-self: start;
   }
   
+  @media (max-width: 414px) {
+    .profile-container {
+      width: 350px;
+      height: 420px; /* Set a fixed height */
+    }
+  
+      /* Keep other styles the same */
+    .profile-header {
+      padding: 5px 15px;
+      gap: 20px;
+      width: 320px;
+    }
+    .profile-header-head{
+      display: none;
+    } 
+  
+    .profile-details {
+      margin-top: 15px;
+      width: 320px;
+      color: #2c2b2b;
+    }
+  
+    .detail-item {
+      display: grid;
+      padding: 25px 21px;
+      grid-template-columns: 1fr 1fr;
+      font-size: 14px;
+    }
+  
+    .btn-section {
+      display: flex;
+      gap: 50px;
+    }
+  
+    .btn-section button {
+      width: 120px;
+      border-radius: 5px;
+      margin: 0 10px;
+    }
+  }

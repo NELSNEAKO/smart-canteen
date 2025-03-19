@@ -13,17 +13,19 @@ import { useState } from 'react';
 import UpdatePopup from './components/UpdatePopup/UpdatePopup';
 import Login from './pages/Login/Login';
 import Profile from './components/Profile/Profile';
+import ResetPassword from './components/ResetPassword/ResetPassword'
+import ResetPasswordForm from './components/ResetPasswordForm/ResetPasswordForm'
 
 const App = () => {
-  // const url = 'http://localhost:5000';
   const url = "https://smart-canteen-backend.onrender.com";
+  // const url = 'http://localhost:5000';
 
   const [showUpdate, setShowUpdate] = useState(false);
   const location = useLocation();
   
   // Hide sidebar on /login and /profile, but only hide navbar on /login
-  const hideSidebar = ["/login", "/profile"].includes(location.pathname);
-  const hideNavbar = location.pathname === "/login";
+  const hideSidebar = ["/", "/profile"].includes(location.pathname);
+  const hideNavbar = location.pathname === "/";
 
   return (
     <div>
@@ -35,10 +37,14 @@ const App = () => {
 
       <Routes>
         {/* Login page (completely standalone, centered) */}
-        <Route path="/login" element={<Login url={url} />} />
+        <Route path="/" element={<Login url={url} />} />
 
         {/* Profile page (navbar visible, sidebar hidden) */}
         <Route path="/profile" element={<Profile url={url} />} />
+
+        <Route path="send-reset-otp" element={<ResetPassword url={url}/>} />
+
+        <Route path="reset-password" element={<ResetPasswordForm url={url} />} />
 
         {/* Other pages (navbar and sidebar both visible) */}
         <Route 
