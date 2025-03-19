@@ -1,0 +1,127 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content */
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  width: 500px;
+  height: 450px; /* Set a fixed height */
+  position: absolute; /* Center the box */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Keep other styles the same */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-self: start;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 25px;
+  gap: 20px;
+  color: #2c2b2b;
+  width: 100%;
+} 
+
+.verified {
+  display: flex;
+  gap: 5px;
+}
+.verified img {
+  width: 30px;
+}
+.verified p {
+  margin-top: 5px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.profile-details {
+  margin-top: 15px;
+  gap: 20px;
+  width: 420px;
+  color: #2c2b2b;
+}
+
+.detail-item {
+  display: grid;
+  padding: 25px 10px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  font-size: 17px;
+}
+
+.detail-item-detais {
+  display: flex;
+  justify-content: flex-end;
+  color: #837e7e;
+  font-family: sans-serif;
+}
+
+.btn-section {
+  display: flex;
+  gap: 70px;
+}
+
+.btn-section button {
+  width: 150px;
+  background: #00a3ee;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 25px 15px;
+  cursor: pointer;
+  align-self: start;
+}
+
+@media (max-width: 414px) {
+  .profile-container {
+    width: 350px;
+    height: 420px; /* Set a fixed height */
+  }
+
+    /* Keep other styles the same */
+  .profile-header {
+    padding: 5px 15px;
+    gap: 20px;
+    width: 320px;
+  }
+  .profile-header-head{
+    display: none;
+  } 
+
+  .profile-details {
+    margin-top: 15px;
+    width: 320px;
+    color: #2c2b2b;
+  }
+
+  .detail-item {
+    display: grid;
+    padding: 25px 21px;
+    grid-template-columns: 1fr 1fr;
+    font-size: 14px;
+  }
+
+  .btn-section {
+    display: flex;
+    gap: 50px;
+  }
+
+  .btn-section button {
+    width: 100px;
+    border-radius: 5px;
+    margin: 15px 10px;
+  }
+}

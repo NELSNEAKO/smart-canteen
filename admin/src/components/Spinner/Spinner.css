@@ -1,0 +1,25 @@
+.verify {
+    min-height: 100vh; /* Cover full screen */
+    display: grid;
+    place-items: center;
+    position: fixed;
+    top: 500;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.verify .spinner {
+    width: 100px;
+    height: 100px;
+    border: 5px solid #bdbdbd;
+    border-top-color: tomato;
+    border-radius: 50%;
+    animation: rotate 1s infinite linear;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}

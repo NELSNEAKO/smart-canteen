@@ -1,0 +1,100 @@
+.nav2-notif {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Notification Icon */
+  .notif-icon {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .notif-icon .dot {
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: tomato;
+    border-radius: 50%;
+    top: -8px;
+    right: -8px;
+}
+  
+  .notif-icon img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Unread Notification Badge */
+  .notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: tomato;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  
+  /* Dropdown (Hidden by Default) */
+  .nav2-notif-dropdown {
+    position: absolute;
+    right: -90px;
+    top: 35px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    display: none; /* Hidden initially */
+    z-index: 1000;
+    padding: 10px 10px;
+  }
+
+  
+  /* Show Dropdown on Hover */
+  .notif-icon:hover .nav2-notif-dropdown {
+    display: block;
+  }
+  
+  /* Notification Items */
+  .notif-item {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    background-color: #fff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  .notif-item:hover {
+    border-radius: 5px;
+    background-color: #f0eaea; /* Light grey background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+  
+  /* No Notifications Text */
+  .notif-empty {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+  }
+
+  .notif-close{
+    z-index: 1000;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .notif-close:hover{
+    color: tomato;
+  }
+  
