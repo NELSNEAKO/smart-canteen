@@ -138,6 +138,25 @@ const getTopFoodItems = async (req, res) => {
   }
 };
 
+const recentFood = async (req, res) => {
+  try {
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Start of today in local time
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // End of today in local time
+
+    const foods = await foodModel.find({
+      created_at: { $gte: startOfDay.toISOString(), $lte: endOfDay.toISOString() }
+    });
+
+    res.json({ success: true, data: foods });
+  } catch (error) {
+    console.error("Error fetching today's food:", error);
+    res.status(500).json({ success: false, message: "Error fetching today's food" });
+  }
+};
+
+
+
  
 module.exports = {
   addFood,
@@ -145,6 +164,7 @@ module.exports = {
   removeFood,
   updateStatus,
   getTopFoodItems,
+  recentFood,
 };
 
 
