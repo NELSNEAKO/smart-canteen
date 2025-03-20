@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/admin_assets/assets';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import VendorNotif from '../VendorNotif/VendorNotif';
@@ -60,11 +60,13 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <img
-          className="logo"
-          src="https://upload.wikimedia.org/wikipedia/en/8/8c/Cebu_Institute_of_Technology_University_logo.png"
-          alt="Logo"
-        />
+      <Link to="/vendor/add">
+                <img 
+                    src="https://upload.wikimedia.org/wikipedia/en/8/8c/Cebu_Institute_of_Technology_University_logo.png"
+                    alt="CIT-U Logo" 
+                    className="logo"
+                />
+            </Link>
         <p className="details">Vendor Panel</p>
       </div>
       <div className="navbar-right">

@@ -9,7 +9,8 @@ const {
     verifyEmail,
     isAuthenticated,
     studentResetPass,
-    sendResetOtp
+    sendResetOtp,
+    updateStudent,
 } = require('../controllers/authController');
 
 const authRouter = express.Router();
@@ -31,7 +32,7 @@ authRouter.post('/send-reset-otp', sendResetOtp);
 
 authRouter.post('/reset-password', studentResetPass);
 
-
+authRouter.put('/update', userAuth, updateStudent);
 
 
 

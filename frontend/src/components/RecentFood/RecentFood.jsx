@@ -70,7 +70,7 @@ const RecentFood = () => {
                         ))}
                     </div>
                 ) : (
-                    <p>No recent food items available.</p>
+                    ""
                 )}
             </div>
         </div>

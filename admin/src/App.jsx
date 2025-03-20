@@ -15,6 +15,7 @@ import Login from './pages/Login/Login';
 import Profile from './components/Profile/Profile';
 import ResetPassword from './components/ResetPassword/ResetPassword'
 import ResetPasswordForm from './components/ResetPasswordForm/ResetPasswordForm'
+import EmailVerify from './components/EmailVerify/EmailVerify';
 
 const App = () => {
   const url = "https://smart-canteen-backend.onrender.com";
@@ -45,6 +46,8 @@ const App = () => {
         <Route path="send-reset-otp" element={<ResetPassword url={url}/>} />
 
         <Route path="reset-password" element={<ResetPasswordForm url={url} />} />
+
+        <Route path="verify-email" element={<EmailVerify url={url} />} />
 
         {/* Other pages (navbar and sidebar both visible) */}
         <Route 

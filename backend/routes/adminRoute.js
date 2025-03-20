@@ -11,6 +11,7 @@ const {
     adminResetPass,
     isAuthenticated,
     getAdminData,
+    updateAdmin,
 } = require('../controllers/adminControler') //import controller
 
 const adminAuth = require("../middleware/adminAuth");
@@ -21,7 +22,6 @@ const adminRouter = express.Router();
 adminRouter.get('/total-reservations', getTotalReservations);
 
 adminRouter.get('/data', adminAuth, getAdminData);
-
 
 adminRouter.get('/total-amounts', getTotalAmounts);
 
@@ -40,6 +40,8 @@ adminRouter.post('/is-auth', adminAuth, isAuthenticated);
 adminRouter.post('/send-reset-otp', sendResetOtp);
 
 adminRouter.post('/reset-password', adminResetPass);
+
+adminRouter.put('/update',adminAuth, updateAdmin);
 
 
 

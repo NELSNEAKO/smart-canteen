@@ -120,3 +120,20 @@
       margin: 0 10px;
     }
   }
+
+  .detail-item input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: -20px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-item input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}

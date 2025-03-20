@@ -59,8 +59,8 @@ const ResetPassword = ({url}) => {
         </form>
 
         <div className="reset-links">
-          <a href="/login">Login</a>
-          <a href="/register">Register</a>
+          <a href="/">Login</a>
+          <a href="/">Register</a>
         </div>
       </div>
     </div>

@@ -3,21 +3,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EmailVerify.css";
-import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 
 
 
 
-const EmailVerify = () => {
+const EmailVerify = ({url}) => {
 
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const { url } = useContext(StoreContext);
-
 
   const handleVerify = async (e) => {
     e.preventDefault();

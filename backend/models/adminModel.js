@@ -13,28 +13,32 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  verifyOtp :{
+  secret_key: {
     type: String,
-    default: '' 
+    required: true,
   },
-  verifyOtpExpireAt :{
-    type: Number,
-    default: 0
-  },
-  isAccountVerified :{
-    type: Boolean,
-    default: false
-  },
-  resetOtp :{
+  verifyOtp: {
     type: String,
     default: ''
   },
-  resetOtpExpireAt :{
+  verifyOtpExpireAt: {
+    type: Number,
+    default: 0
+  },
+  isAccountVerified: {
+    type: Boolean,
+    default: false
+  },
+  resetOtp: {
+    type: String,
+    default: ''
+  },
+  resetOtpExpireAt: {
     type: Number,
     default: 0
   }
 }, { minimize: false });
 
-const adminModel = mongoose.models.Adin || mongoose.model('Admin', adminSchema);
+const adminModel = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 
 module.exports = adminModel;

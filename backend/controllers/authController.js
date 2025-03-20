@@ -287,6 +287,43 @@ const studentResetPass = async (req, res) => {
     }
 };
 
+const updateStudent = async (req, res) => {
+    const { studentId, password, email, student_id, name} = req.body;
+
+    try {   
+        const student = await userModel.findById(studentId);
+
+        if (!student) {
+            return res.json({ success: false, message: "Student not found" });
+        }
+
+        if (name) {
+            student.name = name;
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 8);
+            student.password = hashedPassword;
+        }
+
+        if (email) {
+            student.email = email;
+        }
+
+        if (student_id) {
+            student.student_id = student_id;
+        }
+
+        await student.save();
+
+        return res.json({ success: true, message: "Student updated successfully" });
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+
 
 module.exports = {
     studentRegister,
@@ -297,4 +334,5 @@ module.exports = {
     isAuthenticated,
     studentResetPass,
     sendResetOtp,
+    updateStudent,
   };

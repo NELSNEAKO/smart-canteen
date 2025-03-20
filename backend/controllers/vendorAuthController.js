@@ -299,6 +299,43 @@ const vendorResetPass = async (req, res) => {
     }
 };
 
+const updateVendor = async (req, res) => {
+    const { vendorId, password, email, name} = req.body;
+
+    try {   
+        const vendor = await vendorModel.findById(vendorId);
+
+        if (!vendor) {
+            return res.json({ success: false, message: "vendor not found" });
+        }
+
+        if (name) {
+            vendor.name = name;
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 8);
+            vendor.password = hashedPassword;
+        }
+
+        if (email) {
+            vendor.email = email;
+        }
+
+        if (vendor_id) {
+            vendor.vendor_id = vendor_id;
+        }
+
+        await vendor.save();
+
+        return res.json({ success: true, message: "vendor updated successfully" });
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+
 
 module.exports = {
     vendorRegister,
@@ -309,4 +346,5 @@ module.exports = {
     isAuthenticated,
     vendorResetPass,
     sendResetOtp,
+    updateVendor,
   };

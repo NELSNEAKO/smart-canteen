@@ -6,7 +6,8 @@ const {
     fetchInviteCodes,
     getVendor,
     deleteVendor,
-    getVendorData
+    getVendorData,
+    updateVendor
 } = require('../controllers/vendorController') //import controller
 
 const vendorAuth = require('../middleware/vendorAuth');
@@ -34,6 +35,8 @@ vendorRouter.get('/data',vendorAuth, getVendorData);
 
 // route for deleting vendor
 vendorRouter.delete('/delete/:vendorId', deleteVendor);
+
+vendorRouter.put('/update',vendorAuth, deleteVendor);
 
 
 module.exports = vendorRouter;

@@ -94,12 +94,10 @@ const getTotalAmounts = async (req, res) => {
 };
 
 
-
-
 const adminRegister = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, secret_key } = req.body; // Get secret_key from request body
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !secret_key) { // Checking if secret_key is provided
         return res.json({ success: false, message: "Missing Details!" });
     }
 
@@ -107,7 +105,14 @@ const adminRegister = async (req, res) => {
         const existingAdmin = await adminModel.findOne({ email });
 
         if (existingAdmin) {
-            return res.json({ success: false, message: "admin already exists!" });
+            return res.json({ success: false, message: "Admin already exists!" });
+        }
+
+        // ✅ Correct secret key check
+        const expectedSecretKey = process.env.ADMIN_SECRET_KEY;
+
+        if (secret_key !== expectedSecretKey) { 
+            return res.json({ success: false, message: "Invalid Secret Key" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 8);
@@ -116,13 +121,14 @@ const adminRegister = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            secret_key // Store the secret key if needed
         });
 
         await admin.save();
 
-        // ✅ Corrected token generation
+        // ✅ Token generation
         const token = jwt.sign(
-            { id: admin._id, userType: "admin" },  // Include adminType
+            { id: admin._id, userType: "admin" },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
@@ -130,7 +136,6 @@ const adminRegister = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            // secure: false,
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
@@ -140,7 +145,7 @@ const adminRegister = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: email,
             subject: "Welcome to SmartCanteen",
-            text: `Welcome to Smart Canteen website. Your account has been created with email ID: ${email}.`,
+            text: `Welcome to Smart Canteen website. Your Admin account has been created with email ID: ${email}.`,
         };
 
         await transporter.sendMail(mailOptions);
@@ -152,7 +157,7 @@ const adminRegister = async (req, res) => {
     }
 };
 
-const adminLogin = async (req, res) => {
+    const adminLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -403,6 +408,37 @@ const getAdminData = async (req,res) => {
     }
   }
 
+  const updateAdmin = async (req, res) => {
+    const {adminId, password, email, name} = req.body;
+
+    try {   
+        const admin = await adminModel.findById(adminId);
+
+        if (!admin) {
+            return res.json({ success: false, message: "admin not found" });
+        }
+
+        if (name) {
+            admin.name = name;
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 8);
+            admin.password = hashedPassword;
+        }
+
+        if (email) {
+            admin.email = email;
+        }
+
+        await admin.save();
+
+        return res.json({ success: true, message: "admin updated successfully" });
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
 
 
 module.exports = {
@@ -417,4 +453,5 @@ module.exports = {
     isAuthenticated,
     getTotalAmounts,
     getTotalReservations,
+    updateAdmin
 };

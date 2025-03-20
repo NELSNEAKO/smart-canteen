@@ -12,6 +12,7 @@ const Login = ({url}) => {
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
     name: '',
+    secret_key: '',
     email: '',
     password: '',
   });
@@ -68,6 +69,14 @@ const Login = ({url}) => {
                 value={data.name}
                 type='text'
                 placeholder='Your name'
+                required
+              />
+              <input
+                name='secret_key'
+                onChange={onChangeHandler}
+                value={data.secret_key}
+                type='text'
+                placeholder='Secret key'
                 required
               />
             </>
